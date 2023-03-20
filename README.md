@@ -23,3 +23,8 @@ Unity's Package Manager lets you import git packages with fewer headaches.
 # Supported versions:
 
 Unity 2022.2.3f1 & up... Most of it might work with older versions as well, but you'll have to pick and choose.
+
+# Other Licenses:
+
+Please read licenses of the Third Party packages available within their respective directories.
+The DoTween (HOTween v2) package is used in the project.
