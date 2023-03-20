@@ -1,7 +1,7 @@
 {
   "name": "com.shraa1.sdk",
   "displayName": "Base SDK",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "unity": "2022.2",
   "unityRelease": "3f1",
   "author": {
