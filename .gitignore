@@ -1,0 +1,16 @@
+*.vsconfig
+Library/
+Logs/
+Temp/
+*.csproj
+*.suo
+obj/
+*.sln
+ProjectSettings/
+UserSettings/
+Assets/TextMesh Pro/
+Assets/Samples/
+Assets/TextMesh Pro.meta
+Assets/Samples.meta
+Builds/
+.vs/
