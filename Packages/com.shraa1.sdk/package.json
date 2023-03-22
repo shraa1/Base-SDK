@@ -1,7 +1,7 @@
 {
   "name": "com.shraa1.sdk",
   "displayName": "Base SDK",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "unity": "2022.2",
   "unityRelease": "3f1",
   "author": {
@@ -25,6 +25,11 @@
     "com.unity.nuget.newtonsoft-json": "3.0.2"
   },
   "samples": [
+    {
+      "displayName": "Basic Twitch Chat Integration",
+      "description": "This template shows the basic implementation of the Twitch Chat Integration functionality.",
+      "path": "SubSystems/TwitchChatIntegration/Samples~/Basic Twitch Chat Integration"
+    },
     {
       "displayName": "System Volume Adjust",
       "description": "Adjust the Windows OS's system volume",

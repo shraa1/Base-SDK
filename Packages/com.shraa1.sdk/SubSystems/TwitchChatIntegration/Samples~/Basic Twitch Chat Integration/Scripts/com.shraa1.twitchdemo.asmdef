@@ -1,0 +1,20 @@
+{
+    "name": "com.shraa1.twitchdemo",
+    "rootNamespace": "",
+    "references": [
+        "GUID:f11aa30b29b43c84fb0cf442f20bc2de",
+        "GUID:b66185b40066a3348a3780689b3bac5a",
+        "GUID:e8bed2d3aa368ce4f8b2d8e88a34ec25",
+        "GUID:d258a1d0fcf30a14282dc300d7db7c8e",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
