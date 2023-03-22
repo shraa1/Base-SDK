@@ -1,7 +1,7 @@
 {
   "name": "com.shraa1.sdk",
   "displayName": "Base SDK",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "unity": "2022.2",
   "unityRelease": "3f1",
   "author": {
@@ -25,5 +25,10 @@
     "com.unity.nuget.newtonsoft-json": "3.0.2"
   },
   "samples": [
+    {
+      "displayName": "System Volume Adjust",
+      "description": "Adjust the Windows OS's system volume",
+      "path": "SubSystems/System Volume Adjust/Samples~/System Volume Adjustment Demo"
+    }
   ]
 }
