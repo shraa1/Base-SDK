@@ -1,7 +1,7 @@
 {
   "name": "com.shraa1.sdk",
   "displayName": "Base SDK",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "unity": "2022.2",
   "unityRelease": "3f1",
   "author": {
@@ -25,6 +25,11 @@
     "com.unity.nuget.newtonsoft-json": "3.0.2"
   },
   "samples": [
+    {
+      "displayName": "Basic Social Media Popup",
+      "description": "This template shows the basic implementation of the Social Media Popup functionality.",
+      "path": "SubSystems/SocialMediaPopup/Samples~/Basic Social Media Popup"
+    },
     {
       "displayName": "Basic Twitch Chat Integration",
       "description": "This template shows the basic implementation of the Twitch Chat Integration functionality.",
