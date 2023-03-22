@@ -1,7 +1,7 @@
 {
   "name": "com.shraa1.sdk",
   "displayName": "Base SDK",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "unity": "2022.2",
   "unityRelease": "3f1",
   "author": {
@@ -25,6 +25,11 @@
     "com.unity.nuget.newtonsoft-json": "3.0.2"
   },
   "samples": [
+    {
+      "displayName": "Basic Leaderboard",
+      "description": "This template shows the basic implementation of the Leaderboard functionality.",
+      "path": "SubSystems/Leaderboards/Samples~/Basic Leaderboard"
+    },
     {
       "displayName": "Basic Social Media Popup",
       "description": "This template shows the basic implementation of the Social Media Popup functionality.",
