@@ -27,6 +27,7 @@ Unity 2022.2.3f1 & up... Most of it might work with older versions as well, but 
 # Other Licenses:
 
 Please read licenses of the Third Party packages available within their respective directories.
+
 The DoTween (HOTween v2) package is used in the project.
 
 The Discord SDK is used in the project.
