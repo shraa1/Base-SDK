@@ -1,0 +1,2 @@
+This is a modified version of files from the Unity assetstore free package.
+Original assetstore asset link: https://assetstore.unity.com/packages/tools/utilities/colourful-hierarchy-category-gameobject-205934
