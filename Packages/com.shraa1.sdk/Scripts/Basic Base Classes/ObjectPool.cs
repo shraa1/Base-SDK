@@ -1,9 +1,10 @@
 ﻿#pragma warning disable IDE0017 // Simplify object initialization
 
-using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using UnityEngine;
 
 namespace BaseSDK.Utils {
 	/// <summary>
@@ -30,7 +31,7 @@ namespace BaseSDK.Utils {
 		/// Controller Gameobject Pool<T> (usually dontdestroy and disabled)
 		/// </summary>
 		private static GameObject controller;
-		
+
 		/// <summary>
 		/// Already instantiated objects
 		/// </summary>
@@ -52,7 +53,7 @@ namespace BaseSDK.Utils {
 		/// All freed up items
 		/// </summary>
 		private static List<Tuple<T, ItemUsageState>> FreeItems => instances.FindAll(x => x.Item2 == ItemUsageState.FREE);
-		
+
 		/// <summary>
 		/// All in use items
 		/// </summary>
@@ -107,7 +108,7 @@ namespace BaseSDK.Utils {
 		/// <param name="dontDestroy">Don't Destroy the controller GameObject</param>
 		/// <param name="instantiateActive">Should Instantiate GameObject in (de)active state</param>
 		/// <returns>Returns the Pool<T> gameobject.</returns>
-		private static GameObject CreateControllerGameObject(bool dontDestroy = true, bool instantiateActive = false) {
+		private static GameObject CreateControllerGameObject (bool dontDestroy = true, bool instantiateActive = false) {
 			if (controller == null) {
 				controller = new GameObject($"{pool}<{typeof(T).Name}>");
 				controller.SetActive(instantiateActive);
@@ -125,7 +126,7 @@ namespace BaseSDK.Utils {
 		/// <param name="template">Template</param>
 		/// <param name="dontDestroy">Don't Destroy the controller GameObject</param>
 		/// <param name="maxPoolItems">Max Pool items.</param>
-		public static void SetTemplate(T template, bool dontDestroy = true, int maxPoolItems = -1) {
+		public static void SetTemplate (T template, bool dontDestroy = true, int maxPoolItems = -1) {
 			templ = template;
 			localScale = templ.transform.localScale;
 			rotation = templ.transform.rotation;
@@ -139,7 +140,7 @@ namespace BaseSDK.Utils {
 		/// But if BulkInstantiate is called which makes pool instantiated items more than MaxPoolItems, then next call of Get will not create anything
 		/// </summary>
 		/// <returns>Returns null if MaxPoolItems is reached, else finds an available object, else creates a new one and returns it.</returns>
-		public static T Get() {
+		public static T Get (Transform parentTransform = null) {
 			var find = instances.Find(x => x.Item2 == ItemUsageState.FREE);
 			var item = find?.Item1;
 			var ind = 0;
@@ -152,13 +153,13 @@ namespace BaseSDK.Utils {
 				else
 					item = new GameObject().AddComponent<T>();
 				item.name = templ.name;
-				instances.Add(Tuple.Create(item, ItemUsageState.IN_USE));
-				ind = instances.Count;
+				instances.Add(Tuple.Create(item, ItemUsageState.FREE));
+				ind = instances.Count - 1;
 			}
 			else
 				ind = instances.IndexOf(find);
 
-			item.transform.SetParent(null, true);
+			item.transform.SetParent(parentTransform, true);
 			item.transform.localScale = localScale;
 			item.transform.rotation = rotation;
 			instances[ind] = Tuple.Create(item, ItemUsageState.IN_USE);
@@ -189,7 +190,7 @@ namespace BaseSDK.Utils {
 		/// Free up an item from the In use category to Freed up category.
 		/// </summary>
 		/// <param name="itemToFree">Item to free.</param>
-		public static void FreeToPool(T itemToFree) {
+		public static void FreeToPool (T itemToFree) {
 			var item = instances.Find(x => x.Item1 == itemToFree);
 			var index = instances.IndexOf(item);
 			itemToFree.transform.SetParent(controller.transform, true);
@@ -200,7 +201,7 @@ namespace BaseSDK.Utils {
 		/// Free up all pool items
 		/// </summary>
 		public static void FreeAllItemsToPool () {
-			for(var i = 0; i < instances.Count; i++)
+			for (var i = 0; i < instances.Count; i++)
 				instances[i] = Tuple.Create(instances[i].Item1, ItemUsageState.FREE);
 		}
 		#endregion Methods
