@@ -18,13 +18,14 @@ namespace MStudio {
 		public TextAnchor textAlignment;
 		public FontStyle fontStyle;
 		public bool allUppercase = true;
+		public Texture texture;
 	}
 
 	/// <summary>
 	/// ScriptableObject:Save list of ColorDesign
 	/// </summary>
 	public class ColorPalette : ScriptableObject {
-		public List<ColorDesign> colorDesigns = new List<ColorDesign>();
+		public List<ColorDesign> colorDesigns = new();
 	}
 }
 #endif

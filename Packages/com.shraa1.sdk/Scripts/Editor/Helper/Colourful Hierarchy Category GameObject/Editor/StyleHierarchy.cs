@@ -8,9 +8,9 @@ using UnityEngine;
 namespace MStudio {
 	[InitializeOnLoad]
 	public class StyleHierarchy {
-		static string[] dataArray;//Find ColorPalette GUID
-		static List<string> paths = new List<string>();//Get ColorPalette(ScriptableObject) path
-		static List<ColorPalette> colorPalettes = new List<ColorPalette>();
+		private static readonly string[] dataArray;//Find ColorPalette GUID
+		private static readonly List<string> paths = new();//Get ColorPalette(ScriptableObject) path
+		private static readonly List<ColorPalette> colorPalettes = new();
 
 		static StyleHierarchy () {
 			dataArray = AssetDatabase.FindAssets("t:ColorPalette");
@@ -42,7 +42,7 @@ namespace MStudio {
 						//Check if the name of each gameObject is begin with keyChar in colorDesigns list.
 						if (instance.name.StartsWith(design.keyChar)) {
 							//Remove the symbol(keyChar) from the name.
-							string newName = instance.name.Substring(design.keyChar.Length);
+							string newName = instance.name[design.keyChar.Length..];
 							//Draw a rectangle as a background, and set the color.
 							EditorGUI.DrawRect(selectionRect, design.backgroundColor);
 
@@ -52,12 +52,14 @@ namespace MStudio {
 								fontStyle = design.fontStyle,
 								normal = new GUIStyleState() {
 									textColor = design.textColor,
-								}
+								},
 							};
+
+							var content = new GUIContent(design.allUppercase ? newName.ToUpper() : newName, design.texture);
 
 							//Draw a label to show the name in upper letters and newStyle.
 							//If you don't like all capital latter, you can remove ".ToUpper()".
-							EditorGUI.LabelField(selectionRect, design.allUppercase ? newName.ToUpper() : newName, newStyle);
+							EditorGUI.LabelField(selectionRect, content, newStyle);
 						}
 					}
 				}

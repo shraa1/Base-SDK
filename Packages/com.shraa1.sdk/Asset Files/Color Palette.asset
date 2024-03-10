@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7edb8eb7125ea44f68bbe616b44fa9bc, type: 3}
+  m_Name: Color Palette
+  m_EditorClassIdentifier: 
+  colorDesigns:
+  - keyChar: Cam_
+    textColor: {r: 1, g: 1, b: 1, a: 1}
+    backgroundColor: {r: 0.31764707, g: 0.53333336, b: 0.5176471, a: 1}
+    textAlignment: 3
+    fontStyle: 2
+    allUppercase: 0
+    texture: {fileID: 0}
+  - keyChar: Btn_
+    textColor: {r: 0.23529412, g: 0.8666667, b: 0.16078432, a: 1}
+    backgroundColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+    textAlignment: 3
+    fontStyle: 0
+    allUppercase: 0
+    texture: {fileID: 0}
+  - keyChar: Sldr_
+    textColor: {r: 0.92941177, g: 0.20784314, b: 0.20784314, a: 1}
+    backgroundColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+    textAlignment: 3
+    fontStyle: 0
+    allUppercase: 0
+    texture: {fileID: 0}
+  - keyChar: Drp_
+    textColor: {r: 0, g: 1, b: 0.9529412, a: 1}
+    backgroundColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+    textAlignment: 3
+    fontStyle: 0
+    allUppercase: 0
+    texture: {fileID: 0}
+  - keyChar: Txt_
+    textColor: {r: 1, g: 0.86274517, b: 0, a: 1}
+    backgroundColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+    textAlignment: 3
+    fontStyle: 0
+    allUppercase: 0
+    texture: {fileID: 0}
+  - keyChar: Img_
+    textColor: {r: 1, g: 0, b: 0.79607844, a: 1}
+    backgroundColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+    textAlignment: 3
+    fontStyle: 0
+    allUppercase: 0
+    texture: {fileID: 0}
+  - keyChar: ^
+    textColor: {r: 1, g: 0, b: 0.79607844, a: 1}
+    backgroundColor: {r: 0.5921569, g: 0.12941177, b: 0.8862745, a: 1}
+    textAlignment: 3
+    fontStyle: 1
+    allUppercase: 1
+    texture: {fileID: 0}
