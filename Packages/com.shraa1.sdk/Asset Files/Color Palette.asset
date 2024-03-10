@@ -56,7 +56,7 @@ MonoBehaviour:
     allUppercase: 0
     texture: {fileID: 0}
   - keyChar: ^
-    textColor: {r: 1, g: 0, b: 0.79607844, a: 1}
+    textColor: {r: 1, g: 1, b: 1, a: 1}
     backgroundColor: {r: 0.5921569, g: 0.12941177, b: 0.8862745, a: 1}
     textAlignment: 3
     fontStyle: 1
