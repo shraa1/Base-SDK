@@ -25,6 +25,8 @@ namespace MStudio {
 	/// ScriptableObject:Save list of ColorDesign
 	/// </summary>
 	public class ColorPalette : ScriptableObject {
+		public Texture defaultTexture;
+
 		public List<ColorDesign> colorDesigns = new();
 	}
 }

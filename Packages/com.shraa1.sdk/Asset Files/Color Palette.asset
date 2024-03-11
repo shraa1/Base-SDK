@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7edb8eb7125ea44f68bbe616b44fa9bc, type: 3}
   m_Name: Color Palette
   m_EditorClassIdentifier: 
+  defaultTexture: {fileID: 2800000, guid: 10edb048b4acccb4fb303435847c7eb0, type: 3}
   colorDesigns:
   - keyChar: Cam_
     textColor: {r: 1, g: 1, b: 1, a: 1}
@@ -19,46 +20,39 @@ MonoBehaviour:
     textAlignment: 3
     fontStyle: 2
     allUppercase: 0
-    texture: {fileID: 0}
+    texture: {fileID: 2800000, guid: d4cac944212ff484082817841ed90348, type: 3}
   - keyChar: Btn_
     textColor: {r: 0.23529412, g: 0.8666667, b: 0.16078432, a: 1}
     backgroundColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
     textAlignment: 3
     fontStyle: 0
     allUppercase: 0
-    texture: {fileID: 0}
+    texture: {fileID: 2800000, guid: d4d2e4ed578d3ee40a6f0b031a571a22, type: 3}
   - keyChar: Sldr_
     textColor: {r: 0.92941177, g: 0.20784314, b: 0.20784314, a: 1}
     backgroundColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
     textAlignment: 3
     fontStyle: 0
     allUppercase: 0
-    texture: {fileID: 0}
+    texture: {fileID: 2800000, guid: 5fbfc43972f82784e9aeb19207fac438, type: 3}
   - keyChar: Drp_
     textColor: {r: 0, g: 1, b: 0.9529412, a: 1}
     backgroundColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
     textAlignment: 3
     fontStyle: 0
     allUppercase: 0
-    texture: {fileID: 0}
+    texture: {fileID: 2800000, guid: e0d6448a8b2707845966e55f5745331a, type: 3}
   - keyChar: Txt_
     textColor: {r: 1, g: 0.86274517, b: 0, a: 1}
     backgroundColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
     textAlignment: 3
     fontStyle: 0
     allUppercase: 0
-    texture: {fileID: 0}
+    texture: {fileID: 2800000, guid: bedbed2931251da4e996cc74df28cee1, type: 3}
   - keyChar: Img_
     textColor: {r: 1, g: 0, b: 0.79607844, a: 1}
     backgroundColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
     textAlignment: 3
     fontStyle: 0
     allUppercase: 0
-    texture: {fileID: 0}
-  - keyChar: ^
-    textColor: {r: 1, g: 1, b: 1, a: 1}
-    backgroundColor: {r: 0.5921569, g: 0.12941177, b: 0.8862745, a: 1}
-    textAlignment: 3
-    fontStyle: 1
-    allUppercase: 1
-    texture: {fileID: 0}
+    texture: {fileID: 2800000, guid: 5095b7d02f2e1dc44a929f57cb1f8149, type: 3}

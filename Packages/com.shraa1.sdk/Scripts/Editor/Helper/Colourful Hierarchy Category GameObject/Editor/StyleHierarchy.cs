@@ -55,7 +55,7 @@ namespace MStudio {
 								},
 							};
 
-							var content = new GUIContent(design.allUppercase ? newName.ToUpper() : newName, design.texture);
+							var content = new GUIContent(design.allUppercase ? newName.ToUpper() : newName, design.texture == null ? colorPalettes[i].defaultTexture : design.texture);
 
 							//Draw a label to show the name in upper letters and newStyle.
 							//If you don't like all capital latter, you can remove ".ToUpper()".
