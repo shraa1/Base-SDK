@@ -3,13 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+
+using BaseSDK.Helper;
+
 using UnityEditor;
+
 using UnityEngine;
 
 namespace BaseSDK {
 	public class GeneralHelperEditors : MonoBehaviour {
 		[MenuItem("Tools/Open Persistent Data Path Folder")]
-		public static void OpenPDP() {
+		public static void OpenPDP () {
 			var procInfo = new ProcessStartInfo { UseShellExecute = true, FileName = Application.persistentDataPath };
 			var pp = new Process() { StartInfo = procInfo };
 			try { pp.Start(); }
@@ -25,6 +29,9 @@ namespace BaseSDK {
 			Assembly.GetAssembly(typeof(ActiveEditorTracker)).GetType("UnityEditorInternal.LogEntries").GetMethod("Clear").Invoke(null, null);
 #endif
 		}
+
+		[MenuItem("Tools/Delete PlayerPrefs %#&DEL")]
+		public static void Delete () => PlayerPrefsManager.DeleteAll();
 	}
 }
 #endif
