@@ -56,3 +56,38 @@ MonoBehaviour:
     fontStyle: 0
     allUppercase: 0
     texture: {fileID: 2800000, guid: 5095b7d02f2e1dc44a929f57cb1f8149, type: 3}
+  - keyChar: Canv_
+    textColor: {r: 0.735849, g: 0.5067639, b: 0.5067639, a: 1}
+    backgroundColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+    textAlignment: 3
+    fontStyle: 0
+    allUppercase: 0
+    texture: {fileID: 2800000, guid: 5bb60a97dd968fd4988070cbc3cff081, type: 3}
+  - keyChar: ScrRt_
+    textColor: {r: 1, g: 0.6119468, b: 0, a: 1}
+    backgroundColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+    textAlignment: 3
+    fontStyle: 0
+    allUppercase: 0
+    texture: {fileID: 2800000, guid: 5c9e55917883f654a96e62bb6b06836e, type: 3}
+  - keyChar: Tog_
+    textColor: {r: 0.410763, g: 0.8113208, b: 0.69320756, a: 1}
+    backgroundColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+    textAlignment: 3
+    fontStyle: 0
+    allUppercase: 0
+    texture: {fileID: 2800000, guid: c33145171ea03c44084bcf1ec1c54512, type: 3}
+  - keyChar: ScrBr_
+    textColor: {r: 0.9607844, g: 0.011764707, b: 0.7686275, a: 1}
+    backgroundColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+    textAlignment: 3
+    fontStyle: 0
+    allUppercase: 0
+    texture: {fileID: 2800000, guid: 38baebaf07003184d9d7ad4375640c5c, type: 3}
+  - keyChar: VrtLay_
+    textColor: {r: 0.8000001, g: 0.8000001, b: 0.8000001, a: 1}
+    backgroundColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
+    textAlignment: 3
+    fontStyle: 0
+    allUppercase: 0
+    texture: {fileID: 2800000, guid: c7ac2988dc888dd46badaa3b5814a51e, type: 3}
