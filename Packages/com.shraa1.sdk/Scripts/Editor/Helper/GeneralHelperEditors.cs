@@ -31,7 +31,14 @@ namespace BaseSDK {
 		}
 
 		[MenuItem("Tools/Delete PlayerPrefs %#&DEL")]
-		public static void Delete () => PlayerPrefsManager.DeleteAll();
+		public static void Delete () {
+			var hadKey = PlayerPrefs.HasKey("PlayFromScene0");
+
+			PlayerPrefsManager.DeleteAll();
+
+			if (hadKey)
+				PlayerPrefs.SetString("PlayFromScene0", string.Empty);
+		}
 	}
 }
 #endif

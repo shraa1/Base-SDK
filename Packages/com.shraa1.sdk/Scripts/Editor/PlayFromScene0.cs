@@ -12,7 +12,7 @@ namespace IdlingGame {
 	public class PlayFromScene0 {
 		[MenuItem("Tools/Play from Scene 0")]
 		public static void Play () {
-			PlayerPrefs.SetString("PlayFromScene0", "");
+			PlayerPrefs.SetString("PlayFromScene0", string.Empty);
 			playModeStartScene = LoadAssetAtPath<SceneAsset>(scenes[0].path);
 		}
 

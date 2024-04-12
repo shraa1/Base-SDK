@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+
+using UnityEngine;
 
 namespace BaseSDK {
 	public class GameConstants {
@@ -65,6 +66,7 @@ namespace BaseSDK {
 
 		#region Commonly Used Numbers
 		public const float TWO_FIFTY_FIVE_FLOAT = 255f;
+		public const int SECONDS_IN_AN_HOUR = 3600;
 		#endregion Commonly Used Numbers
 
 		#region Currency Things
