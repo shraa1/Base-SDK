@@ -1,15 +1,16 @@
-﻿using DG.Tweening;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using DG.Tweening;
+
 using UnityEngine;
 
 namespace BaseSDK.Utils {
 	public class Utilities {
-		public static T EitherOf<T>(params T[] args) => args[UnityEngine.Random.Range(0, args.Length)];
+		public static T EitherOf<T> (params T[] args) => args[UnityEngine.Random.Range(0, args.Length)];
 
-		public static Tweener WaitBeforeExecuting(float waitTime, Action action) {
+		public static Tweener WaitBeforeExecuting (float waitTime, Action action) {
 			if (waitTime == 0f) {
 				action?.Invoke();
 				return null;
@@ -24,7 +25,7 @@ namespace BaseSDK.Utils {
 			return (char)(start + UnityEngine.Random.Range(0, 26));
 		}
 
-		public static List<GameObject> FindGameObjectsOfName(IEnumerable<string> names) {
+		public static List<GameObject> FindGameObjectsOfName (IEnumerable<string> names) {
 			var list = new List<GameObject>();
 			names.ToList().ForEach(x =>
 				list.AddRange(UnityEngine.Object.FindObjectsOfType<GameObject>().ToList().FindAll(y => y.name == x)));

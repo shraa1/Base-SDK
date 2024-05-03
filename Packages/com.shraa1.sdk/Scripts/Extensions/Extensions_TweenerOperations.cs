@@ -7,10 +7,10 @@ using UnityEngine;
 namespace BaseSDK.Extension {
 	public static partial class Extensions {
 		public static void PauseTweeners<T>(this Singleton<T> singleton) where T : MonoBehaviour =>
-			Singleton<T>.allTweeners.ForEach((Tweener tweener) => tweener.Pause());
+			Singleton<T>.AllTweeners.ForEach((Tweener tweener) => tweener.Pause());
 			
 		public static void ResumeTweeners<T>(this Singleton<T> singleton) where T : MonoBehaviour =>
-			Singleton<T>.allTweeners.ForEach((Tweener tweener) => tweener.Play());
+			Singleton<T>.AllTweeners.ForEach((Tweener tweener) => tweener.Play());
 
 		public static List<Tweener> Kill(this List<Tweener> tweeners) { tweeners?.ForEach(x => x.Kill()); return tweeners; }
 
