@@ -43,8 +43,15 @@ namespace BaseSDK.Utils {
 				onComplete?.Invoke();
 				return;
 			}
-			if (index < textToDisplay.Length && textToDisplay[index] == GameConstants.LINE_BREAK)
-				index++;
+			if (index < textToDisplay.Length) {
+				if (textToDisplay[index] == GameConstants.LINE_BREAK)
+					index++;
+				else if (textToDisplay[index] == '<') {
+					var closing = textToDisplay.Substring(index + 1, textToDisplay.Length - index - 1).IndexOf('>');
+					if (closing != -1)
+						index += closing + 1;
+				}
+			}
 
 			string s = textToDisplay.Substring(0, index + 1);
 			int count = TotalNewLineCount - s.Occurrences(GameConstants.LINE_BREAK);
