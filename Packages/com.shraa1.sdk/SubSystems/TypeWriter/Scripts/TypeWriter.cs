@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using BaseSDK.Extension;
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
-using BaseSDK.Extension;
-using TMPro;
 
 namespace BaseSDK.Utils {
 	public class TypeWriter : MonoBehaviour {
@@ -17,26 +17,28 @@ namespace BaseSDK.Utils {
 		private Action onComplete;
 		private TextMesh textMesh;
 		private TextMeshProUGUI tmp;
+		private TextMeshPro tmpro;
 		private Text text;
 		private Tweener tweener;
 
 		private int TotalNewLineCount => textToDisplay.Occurrences(GameConstants.LINE_BREAK);
 
-		private void Awake() {
+		private void Awake () {
 			text = GetComponent<Text>();
 			textMesh = GetComponent<TextMesh>();
 			tmp = GetComponent<TextMeshProUGUI>();
+			tmpro = GetComponent<TextMeshPro>();
 			if (autoStartTyping) StartTyping();
 		}
 
-		public void StartTyping(Action onComplete = null) {
+		public void StartTyping (Action onComplete = null) {
 			StartTyping(0);
 			if (textMesh != null)
 				GetComponent<MeshRenderer>().sortingOrder = textMeshSortingOrder;
 			this.onComplete = onComplete;
 		}
 
-		private void StartTyping(int index) {
+		private void StartTyping (int index) {
 			if (index == textToDisplay.Length) {
 				onComplete?.Invoke();
 				return;
@@ -52,14 +54,16 @@ namespace BaseSDK.Utils {
 			if (textMesh != null) textMesh.text = s;
 			else if (text != null) text.text = s;
 			else if (tmp != null) tmp.text = s;
+			else if (tmpro != null) tmpro.text = s;
 
-			audioSource.Random().Play();
+			if (audioSource.Count > 0)
+				audioSource.Random().Play();
 
 			index++;
 
 			tweener = Utilities.WaitBeforeExecuting(typewriterTimeDelay, () => StartTyping(index));
 		}
 
-		public void StopTyping() => tweener?.Kill();
+		public void StopTyping () => tweener?.Kill();
 	}
 }
