@@ -1,5 +1,3 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 using UnityEngine;
@@ -9,7 +7,7 @@ using TMPro;
 
 namespace BaseSDK.Utils {
 	public class TwitchChatIntegration : Singleton<TwitchChatIntegration> {
-#region Variables
+		#region Variables
 		/// <summary>
 		/// Connection to the twitch chat API
 		/// </summary>
@@ -88,24 +86,24 @@ namespace BaseSDK.Utils {
 		/// 1st parameter is the userName.
 		/// 2nd parameter is the actual message;
 		public UnityEvent<string, string> OnChatMessageReceived { get => onChatMessageReceived; set => onChatMessageReceived = value; }
-#endregion
+		#endregion
 
-#region Constants
+		#region Constants
 		private const string PRIVMSG = "PRIVMSG";
 		private const string PART = "PART";
 		private const string JOIN = "JOIN";
 		private const string NICK = "NICK";
 		private const string PASS = "PASS";
 		private const string PING = "PING: tmi.twitch.tv";
-#endregion
+		#endregion
 
-#region Unity Methods
-		protected virtual void Awake() {
+		#region Unity Methods
+		protected virtual void Awake () {
 			if (connectAtAwake)
 				ConnectToTwitch(UserName, OAuthPassword, ChannelName);
 		}
 
-		protected virtual void Update() {
+		protected virtual void Update () {
 			//twitchClient was null, must mean that it was not connected.
 			if (twitchClient == null || !twitchClient.Connected)
 				return;
@@ -134,10 +132,10 @@ namespace BaseSDK.Utils {
 				}
 			}
 		}
-#endregion
+		#endregion
 
-#region Connection related methods
-		public void ConnectToTwitch() => ConnectToTwitch(UserName, OAuthPassword, ChannelName);
+		#region Connection related methods
+		public void ConnectToTwitch () => ConnectToTwitch(UserName, OAuthPassword, ChannelName);
 
 		/// <summary>
 		/// Connect to Twitch API.
@@ -146,7 +144,7 @@ namespace BaseSDK.Utils {
 		/// <param name="userName">Username of the twitch account.</param>
 		/// <param name="OauthPassword">Secret OAuth password.</param>
 		/// <param name="channelName">Channel to join when connecting, so that we can join the channel when logging in</param>
-		public void ConnectToTwitch(string userName, string OauthPassword, string channelName = null) {
+		public void ConnectToTwitch (string userName, string OauthPassword, string channelName = null) {
 			LeaveChannel();
 
 			//Connect to twitch chat client
@@ -171,7 +169,7 @@ namespace BaseSDK.Utils {
 		/// Joins a channel with the given Channel Name
 		/// </summary>
 		/// <param name="channelName">Joins the channel. Should not be null or empty, otherwise a System.Exception will be thrown</param>
-		public void JoinChannel(string channelName) {
+		public void JoinChannel (string channelName) {
 			if (channelName.IsNullOrEmpty())
 				throw new System.Exception("channelName should not be " + (channelName == null ? "null" : "Empty"));
 
@@ -185,7 +183,7 @@ namespace BaseSDK.Utils {
 		/// <summary>
 		/// Disconnect from a joined channel, and then disconnect the TcpClient properly
 		/// </summary>
-		public void LeaveChannel() {
+		public void LeaveChannel () {
 			if (twitchClient != null && twitchClient.Connected && streamWriter != null) {
 				//Leave the channel before disconnecting the TcpClient
 				streamWriter.WriteLine($"{PART} #{ChannelName}");
@@ -203,71 +201,22 @@ namespace BaseSDK.Utils {
 		/// </summary>
 		/// <param name="msg">The message to send to twitch.
 		/// Note: This message is not received back in the streamreader, so no worries about filtering the messages. But if the same user sends the message from some other app/browser from twitch, it does get recognized.</param>
-		public void SendMessageToTwitch(string msg) {
+		public void SendMessageToTwitch (string msg) {
 			if (twitchClient != null && twitchClient.Connected && streamWriter != null) {
 				streamWriter.WriteLine($"{PRIVMSG} #{ChannelName} :{msg}");
 				streamWriter.Flush();
 			}
 		}
-#endregion
+		#endregion
 
-#region UI Helper method
-//#if TMP_PRESENT
+		#region UI Helper method
+		//#if TMP_PRESENT
 		/// <summary>
 		/// Sends the text from the InputField as a message from the app/unity editor to twitch. Use this after a twitch connection is active
 		/// </summary>
 		/// <param name="inputField"></param>
-		public void SendMessageToTwitch(TMP_InputField inputField) => SendMessageToTwitch(inputField.text);
-//#endif
-#endregion
+		public void SendMessageToTwitch (TMP_InputField inputField) => SendMessageToTwitch(inputField.text);
+		//#endif
+		#endregion
 	}
 }
-
-#if UNITY_EDITOR
-namespace BaseSDK.EditorScripts {
-	using BaseSDK.Utils;
-	using UnityEditor;
-
-	[CustomEditor(typeof(TwitchChatIntegration))]
-	public class TwitchChatIntegrationEditor : Editor {
-		private UnityEditor.PackageManager.Requests.AddRequest addPackage_Result;
-
-		private void OnEnable() {
-			EditorApplication.update += Update;
-		}
-
-		private void Update() {
-			if (addPackage_Result != null && addPackage_Result.IsCompleted) {
-				addPackage_Result = null;
-				PackageDependenciesHelper.AddTextMeshProEssentials();
-			}
-		}
-
-		public override void OnInspectorGUI() {
-			var connectAtAwake = serializedObject.FindProperty("connectAtAwake");
-			connectAtAwake.boolValue = EditorGUILayout.Toggle("Connect At Awake", connectAtAwake.boolValue);
-
-			var userName = serializedObject.FindProperty("userName");
-			userName.stringValue = EditorGUILayout.TextField("Username", userName.stringValue);
-
-			EditorGUILayout.HelpBox("OAuth Password is meant to be secret, do not share it with anyone. Usually, do not serialize this, preferably get this value from an InputField or a text file or something similar", MessageType.Warning);
-			var password = serializedObject.FindProperty("OauthPassword");
-			password.stringValue = EditorGUILayout.TextField("OAuth Password", password.stringValue);
-
-			if (password.stringValue.IsNullOrEmpty() && GUILayout.Button("Get OAuth Password"))
-				Application.OpenURL("https://twitchapps.com/tmi");
-
-			GUILayout.Space(40);
-
-			EditorGUILayout.HelpBox("If you want to Connect to twitch and not join a channel immediately, leave the channel name empty", MessageType.Warning);
-			var channelName = serializedObject.FindProperty("channelName");
-			channelName.stringValue = EditorGUILayout.TextField("Channel To Join", channelName.stringValue);
-
-			var onChatMessageReceived = serializedObject.FindProperty("onChatMessageReceived");
-			EditorGUILayout.PropertyField(onChatMessageReceived);
-
-			serializedObject.ApplyModifiedProperties();
-		}
-	}
-}
-#endif

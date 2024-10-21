@@ -1,4 +1,3 @@
-﻿#if UNITY_EDITOR
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +12,7 @@ namespace BaseSDK.EditorScripts {
 	/// </summary>
 	[CustomEditor(typeof(MeshRenderer)), CanEditMultipleObjects]
 	public class MeshRendererSortingLayerExposed : Editor {
-		public override void OnInspectorGUI() {
+		public override void OnInspectorGUI () {
 			base.OnInspectorGUI();
 
 			SerializedProperty sortingLayerID = serializedObject.FindProperty("m_SortingLayerID");
@@ -54,17 +53,16 @@ namespace BaseSDK.EditorScripts {
 			serializedObject.ApplyModifiedProperties();
 		}
 
-		public string[] GetSortingLayerNames() {
+		public string[] GetSortingLayerNames () {
 			Type internalEditorUtilityType = typeof(InternalEditorUtility);
 			PropertyInfo sortingLayersProperty = internalEditorUtilityType.GetProperty("sortingLayerNames", BindingFlags.Static | BindingFlags.NonPublic);
 			return (string[])sortingLayersProperty.GetValue(null, null);
 		}
 
-		public int[] GetSortingLayerUniqueIDs() {
+		public int[] GetSortingLayerUniqueIDs () {
 			Type internalEditorUtilityType = typeof(InternalEditorUtility);
 			PropertyInfo sortingLayerUniqueIDsProperty = internalEditorUtilityType.GetProperty("sortingLayerUniqueIDs", BindingFlags.Static | BindingFlags.NonPublic);
 			return (int[])sortingLayerUniqueIDsProperty.GetValue(null, null);
 		}
 	}
 }
-#endif

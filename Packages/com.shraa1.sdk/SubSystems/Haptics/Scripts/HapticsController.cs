@@ -33,7 +33,7 @@ namespace BaseSDK.Controllers {
 		/// <summary>
 		/// Awake. Dont Destroy this gameObject.
 		/// </summary>
-		protected virtual void Awake() {
+		protected virtual void Awake () {
 			DontDestroy = true;
 		}
 		#endregion
@@ -44,7 +44,7 @@ namespace BaseSDK.Controllers {
 		/// <summary>
 		/// Place the controller in your hand or your back and use it as a massager ;)
 		/// </summary>
-		public void Massage() => Vibrate(float.MaxValue, 1f, false);
+		public void Massage () => Vibrate(float.MaxValue, 1f, false);
 #endif
 
 		/// <summary>
@@ -53,7 +53,7 @@ namespace BaseSDK.Controllers {
 		/// <param name="duration">How long should the vibration stay active?</param>
 		/// <param name="strength">How strong should the vibration be? Ranges from 0 to 1</param>
 		/// <param name="cancelAllPreviousVibrations">If there was a previously long vibration already active, and it a new shorter one is needed to be played, should the old vibration continue to play after the new one? Or should all vibrations stop when the new one has finished playing? If everything should stop, use true, else use false</param>
-		public void Vibrate(float duration, float strength, bool cancelAllPreviousVibrations = false) {
+		public void Vibrate (float duration, float strength, bool cancelAllPreviousVibrations = false) {
 #if !ENABLE_INPUT_SYSTEM
 			Debug.LogWarning("Haptics Controller uses the New InputSystem to use the Gamepad class.");
 			return;
@@ -72,7 +72,7 @@ namespace BaseSDK.Controllers {
 		/// <summary>
 		/// Check if there is any vibration left to play, if so, play it. Else, early return.
 		/// </summary>
-		protected virtual IEnumerator CheckToPlayHaptics() {
+		protected virtual IEnumerator CheckToPlayHaptics () {
 			//Remove all items which have already expired.
 			hapticControllerDatas.RemoveAll(x => x.endTime <= Time.time);
 			//Sort the items descendigly, based on the strength.
@@ -116,41 +116,3 @@ namespace BaseSDK.Controllers {
 		#endregion
 	}
 }
-
-#if UNITY_EDITOR
-namespace BaseSDK.EditorScripts {
-	using BaseSDK.Controllers;
-	using UnityEditor;
-	
-	[CustomEditor(typeof(HapticsController))]
-	public class HapticsControllerEditor : Editor {
-		private UnityEditor.PackageManager.Requests.AddRequest addPackage_Result;
-
-		protected void OnEnable() => EditorApplication.update += Update;
-
-		private void Update() {
-			if (addPackage_Result != null && addPackage_Result.IsCompleted && addPackage_Result.Status == UnityEditor.PackageManager.StatusCode.Success) {
-				addPackage_Result = null;
-				PackageDependenciesHelper.ChangeInputSystemPlayerSettings();
-				AssetDatabase.Refresh();
-				EditorUtility.DisplayDialog("Restart", "The Input settings for the game will be modified to use the new Input System. Unity will be restarted to use the updated settings without any issues. If you have any scene changes which are unsaved, you will get a chance to save them.", "Okay");
-
-				EditorApplication.OpenProject(System.IO.Directory.GetCurrentDirectory());
-			}
-		}
-
-		public override void OnInspectorGUI() {
-			base.OnInspectorGUI();
-
-#if ENABLE_INPUT_SYSTEM
-			if (GUILayout.Button("Massage"))
-				(target as HapticsController).Massage();
-#else
-			EditorGUILayout.HelpBox("Haptics System does not work with the legacy InputManager. Switch to the New InputSystem to use it", MessageType.Error);
-			if (GUILayout.Button("Switch to new InputSystem"))
-				PackageDependenciesHelper.ChangeInputSystemPlayerSettings();
-#endif
-		}
-	}
-}
-#endif

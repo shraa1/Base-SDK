@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using BaseSDK.Extension;
-using UnityEngine.Events;
+
 using UnityEngine;
+using UnityEngine.Events;
+
 using IS = UnityEngine.InputSystem.InputSystem;
-using UnityEditor;
 
 namespace BaseSDK.Controllers {
 	/// <summary>
@@ -13,7 +15,6 @@ namespace BaseSDK.Controllers {
 	/// Cheats can be set up in the inspector.
 	/// </summary>
 	public class CheatCodesManager : Singleton<CheatCodesManager> {
-
 		#region Custom DataTypes
 		/// <summary>
 		/// Data required for any cheat codes
@@ -56,7 +57,7 @@ namespace BaseSDK.Controllers {
 		/// <summary>
 		/// Awake. Add Listeners
 		/// </summary>
-		protected virtual void Awake() {
+		protected virtual void Awake () {
 			DontDestroy = true;
 
 #if ENABLE_INPUT_SYSTEM
@@ -70,12 +71,12 @@ namespace BaseSDK.Controllers {
 		/// <summary>
 		/// OnEnable. Activate the cheat code system.
 		/// </summary>
-		protected virtual void OnEnable() => InputMasterController.InputMaster.CheatCodes.Enable();
+		protected virtual void OnEnable () => InputMasterController.InputMaster.CheatCodes.Enable();
 
 		/// <summary>
 		/// OnDisable. Deactivate the cheat code system.
 		/// </summary>
-		protected virtual void OnDisable() => InputMasterController.InputMaster.CheatCodes.Disable();
+		protected virtual void OnDisable () => InputMasterController.InputMaster.CheatCodes.Disable();
 #endif
 		#endregion
 
@@ -88,7 +89,7 @@ namespace BaseSDK.Controllers {
 		/// If you plan to use only Keyboard cheatcodes, you can modify the method below and hook it up to Keyboard.onTextInput instead.
 		/// </summary>
 		/// <param name="context"></param>
-		private void CheatCodeKeyPressPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context) {
+		private void CheatCodeKeyPressPerformed (UnityEngine.InputSystem.InputAction.CallbackContext context) {
 			//If certain keys which have sensitive values, like sticks/shoulders on controllers, ignore them till they are completely triggered
 			if (context.ReadValue<float>() < 1f)
 				return;
@@ -160,55 +161,3 @@ namespace BaseSDK.Controllers {
 		#endregion
 	}
 }
-
-
-#if UNITY_EDITOR
-namespace BaseSDK.EditorScripts {
-	[CustomEditor(typeof(Controllers.CheatCodesManager))]
-	public class CheatCodesManagerEditor : Editor {
-		private SerializedProperty m_ActionProperty;
-		private UnityEditor.PackageManager.Requests.AddRequest addPackage_Result;
-
-		protected void OnEnable() {
-			m_ActionProperty = serializedObject.FindProperty("allCheatCodes");
-			EditorApplication.update += Update;
-		}
-
-		private void Update() {
-			if (addPackage_Result != null && addPackage_Result.IsCompleted && addPackage_Result.Status == UnityEditor.PackageManager.StatusCode.Success) {
-				addPackage_Result = null;
-				PackageDependenciesHelper.ChangeInputSystemPlayerSettings();
-				AssetDatabase.Refresh();
-				EditorUtility.DisplayDialog("Restart", "The Input settings for the game will be modified to use the new Input System. Unity will be restarted to use the updated settings without any issues. If you have any scene changes which are unsaved, you will get a chance to save them.", "Okay");
-
-				EditorApplication.OpenProject(System.IO.Directory.GetCurrentDirectory());
-			}
-		}
-
-		public override void OnInspectorGUI() {
-#if ENABLE_INPUT_SYSTEM
-			if (PlayerPrefs.HasKey("RemoveWarningsCCM") && GUILayout.Button("Remove warnings forever"))
-				PlayerPrefs.SetInt("RemoveWarningsCCM", 1);
-
-			if (PlayerPrefs.GetInt("RemoveWarningsCCM", 0) != 1) {
-				EditorGUILayout.HelpBox("The CheatCode system works with cheats that are not subsets of each other. For example, if you have cheat codes \"BigB\" and \"BigBang\", then only BigB will get triggered, and not BigBang. You can modify the code to fit your needs if you'd like.", MessageType.Warning);
-				EditorGUILayout.HelpBox("Multiple Input Devices can not make up 1 single cheat code, like Keyboard + Mouse. It can either be Keyboard or Mouse.", MessageType.Warning);
-				EditorGUILayout.HelpBox("Only alphanumeric cheatcodes allowed for Keyboard.", MessageType.Warning);
-				EditorGUILayout.HelpBox("There is no time limit for consecutive key presses. If the 1st character of the cheat was pressed at time 10, and 2nd character was pressed at 100, it would still consider it as the same attempt. You can add a timer and remove the items from attemptedCheats if you so wish", MessageType.Warning);
-			}
-
-			EditorGUI.BeginChangeCheck();
-
-			EditorGUILayout.PropertyField(m_ActionProperty);
-
-			if (EditorGUI.EndChangeCheck())
-				serializedObject.ApplyModifiedProperties();
-#else
-			EditorGUILayout.HelpBox("CheatCode System does not work with the legacy InputManager. Switch to the New InputSystem to use it", MessageType.Error);
-			if (GUILayout.Button("Switch to new InputSystem"))
-				PackageDependenciesHelper.ChangeInputSystemPlayerSettings();
-#endif
-		}
-	}
-}
-#endif
