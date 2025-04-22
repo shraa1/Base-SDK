@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#pragma warning disable S2743 // Static fields should not be used in generic types
+using System.Collections.Generic;
 
 using DG.Tweening;
 
@@ -6,7 +7,7 @@ using UnityEngine;
 
 namespace BaseSDK {
 	[DisallowMultipleComponent]
-	public class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
+	public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
 		/// <summary>
 		/// A list of tweeners for this Singleton<T> type
 		/// </summary>

@@ -7,15 +7,15 @@ using DG.Tweening;
 using UnityEngine;
 
 namespace BaseSDK.Utils {
-	public class Utilities {
+	public static class Utilities {
 		public static T EitherOf<T> (params T[] args) => args[UnityEngine.Random.Range(0, args.Length)];
 
 		public static Tweener WaitBeforeExecuting (float waitTime, Action action) {
-			if (waitTime == 0f) {
+			if (Mathf.Approximately(waitTime, 0f)) {
 				action?.Invoke();
 				return null;
 			}
-			float a = 0f;
+			var a = 0f;
 			return DOTween.To(() => a, x => a = x, waitTime, waitTime)
 				.OnComplete(() => action?.Invoke());
 		}
@@ -28,8 +28,15 @@ namespace BaseSDK.Utils {
 		public static List<GameObject> FindGameObjectsOfName (IEnumerable<string> names) {
 			var list = new List<GameObject>();
 			names.ToList().ForEach(x =>
-				list.AddRange(UnityEngine.Object.FindObjectsOfType<GameObject>().ToList().FindAll(y => y.name == x)));
+				list.AddRange(UnityEngine.Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None).ToList().FindAll(y => y.name == x)));
 			return list;
 		}
+
+		public static void Quit () =>
+#if UNITY_EDITOR
+			UnityEditor.EditorApplication.isPlaying = false;
+#else
+			Application.Quit();
+#endif
 	}
 }
