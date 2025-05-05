@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using UnityEngine;
-using System.Globalization;
-using BaseSDK.Utils;
 
 namespace BaseSDK.Extension {
 	public static partial class Extensions {
@@ -16,18 +12,18 @@ namespace BaseSDK.Extension {
 		/// <param name="stringToEncrypt">String to encrypt</param>
 		/// <param name="encryptionType">Type of encryption</param>
 		/// <returns></returns>
-		public static string Encrypt(this string stringToEncrypt, EncryptionType encryptionType = EncryptionType.AES) {
+		public static string Encrypt (this string stringToEncrypt, EncryptionType encryptionType = EncryptionType.AES) {
 			if (encryptionType == EncryptionType.AES) {
-				var encrypt = AESmanaged.CreateEncryptor(AESmanaged.Key, AESmanaged.IV);
+				var encrypt = AESmanaged.CreateEncryptor();
 
 				var bytes = Encoding.UTF8.GetBytes(stringToEncrypt);
-				byte[] xBuff = null;
-				using (var ms = new MemoryStream()) {
-					using (var cs = new CryptoStream(ms, encrypt, CryptoStreamMode.Write))
-						cs.Write(bytes, 0, bytes.Length);
-					xBuff = ms.ToArray();
+				using var ms = new MemoryStream();
+				using (var cs = new CryptoStream(ms, encrypt, CryptoStreamMode.Write)) {
+					cs.Write(bytes, 0, bytes.Length);
+					cs.FlushFinalBlock();
 				}
-				return Convert.ToBase64String(xBuff);
+				var encryptedBytes = ms.ToArray();
+				return Convert.ToBase64String(encryptedBytes);
 			}
 			else if (encryptionType == EncryptionType.RSA) {
 				if (stringToEncrypt.IsNullOrEmpty())
@@ -49,18 +45,19 @@ namespace BaseSDK.Extension {
 		/// <param name="stringToDecrypt">The encrypted string meant to be decrypted</param>
 		/// <param name="encryptionType">Type of encryption</param>
 		/// <returns></returns>
-		public static T Decrypt<T>(this string stringToDecrypt, EncryptionType encryptionType = EncryptionType.AES) where T : IConvertible {
+		public static T Decrypt<T> (this string stringToDecrypt, EncryptionType encryptionType = EncryptionType.AES) where T : IConvertible {
 			if (encryptionType == EncryptionType.AES) {
 				var decrypt = AESmanaged.CreateDecryptor();
 
 				var bytes = Convert.FromBase64String(stringToDecrypt);
-				byte[] xBuff = null;
-				using (var ms = new MemoryStream()) {
-					using (var cs = new CryptoStream(ms, decrypt, CryptoStreamMode.Write))
-						cs.Write(bytes, 0, bytes.Length);
-					xBuff = ms.ToArray();
+				using var ms = new MemoryStream();
+				using (var cs = new CryptoStream(ms, decrypt, CryptoStreamMode.Write)) {
+					cs.Write(bytes, 0, bytes.Length);
+					cs.FlushFinalBlock();
 				}
-				return Encoding.UTF8.GetString(xBuff).To<T>();
+
+				var decryptedBytes = ms.ToArray();
+				return Encoding.UTF8.GetString(decryptedBytes).To<T>();
 			}
 			else if (encryptionType == EncryptionType.RSA) {
 				if (stringToDecrypt.IsNullOrEmpty())
@@ -70,7 +67,7 @@ namespace BaseSDK.Extension {
 					var cspp = new CspParameters { KeyContainerName = GameConstants.RSA_KEY };
 					var rsa = new RSACryptoServiceProvider(cspp) { PersistKeyInCsp = true };
 					var splits = stringToDecrypt.Split('-');
-					var bytes = Array.ConvertAll(splits, (x => Convert.ToByte(byte.Parse(x, NumberStyles.HexNumber))));
+					var bytes = Array.ConvertAll(splits, x => Convert.ToByte(byte.Parse(x, NumberStyles.HexNumber)));
 					result = Encoding.UTF8.GetString(rsa.Decrypt(bytes, true));
 				}
 				catch { }
@@ -82,7 +79,7 @@ namespace BaseSDK.Extension {
 		private static RijndaelManaged _AESmanaged;
 		private static RijndaelManaged AESmanaged =>
 			//simplify for c# 8.0 and further, with unity upgrade
-			_AESmanaged ??=  new RijndaelManaged {
+			_AESmanaged ??= new RijndaelManaged {
 				KeySize = 256,
 				BlockSize = 256,
 				Mode = CipherMode.CBC,
