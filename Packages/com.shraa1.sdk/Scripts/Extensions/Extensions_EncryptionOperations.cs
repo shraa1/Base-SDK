@@ -5,6 +5,14 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace BaseSDK.Extension {
+	public static class EncryptionConfig {
+		public static Func<string> GetAESEncryptionKey;
+		public static Func<string> GetAESEncryptionIV;
+		public static Func<int> GetAESEncryptionBlockSize;
+		public static Func<int> GetAESEncryptionKeySize;
+		public static Func<string> GetRSAEncryptionKey;
+	}
+
 	public static partial class Extensions {
 		/// <summary>
 		/// Encrypt any string using either AES or RSA encryption. Encryption size is 256
@@ -29,7 +37,7 @@ namespace BaseSDK.Extension {
 				if (stringToEncrypt.IsNullOrEmpty())
 					throw new ArgumentException($"Cannot Encrypt {(stringToEncrypt == null ? "null" : "empty")} string");
 
-				var cspp = new CspParameters { KeyContainerName = GameConstants.RSA_KEY };
+				var cspp = new CspParameters { KeyContainerName = EncryptionConfig.GetRSAEncryptionKey() };
 				var rsa = new RSACryptoServiceProvider(cspp) { PersistKeyInCsp = true };
 
 				var bytes = rsa.Encrypt(Encoding.UTF8.GetBytes(stringToEncrypt), true);
@@ -47,6 +55,11 @@ namespace BaseSDK.Extension {
 		/// <returns></returns>
 		public static T Decrypt<T> (this string stringToDecrypt, EncryptionType encryptionType = EncryptionType.AES) where T : IConvertible {
 			if (encryptionType == EncryptionType.AES) {
+				if (string.IsNullOrEmpty(stringToDecrypt))
+					throw new ArgumentException("Attempted to decrypt an empty string.");
+				if (!IsBase64String(stringToDecrypt))
+					throw new FormatException("Encrypted string is not valid base64.");
+
 				var decrypt = AESmanaged.CreateDecryptor();
 
 				var bytes = Convert.FromBase64String(stringToDecrypt);
@@ -64,28 +77,33 @@ namespace BaseSDK.Extension {
 					throw new ArgumentException($"Cannot Decrypt {(stringToDecrypt == null ? "null" : "empty")} string");
 				var result = string.Empty;
 				try {
-					var cspp = new CspParameters { KeyContainerName = GameConstants.RSA_KEY };
+					var cspp = new CspParameters { KeyContainerName = EncryptionConfig.GetRSAEncryptionKey() };
 					var rsa = new RSACryptoServiceProvider(cspp) { PersistKeyInCsp = true };
 					var splits = stringToDecrypt.Split('-');
 					var bytes = Array.ConvertAll(splits, x => Convert.ToByte(byte.Parse(x, NumberStyles.HexNumber)));
 					result = Encoding.UTF8.GetString(rsa.Decrypt(bytes, true));
 				}
-				catch { }
+				catch { /* Not doing anything */ }
 				return result.To<T>();
 			}
 			return stringToDecrypt.To<T>();
+		}
+
+		public static bool IsBase64String (string s) {
+			var buffer = new Span<byte>(new byte[s.Length]);
+			return Convert.TryFromBase64String(s, buffer, out _);
 		}
 
 		private static RijndaelManaged _AESmanaged;
 		private static RijndaelManaged AESmanaged =>
 			//simplify for c# 8.0 and further, with unity upgrade
 			_AESmanaged ??= new RijndaelManaged {
-				KeySize = 256,
-				BlockSize = 256,
+				KeySize = EncryptionConfig.GetAESEncryptionKeySize(),
+				BlockSize = EncryptionConfig.GetAESEncryptionBlockSize(),
 				Mode = CipherMode.CBC,
 				Padding = PaddingMode.PKCS7,
-				Key = Convert.FromBase64String(GameConstants.AES_KEY),
-				IV = Convert.FromBase64String(GameConstants.AES_IV)
+				Key = Convert.FromBase64String(EncryptionConfig.GetAESEncryptionKey()),
+				IV = Convert.FromBase64String(EncryptionConfig.GetAESEncryptionIV()),
 			};
 	}
 

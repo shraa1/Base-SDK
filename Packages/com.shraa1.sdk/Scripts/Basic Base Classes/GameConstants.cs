@@ -3,35 +3,17 @@
 using UnityEngine;
 
 namespace BaseSDK {
-	public class GameConstants {
+	public sealed class GameConstants {
+		#region Private Constructor
+		private GameConstants () { }
+		#endregion Private Constructor
+
 		#region Properties
 		/// <summary>
 		/// Desktop folder's path. Should work fine in MacOS as well.
 		/// </summary>
 		public static string DESKTOP_PATH => Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 		#endregion Properties
-
-		#region Encryption Things
-		/// <summary>
-		/// AES Encryption key -> Update this key for each project
-		/// </summary>
-		public const string AES_KEY = "PSVJQRk9QTEpNVU1DWUZCRVFGV1VVT0ZOV1RRU1NaWQ=";
-
-		/// <summary>
-		/// AES Encryption IV -> Update this for each project
-		/// </summary>
-		public const string AES_IV = "ILUVYOU2k48pNVU1DWUZCRVFGV1VVT0ZOV1RRU1NaWQ=";
-
-		/// <summary>
-		/// RSA Encryption key -> Update this for each project if used
-		/// </summary>
-		public const string RSA_KEY = "1234";
-
-		/// <summary>
-		/// Padding char for custom encryption
-		/// </summary>
-		public const char ENCRYPTION_IN_MEMORY_PADDING_CHAR = '|';
-		#endregion Encryption Things
 
 		#region AssetBundle Things
 		/// <summary>
@@ -88,9 +70,10 @@ namespace BaseSDK {
 		#endregion Other Constants
 
 		#region Other Static Readonlys
-		public static readonly Color DEFAULT_HIGHLIGHT_COLOUR_BUTTON2D = new Color(0.2f, 0.2f, 0.2f, 1f);
-		public static readonly DateTime EpochDateTime = new DateTime(1970, 1, 1);
-		public static readonly WaitForEndOfFrame EOF = new WaitForEndOfFrame();
+		public static readonly Color DEFAULT_HIGHLIGHT_COLOUR_BUTTON2D = new(0.2f, 0.2f, 0.2f, 1f);
+		public static readonly DateTime k_EPOCH_DATETIME = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Local);
+		public static readonly DateTime k_EPOCH_DATETIME_UTC = DateTime.UnixEpoch;
+		public static readonly WaitForEndOfFrame EOF = new();
 		#endregion Other Static Readonlys
 	}
 }
