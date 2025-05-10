@@ -74,5 +74,14 @@ namespace BaseSDK {
 		}
 
 		protected virtual void OnApplicationQuit () => m_AppQuitStarted = true;
+
+		#if UNITY_EDITOR
+		[UnityEditor.InitializeOnLoadMethod]
+		#endif
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+		private static void ResetEditor () {
+			AllTweeners = null;
+			Instance = null;
+		}
 	}
 }

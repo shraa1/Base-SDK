@@ -35,7 +35,7 @@ namespace BaseSDK.Utils {
 		/// <summary>
 		/// Already instantiated objects
 		/// </summary>
-		private static List<Tuple<T, ItemUsageState>> instances = new List<Tuple<T, ItemUsageState>>();
+		private static readonly List<Tuple<T, ItemUsageState>> instances = new();
 
 		/// <summary>
 		/// Default rotation for instantiating new objects
@@ -205,5 +205,14 @@ namespace BaseSDK.Utils {
 				instances[i] = Tuple.Create(instances[i].Item1, ItemUsageState.FREE);
 		}
 		#endregion Methods
+
+		#if UNITY_EDITOR
+		[UnityEditor.InitializeOnLoadMethod]
+		#endif
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+		private static void ResetEditor () {
+			templ = null;
+			controller = null;
+		}
 	}
 }

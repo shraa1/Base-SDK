@@ -13,7 +13,7 @@ public class AssetBundlesEditor : EditorWindow {
 	//[MenuItem("Shraavan/Asset Bundles Creation")]
 	[Obsolete("Use Addressables Instead")]
 	public static void AssetBundleCreation() {
-		var ew = EditorWindow.GetWindow<AssetBundlesEditor>(false, "AssetBundles", false);
+		var ew = GetWindow<AssetBundlesEditor>(false, "AssetBundles", false);
 		ew.minSize = new Vector2(500f, 600f);
 		ew.Show();
 	}
@@ -26,14 +26,14 @@ public class AssetBundlesEditor : EditorWindow {
 	private Dictionary<BuildPlatform, string> buildPlatformDict = new Dictionary<BuildPlatform, string>();
 	private Dictionary<BuildQuality, string> buildQualityDict = new Dictionary<BuildQuality, string>();
 
-	public void OnEnable(){
+	public void OnEnable() {
 		buildPlatform = (BuildPlatform)EditorPrefs.GetInt("buildPlatform", 0);
 		buildQuality = (BuildQuality)EditorPrefs.GetInt("buildQuality", 0);
 		backendPath = EditorPrefs.GetString("backendPath", @"C:\xampp\htdocs");
 		frontendPath = EditorPrefs.GetString("frontendPath", Application.dataPath);
 		selectedSwitchAssetBundle = false;
-		switchToPlatform = (BuildPlatform)0;
-		switchToQuality = (BuildQuality)0;
+		switchToPlatform = 0;
+		switchToQuality = 0;
 		if (buildPlatformDict.Count == 0)
 			//ADD NEW HERE
 			buildPlatformDict = new Dictionary<BuildPlatform, string>() {
@@ -60,7 +60,7 @@ public class AssetBundlesEditor : EditorWindow {
 		buildPlatform = (BuildPlatform)EditorGUILayout.EnumFlagsField("Build Platform", buildPlatform);
 		EditorPrefs.SetInt("buildPlatform", (int)buildPlatform);
 
-		if((int)buildPlatform == 0){
+		if(buildPlatform == 0){
 			EditorGUILayout.HelpBox("You can not build bundles without defining which platform to build it for", MessageType.Error);
 			return;
 		}
@@ -81,7 +81,7 @@ public class AssetBundlesEditor : EditorWindow {
 		EditorPrefs.SetInt("buildQuality", (int)buildQuality);
 		Space(5);
 
-		if((int)buildQuality==0){
+		if(buildQuality == 0){
 			EditorGUILayout.HelpBox("You must choose a valid Graphics Quality setting to build for", MessageType.Error);
 			return;
 		}
@@ -167,14 +167,14 @@ public class AssetBundlesEditor : EditorWindow {
 			switchToQuality = (BuildQuality)EditorGUILayout.EnumPopup(switchToQuality);
 			GUI.color = Color.red;
 			if(GUILayout.Button("X", GUILayout.Width(20))){
-				switchToPlatform = (BuildPlatform)0;
-				switchToQuality = (BuildQuality)0;
+				switchToPlatform = 0;
+				switchToQuality = 0;
 				selectedSwitchAssetBundle = false;
 			}
 			GUI.color = Color.white;
 			EditorGUILayout.EndHorizontal();
 			Space(5);
-			if (!((int)switchToPlatform == 0) && !((int)switchToQuality == 0)){
+			if (!(switchToPlatform == 0) && !(switchToQuality == 0)){
 				if(GUILayout.Button("Switch Platform"))
 					SwitchAssetBundle(string.Format("{0}-{1}", buildPlatformDict[switchToPlatform], buildQualityDict[switchToQuality]),
 						switchToPlatform.ToString(), true);
@@ -231,8 +231,8 @@ public class AssetBundlesEditor : EditorWindow {
 		if (showDialog)
 		if (!EditorUtility.DisplayDialog("Sure?", string.Format("You are about to switch all asset bundles to {0} asset variant. This may take time. Are you sure?", newVariantName), "Yes", "No")){
 			selectedSwitchAssetBundle = false;
-			switchToPlatform = (BuildPlatform) 0;
-			switchToQuality = (BuildQuality) 0;
+			switchToPlatform = 0;
+			switchToQuality = 0;
 			return;
 		}
 		var listOfBundles = AssetDatabase.GetAllAssetBundleNames().ToList();

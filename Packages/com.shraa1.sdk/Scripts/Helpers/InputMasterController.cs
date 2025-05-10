@@ -7,7 +7,6 @@ namespace BaseSDK {
     /// We create an instance of this class to use. Could do more functionality here.
     /// </summary>
     public class InputMasterController : Singleton<InputMasterController> {
-
         private static InputMaster _inputMaster;
         /// <summary>
         /// The InputMaster asset file's class instance.
