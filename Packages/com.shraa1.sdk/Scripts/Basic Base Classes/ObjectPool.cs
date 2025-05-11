@@ -1,6 +1,4 @@
-﻿#pragma warning disable IDE0017 // Simplify object initialization
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,6 +10,7 @@ namespace BaseSDK.Utils {
 	/// </summary>
 	/// <typeparam name="T">Type of ObjectPool</typeparam>
 	public class ObjectPool<T> where T : Component {
+#pragma warning disable S2743 // Static fields should not be used in generic types
 		#region Custom DataTypes
 		/// <summary>
 		/// If an item is available or in use
@@ -108,6 +107,7 @@ namespace BaseSDK.Utils {
 		/// <param name="dontDestroy">Don't Destroy the controller GameObject</param>
 		/// <param name="instantiateActive">Should Instantiate GameObject in (de)active state</param>
 		/// <returns>Returns the Pool<T> gameobject.</returns>
+#pragma warning disable S3241 // Methods should not return values that are never used
 		private static GameObject CreateControllerGameObject (bool dontDestroy = true, bool instantiateActive = false) {
 			if (controller == null) {
 				controller = new GameObject($"{pool}<{typeof(T).Name}>");
@@ -117,6 +117,7 @@ namespace BaseSDK.Utils {
 			}
 			return controller;
 		}
+#pragma warning restore S3241 // Methods should not return values that are never used
 
 		/// <summary>
 		/// Set the instantiation template object. This template gameobject will be used to instantiate from Get.<br/>
@@ -205,14 +206,6 @@ namespace BaseSDK.Utils {
 				instances[i] = Tuple.Create(instances[i].Item1, ItemUsageState.FREE);
 		}
 		#endregion Methods
-
-		#if UNITY_EDITOR
-		[UnityEditor.InitializeOnLoadMethod]
-		#endif
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-		private static void ResetEditor () {
-			templ = null;
-			controller = null;
-		}
+#pragma warning restore S2743 // Static fields should not be used in generic types
 	}
 }

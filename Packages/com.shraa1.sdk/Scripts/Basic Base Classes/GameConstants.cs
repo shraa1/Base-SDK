@@ -71,7 +71,6 @@ namespace BaseSDK {
 
 		#region Other Static Readonlys
 		public static readonly Color DEFAULT_HIGHLIGHT_COLOUR_BUTTON2D = new(0.2f, 0.2f, 0.2f, 1f);
-		public static readonly DateTime k_EPOCH_DATETIME = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Local);
 		public static readonly DateTime k_EPOCH_DATETIME_UTC = DateTime.UnixEpoch;
 		public static readonly WaitForEndOfFrame EOF = new();
 		#endregion Other Static Readonlys
