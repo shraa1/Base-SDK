@@ -15,7 +15,7 @@ namespace BaseSDK.Utils {
 		/// <summary>
 		/// If an item is available or in use
 		/// </summary>
-		private enum ItemUsageState { FREE, IN_USE }
+		public enum ItemUsageState { FREE, IN_USE }
 		#endregion Custom DataTypes
 
 		#region Private Fields
@@ -140,8 +140,10 @@ namespace BaseSDK.Utils {
 		/// If instantiated pool items count is equal to MaxPoolItems, then no new item will be created & returns null.<br/>
 		/// But if BulkInstantiate is called which makes pool instantiated items more than MaxPoolItems, then next call of Get will not create anything
 		/// </summary>
+		/// <param name="parentTransform">Which gameobject should this pool item be parented to?</param>
+		/// <param name="itemUsageState">On creating a new or fetching an existing pool item, set it as an in-use item or a free to use item</param>
 		/// <returns>Returns null if MaxPoolItems is reached, else finds an available object, else creates a new one and returns it.</returns>
-		public static T Get (Transform parentTransform = null) {
+		public static T Get (Transform parentTransform = null, ItemUsageState itemUsageState = ItemUsageState.IN_USE) {
 			var find = instances.Find(x => x.Item2 == ItemUsageState.FREE);
 			var item = find?.Item1;
 			var ind = 0;
@@ -163,7 +165,7 @@ namespace BaseSDK.Utils {
 			item.transform.SetParent(parentTransform, true);
 			item.transform.localScale = localScale;
 			item.transform.rotation = rotation;
-			instances[ind] = Tuple.Create(item, ItemUsageState.IN_USE);
+			instances[ind] = Tuple.Create(item, itemUsageState);
 			return item;
 		}
 
