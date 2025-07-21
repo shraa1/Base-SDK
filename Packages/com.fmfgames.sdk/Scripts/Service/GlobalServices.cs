@@ -12,7 +12,10 @@ namespace BaseSDK.Services {
 		/// </summary>
 		/// <param name="contextIndex">What context is the service registered for?</param>
 		public static void Init(int contextIndex) {
-			ServiceProviders[contextIndex] ??= new ServiceProvider();
+			if (ServiceProviders.ContainsKey(contextIndex))
+				ServiceProviders[contextIndex] = new ServiceProvider();
+			else
+				ServiceProviders.Add(contextIndex, new ServiceProvider());
 		}
 	}
 }
