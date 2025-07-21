@@ -15,3 +15,7 @@ Assets/Samples.meta
 Builds/
 .vs/
 .vscode
+Assets/DefaultVolumeProfile.asset
+Assets/DefaultVolumeProfile.asset.meta
+Assets/UniversalRenderPipelineGlobalSettings.asset
+Assets/UniversalRenderPipelineGlobalSettings.asset.meta
