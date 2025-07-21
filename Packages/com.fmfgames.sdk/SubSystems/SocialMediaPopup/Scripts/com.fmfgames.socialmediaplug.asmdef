@@ -1,0 +1,16 @@
+{
+    "name": "com.fmfgames.socialmediapopup",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d258a1d0fcf30a14282dc300d7db7c8e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

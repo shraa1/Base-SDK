@@ -18,7 +18,7 @@ Unity's Package Manager lets you import git packages with fewer headaches.
 
 [3] Click on the + button to add a package, then select the git option
 
-[4] Add the clone repository link: https://github.com/shraa1/Base-SDK.git?path=/Packages/com.shraa1.sdk
+[4] Add the clone repository link: https://github.com/shraa1/Base-SDK.git?path=/Packages/com.fmfgames.sdk
 
 # Supported versions:
 

@@ -1,0 +1,50 @@
+{
+  "name": "com.fmfgames.sdk",
+  "displayName": "Base SDK",
+  "version": "0.1.0",
+  "unity": "6000.0",
+  "unityRelease": "23f1",
+  "author": {
+    "name": "shraa1",
+    "email": "shraavan8@gmail.com",
+    "url": "https://github.com/shraa1/Base-SDK"
+  },
+  "description": "Base SDK that has basic extensions, plugins, editor scripts, utilities, assets, etc.",
+  "keywords": [
+    "BasePackage",
+    "Base Package",
+    "BaseSDF",
+    "Base SDK",
+    "Basics",
+    "SDK"
+  ],
+  "dependencies": {
+    "com.unity.inputsystem": "1.4.4",
+    "com.unity.mathematics": "1.2.6",
+    "com.unity.nuget.newtonsoft-json": "3.0.2",
+    "com.unity.render-pipelines.universal": "10.10.1",
+    "com.unity.ide.visualstudio": "2.0.23"
+  },
+  "samples": [
+    {
+      "displayName": "Basic Leaderboard",
+      "description": "This template shows the basic implementation of the Leaderboard functionality.",
+      "path": "SubSystems/Leaderboards/Samples~/Basic Leaderboard"
+    },
+    {
+      "displayName": "Basic Social Media Popup",
+      "description": "This template shows the basic implementation of the Social Media Popup functionality.",
+      "path": "SubSystems/SocialMediaPopup/Samples~/Basic Social Media Popup"
+    },
+    {
+      "displayName": "Basic Twitch Chat Integration",
+      "description": "This template shows the basic implementation of the Twitch Chat Integration functionality.",
+      "path": "SubSystems/TwitchChatIntegration/Samples~/Basic Twitch Chat Integration"
+    },
+    {
+      "displayName": "System Volume Adjust",
+      "description": "Adjust the Windows OS's system volume",
+      "path": "SubSystems/System Volume Adjust/Samples~/System Volume Adjustment Demo"
+    }
+  ]
+}

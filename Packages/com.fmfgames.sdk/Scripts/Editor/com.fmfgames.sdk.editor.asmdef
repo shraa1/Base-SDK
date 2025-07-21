@@ -1,0 +1,21 @@
+{
+    "name": "com.fmfgames.sdk.editor",
+    "rootNamespace": "BaseSDK.EditorScripts",
+    "references": [
+        "GUID:d258a1d0fcf30a14282dc300d7db7c8e",
+        "GUID:e8bed2d3aa368ce4f8b2d8e88a34ec25",
+        "GUID:974a3999a8b6d174aaa032b8fddc8bc9",
+        "GUID:5e3868510cb478e4497acf79e61bf105"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_EDITOR"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
