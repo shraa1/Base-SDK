@@ -204,8 +204,10 @@ namespace BaseSDK.Utils {
 		/// Free up all pool items
 		/// </summary>
 		public static void FreeAllItemsToPool () {
-			for (var i = 0; i < instances.Count; i++)
+			for (var i = 0; i < instances.Count; i++) {
+				instances[i].Item1.transform.SetParent(controller.transform, true);
 				instances[i] = Tuple.Create(instances[i].Item1, ItemUsageState.FREE);
+			}
 		}
 		#endregion Methods
 #pragma warning restore S2743 // Static fields should not be used in generic types
