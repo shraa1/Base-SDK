@@ -1,10 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using BaseSDK.Utils;
-using UnityEngine;
 
 namespace BaseSDK.Extension {
 	public static partial class Extensions {
@@ -84,5 +81,17 @@ namespace BaseSDK.Extension {
 				dict.Add(key, value);
 			return dict;
 		}
+
+		/// <summary>
+		/// If an element with the key does not exist in the dictionary, return default, else return the value.
+		/// </summary>
+		/// <typeparam name="T">Key Type</typeparam>
+		/// <typeparam name="U">Value Type</typeparam>
+		/// <param name="dict">Dictionary to modify</param>
+		/// <param name="key">Check if this key exists in the dictionary</param>
+		/// <param name="value">Return default, if the <paramref name="key"/> does not exist, else return the value from the dictionary.</param>
+		/// <returns>Returns the modified dictionary for chain actions</returns>
+		public static U GetSafely<T, U>(this Dictionary<T, U> dict, T key) =>
+			dict.ContainsKey(key) ? dict[key] : default;
 	}
 }

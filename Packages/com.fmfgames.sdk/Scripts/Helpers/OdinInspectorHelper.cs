@@ -23,4 +23,7 @@ namespace BaseSDK.SirenixHelper {
 
     [AttributeUsage(AttributeTargets.All), Conditional("UNITY_EDITOR")]
     public class HideLabelAttribute : Attribute { }
+
+	[AttributeUsage(AttributeTargets.All), Conditional("UNITY_EDITOR")]
+	public class ShowInInspectorAttribute : Attribute { }
 }
