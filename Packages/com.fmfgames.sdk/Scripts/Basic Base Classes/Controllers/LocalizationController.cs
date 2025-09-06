@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using BaseSDK.Models;
 using BaseSDK.Services;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -19,6 +21,8 @@ namespace BaseSDK.Controllers {
 		#endregion Properties
 
 		#region Interface Implementation
+		public (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(ILocalizationService));
+
 		/// <summary>
 		/// Has finished doing the Setup?
 		/// </summary>

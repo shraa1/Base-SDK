@@ -65,7 +65,7 @@ namespace BaseSDK.Controllers {
 				m_DownloadedAllAudios = true;
 			else
 				foreach (var audioInfo in m_AudiosInfo)
-					(GlobalServices.GetServiceProvide(ServicesScope.GLOBAL) as IAddressableService)
+					(GlobalServices.GetServiceProvider(ServicesScope.GLOBAL) as IAddressableService)
 						.LoadAsset<AudioClip>(audioInfo.AudioClipAssetReference, null, obj => {
 							i++;
 							if (i == m_AudiosInfo.Count)
@@ -76,6 +76,8 @@ namespace BaseSDK.Controllers {
 		#endregion Unity Methods
 
 		#region Interface Implementation
+		public (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IAudioService));
+
 		/// <summary>
 		/// Has finished doing the Setup?
 		/// </summary>
@@ -90,7 +92,7 @@ namespace BaseSDK.Controllers {
 				yield return null;
 			Initialized = true;
 
-			var settingsManager = GlobalServices.GetServiceProvide(ServicesScope.GLOBAL) as ISettingsService;
+			var settingsManager = GlobalServices.GetServiceProvider(ServicesScope.GLOBAL) as ISettingsService;
 			SetVolume(VOLUMETYPE.MASTER, settingsManager.SettingsState.MasterVolume);
 			SetVolume(VOLUMETYPE.MUSIC, settingsManager.SettingsState.MusicVolume);
 			SetVolume(VOLUMETYPE.SFX, settingsManager.SettingsState.SFXVolume);

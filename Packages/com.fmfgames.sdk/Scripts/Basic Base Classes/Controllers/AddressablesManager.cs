@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
+using BaseSDK.Models;
 using BaseSDK.Services;
 using BaseSDK.Utils.Helpers;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using IServiceProvider = BaseSDK.Services.IServiceProvider;
 
 namespace BaseSDK.Controllers {
 	/// <summary>
@@ -13,6 +13,8 @@ namespace BaseSDK.Controllers {
 	/// </summary>
 	public class AddressablesManager : MonoBehaviour, IAddressableService, IConfigurable {
 		#region Interface Implementation
+		public (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IAddressableService));
+
 		/// <summary>
 		/// Index of when the setup is executed in the order of execution
 		/// </summary>

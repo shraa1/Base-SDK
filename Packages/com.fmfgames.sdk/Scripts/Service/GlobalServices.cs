@@ -28,7 +28,7 @@ namespace BaseSDK.Services {
 		/// <typeparam name="T">IService being fetched</typeparam>
 		/// <param name="serviceScope">Scope where the service service was registered</param>
 		/// <returns>Returns the relevant service if found, in the current scope</returns>
-		public static IServiceProvider GetServiceProvide<T>(T serviceScope) where T : Enum =>
+		public static IServiceProvider GetServiceProvider<T>(T serviceScope) where T : Enum =>
 			s_ServiceProviders.GetSafely(serviceScope.To<int>());
 	}
 }
