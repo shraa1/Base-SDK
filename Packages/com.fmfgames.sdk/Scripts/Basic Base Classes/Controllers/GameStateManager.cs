@@ -5,7 +5,6 @@ using BaseSDK.Extension;
 using BaseSDK.Helper;
 using BaseSDK.Models;
 using Newtonsoft.Json;
-using UnityEngine;
 using UnityEngine.Profiling;
 
 namespace BaseSDK.Controllers {
@@ -23,13 +22,7 @@ namespace BaseSDK.Controllers {
 		#endregion Properties
 
 		#region Variables
-		private const string k_SAVED_FILE_NAME = "Bomballded.sav";
-		private const string k_SAVED_FOLDER_NAME = "Saved Game Files";
 		private const string k_PLAYERPREF_KEY = "m_GameState";
-
-		private static readonly string k_SAVE_FOLDER_PATH = Path.Combine(Application.dataPath, k_SAVED_FOLDER_NAME);
-		private static readonly string k_SAVE_TEMP_FILE_PATH = Path.Combine(k_SAVE_FOLDER_PATH, k_SAVED_FILE_NAME + ".tmp");
-		private static readonly string k_SAVE_FILE_PATH = Path.Combine(k_SAVE_FOLDER_PATH, k_SAVED_FILE_NAME);
 		#endregion Variables
 
 		#region Unity Methods
@@ -46,14 +39,14 @@ namespace BaseSDK.Controllers {
 		}
 
 		public void Load () {
-			if (File.Exists(k_SAVE_TEMP_FILE_PATH)) {
-				if (File.Exists(k_SAVE_FILE_PATH))
-					File.Delete(k_SAVE_FILE_PATH);
-				File.Move(k_SAVE_TEMP_FILE_PATH, k_SAVE_FILE_PATH);
+			if (File.Exists(Constants.SAVE_TEMP_FILE_PATH)) {
+				if (File.Exists(Constants.SAVE_FILE_PATH))
+					File.Delete(Constants.SAVE_FILE_PATH);
+				File.Move(Constants.SAVE_TEMP_FILE_PATH, Constants.SAVE_FILE_PATH);
 			}
 
 			//Fresh launch
-			if (!File.Exists(k_SAVE_FILE_PATH)) {
+			if (!File.Exists(Constants.SAVE_FILE_PATH)) {
 				GameState = new T();
 				Save();
 				return;
@@ -61,14 +54,14 @@ namespace BaseSDK.Controllers {
 
 			Profiler.BeginSample("Open GameState File");
 			var savGameState = string.Empty;
-			using (var sr = new StreamReader(k_SAVE_FILE_PATH))
+			using (var sr = new StreamReader(Constants.SAVE_FILE_PATH))
 				savGameState = sr.ReadToEnd();
 			var ppGameState = PlayerPrefsManager.Get(k_PLAYERPREF_KEY, string.Empty);
 			Profiler.EndSample();
 
 			Profiler.BeginSample("Deserialize JSONs");
-			var ppGS = JsonConvert.DeserializeObject<T>(ppGameState.Decrypt<string>());
-			var savGS = JsonConvert.DeserializeObject<T>(savGameState.Decrypt<string>());
+			var ppGS = ppGameState.Decrypt<string>().Deserialize<T>();
+			var savGS = savGameState.Decrypt<string>().Deserialize<T>();
 			Profiler.EndSample();
 
 			Profiler.BeginSample("Assign Final GameStates");
@@ -84,13 +77,13 @@ namespace BaseSDK.Controllers {
 			var encrypted = JsonConvert.SerializeObject(GameState, Formatting.None).Encrypt();
 			PlayerPrefsManager.Set(k_PLAYERPREF_KEY, encrypted);
 
-			if (!Directory.Exists(k_SAVE_FOLDER_PATH))
-				Directory.CreateDirectory(k_SAVE_FOLDER_PATH);
+			if (!Directory.Exists(Constants.SAVE_FOLDER_PATH))
+				Directory.CreateDirectory(Constants.SAVE_FOLDER_PATH);
 
-			File.WriteAllText(k_SAVE_TEMP_FILE_PATH, encrypted);
-			if (File.Exists(k_SAVE_FILE_PATH))
-				File.Delete(k_SAVE_FILE_PATH);
-			File.Move(k_SAVE_TEMP_FILE_PATH, k_SAVE_FILE_PATH);
+			File.WriteAllText(Constants.SAVE_TEMP_FILE_PATH, encrypted);
+			if (File.Exists(Constants.SAVE_FILE_PATH))
+				File.Delete(Constants.SAVE_FILE_PATH);
+			File.Move(Constants.SAVE_TEMP_FILE_PATH, Constants.SAVE_FILE_PATH);
 #if UNITY_EDITOR
 			UnityEditor.AssetDatabase.Refresh();
 #endif

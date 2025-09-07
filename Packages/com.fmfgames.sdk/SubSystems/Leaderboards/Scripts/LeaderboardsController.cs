@@ -126,7 +126,7 @@ namespace BaseSDK.Leaderboard {
 						if (GetJSON_Link.Contains("infamy")) {
 							//If the list is empty, it returns an object rather than an array
 							try {
-								var infamyList = JsonConvert.DeserializeObject<JArray>(request.downloadHandler.text);
+								var infamyList = request.downloadHandler.text.Deserialize<JArray>();
 								foreach (var kvp in infamyList)
 									//TODO currently infamy.dev returns the rank not on index based. If it changes, make change here
 									list.Add(new LeaderboardItemData { Rank = (int)kvp["rank"] - 1, UserName = (string)kvp["name"], Score = (ulong)kvp["score"] });
@@ -136,7 +136,7 @@ namespace BaseSDK.Leaderboard {
 							onScoreFetched?.Invoke(list);
 						}
 					else {
-							var dreamloDict = JsonConvert.DeserializeObject<Dictionary<string, JObject>>(request.downloadHandler.text);
+							var dreamloDict = request.downloadHandler.text.Deserialize<Dictionary<string, JObject>>();
 							if (dreamloDict["dreamlo"]["leaderboard"].ToString().IsNullOrEmpty()) {
 								onScoreFetched?.Invoke(list);
 								break;

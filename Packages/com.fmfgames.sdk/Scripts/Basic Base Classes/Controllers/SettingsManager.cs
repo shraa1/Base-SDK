@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using BaseSDK.Extension;
 using BaseSDK.Helper;
 using BaseSDK.Models;
 using Newtonsoft.Json;
@@ -8,8 +9,7 @@ using UnityEngine;
 namespace BaseSDK.Controllers {
 	public class SettingsManager<T> : Configurable, IManagerBehaviour, ISettingsService<T> where T : SettingsState, new () {
 		#region Variables
-		private static string k_SAVED_FILE_NAME = $"{Constants.GameName}_Settings.json";
-		private const string k_SAVED_FOLDER_NAME = "Saved Game Files";
+		private static readonly string k_SAVED_FILE_NAME = $"{Constants.GameName}_Settings.json";
 		private const string k_PLAYERPREF_KEY = "m_SettingsState";
 		#endregion Variables
 
@@ -32,7 +32,7 @@ namespace BaseSDK.Controllers {
 			var serialized = JsonConvert.SerializeObject(SettingsState, Formatting.Indented);
 			PlayerPrefsManager.Set(k_PLAYERPREF_KEY, serialized);
 
-			var path = Path.Combine(Application.dataPath, k_SAVED_FOLDER_NAME);
+			var path = Path.Combine(Application.dataPath, Constants.SAVED_GAME_FILES_FOLDERNAME);
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
 			using var sw = new StreamWriter(Path.Combine(path, k_SAVED_FILE_NAME));
@@ -43,7 +43,7 @@ namespace BaseSDK.Controllers {
 		}
 
 		public virtual void Load () {
-			var savFilePath = Path.Combine(Application.dataPath, k_SAVED_FOLDER_NAME, k_SAVED_FILE_NAME);
+			var savFilePath = Path.Combine(Application.dataPath, Constants.SAVED_GAME_FILES_FOLDERNAME, k_SAVED_FILE_NAME);
 			//Fresh launch
 			if (!File.Exists(savFilePath)) {
 				SettingsState = new T();
@@ -56,10 +56,10 @@ namespace BaseSDK.Controllers {
 			var ppGameState = PlayerPrefsManager.Get(k_PLAYERPREF_KEY, string.Empty);
 			T ppSS = null;
 			try {
-				ppSS = JsonConvert.DeserializeObject<T>(ppGameState);
+				ppSS = ppGameState.Deserialize<T>();
 			}
 			catch {
-				SettingsState = JsonConvert.DeserializeObject<T>(savSettingsState);
+				SettingsState = savSettingsState.Deserialize<T>();
 				return;
 			}
 			SettingsState = ppSS;
