@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using BaseSDK.Models;
 using BaseSDK.Services;
 using UnityEngine;
@@ -8,29 +6,27 @@ namespace BaseSDK {
 	/// <summary>
 	/// Scene0 Manager's base class setup
 	/// </summary>
-	public abstract class Scene0Base : MonoBehaviour {
-		#region Inspector Variables
-		[SerializeField] protected List<MonoBehaviour> m_IConfigurables = new();
-		#endregion Inspector Variables
-
+	public abstract class Scene0Base : SceneServiceHandler {
 		#region Unity Methods
 		protected virtual void Awake() {
 			Debug.unityLogger.logEnabled = Debug.isDebugBuild;
 
-			//Since Global scope should be initialized before anything else, 
+			//Since Global scope should be initialized before anything else
 			GlobalServices.Initialize(ServicesScope.GLOBAL);
+			//Register other things like
+			Init();
+			//Register the services present in this scene
+			RegisterServices();
+
+			StartCoroutine(LoadAllData());
 		}
 		#endregion Unity Methods
 
 		#region Private/Protected Helper Methods
 		/// <summary>
-		/// Fire Setups for IConfigurables
+		/// Initialize things like Lobby scoped services provider, encryption key, game name, etc.
 		/// </summary>
-		/// <returns></returns>
-		protected virtual IEnumerator LoadAllData() {
-			foreach (var configurable in m_IConfigurables)
-				yield return StartCoroutine((configurable as IConfigurable).Setup());
-		}
+		protected override abstract void Init();
 		#endregion Private/Protected Helper Methods
 	}
 }
