@@ -3,7 +3,6 @@ using System.Collections;
 using BaseSDK.Models;
 using BaseSDK.Services;
 using BaseSDK.Utils.Helpers;
-using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
@@ -11,23 +10,9 @@ namespace BaseSDK.Controllers {
 	/// <summary>
 	/// Manage Addressables through this script.
 	/// </summary>
-	public class AddressablesManager : MonoBehaviour, IAddressableService, IConfigurable {
+	public class AddressablesManager : Configurable, IAddressableService {
 		#region Interface Implementation
 		public (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IAddressableService));
-
-		/// <summary>
-		/// Index of when the setup is executed in the order of execution
-		/// </summary>
-		public static int ExecutionOrder => 0;
-		/// <summary>
-		/// Has finished doing the Setup?
-		/// </summary>
-		public bool Initialized { get; set; }
-
-		public IEnumerator Setup () {
-			yield return null;
-			Initialized = true;
-		}
 		#endregion Interface Implementation
 
 		#region Public Helper Methods

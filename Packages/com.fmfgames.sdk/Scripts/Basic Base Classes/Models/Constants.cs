@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace BaseSDK.Models {
     public static class Constants {
+		public static System.Func<string> GameName;
+
 		#region Saved Files Related
 		public const string SAVED_FILE_NAME = "FirstLaunch.playedAlready";
 		public const string SAVED_FOLDER_NAME = "Saved Game Files";

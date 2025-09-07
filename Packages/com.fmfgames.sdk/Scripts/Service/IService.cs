@@ -1,8 +1,7 @@
 using System;
-using BaseSDK.Models;
 
 namespace BaseSDK.Services {
-	public interface IService {
+	public interface IService : IConfigurable {
 		(int scope, Type interfaceType) RegisteringTypes { get; }
 	}
 

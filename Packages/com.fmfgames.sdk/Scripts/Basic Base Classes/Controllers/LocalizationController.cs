@@ -10,7 +10,7 @@ using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 
 namespace BaseSDK.Controllers {
-	public class LocalizationController : MonoBehaviour, IConfigurable, ILocalizationService {
+	public class LocalizationController : Configurable, ILocalizationService {
 		#region String Tables
 		[SerializeField] private List<LocalizedStringTable> m_LocalizationTables = new();
 		#endregion String Tables
@@ -24,15 +24,10 @@ namespace BaseSDK.Controllers {
 		public (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(ILocalizationService));
 
 		/// <summary>
-		/// Has finished doing the Setup?
-		/// </summary>
-		public bool Initialized { get; set; }
-
-		/// <summary>
 		/// Wait for Localization to finish initializing
 		/// </summary>
 		/// <returns></returns>
-		public IEnumerator Setup () {
+		public override IEnumerator Setup () {
 			yield return LocalizationSettings.InitializationOperation;
 			LocalizationSettings.AvailableLocales.Locales.ForEach(x => SupportedLanguages.Add(new(x.Formatter.ToString())));
 			Initialized = true;

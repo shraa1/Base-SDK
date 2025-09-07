@@ -23,7 +23,7 @@ namespace BaseSDK.Controllers {
 		public AssetReferenceAudioClip AudioClipAssetReference;
 	}
 
-	public class AudioManager : Singleton<AudioManager>, IConfigurable, IAudioService {
+	public class AudioManager : Configurable, IAudioService {
 		#region Inspector Variables
 		/// <summary>
 		/// AudioSources and respective Audioclips they play
@@ -63,15 +63,16 @@ namespace BaseSDK.Controllers {
 			var i = 0;
 			if (m_AudiosInfo.Count == 0)
 				m_DownloadedAllAudios = true;
-			else
+			else {
+				var service = GlobalServices.GetServiceProvider(ServicesScope.GLOBAL).Get<IAddressableService>();
 				foreach (var audioInfo in m_AudiosInfo)
-					(GlobalServices.GetServiceProvider(ServicesScope.GLOBAL) as IAddressableService)
-						.LoadAsset<AudioClip>(audioInfo.AudioClipAssetReference, null, obj => {
-							i++;
-							if (i == m_AudiosInfo.Count)
-								m_DownloadedAllAudios = true;
-							audioInfo.AudioSource.clip = obj;
-						});
+					service.LoadAsset<AudioClip>(audioInfo.AudioClipAssetReference, null, obj => {
+						i++;
+						if (i == m_AudiosInfo.Count)
+							m_DownloadedAllAudios = true;
+						audioInfo.AudioSource.clip = obj;
+					});
+			}
 		}
 		#endregion Unity Methods
 
@@ -79,20 +80,14 @@ namespace BaseSDK.Controllers {
 		public (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IAudioService));
 
 		/// <summary>
-		/// Has finished doing the Setup?
-		/// </summary>
-		public bool Initialized { get; set; }
-
-		/// <summary>
 		/// IConfigurable implementation
 		/// </summary>
-		public IEnumerator Setup () {
-			_ = Instance;
+		public override IEnumerator Setup () {
 			while (!m_DownloadedAllAudios)
 				yield return null;
 			Initialized = true;
 
-			var settingsManager = GlobalServices.GetServiceProvider(ServicesScope.GLOBAL) as ISettingsService;
+			var settingsManager = GlobalServices.GetServiceProvider(ServicesScope.GLOBAL).Get<ISettingsService<SettingsState>>();
 			SetVolume(VOLUMETYPE.MASTER, settingsManager.SettingsState.MasterVolume);
 			SetVolume(VOLUMETYPE.MUSIC, settingsManager.SettingsState.MusicVolume);
 			SetVolume(VOLUMETYPE.SFX, settingsManager.SettingsState.SFXVolume);
