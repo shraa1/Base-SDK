@@ -20,7 +20,8 @@ namespace BaseSDK.Services {
 		/// Uninitialize a service provider when the scope of the service ended
 		/// </summary>
 		/// <param name="contextIndex"></param>
-		public static void UnInitialize(int contextIndex) => s_ServiceProviders.RemoveSafely(contextIndex);
+		public static void UnInitialize<T>(T contextIndex) where T : Enum =>
+			s_ServiceProviders.RemoveSafely(contextIndex.To<int>());
 
 		/// <summary>
 		/// Get the Service Provider for the type <typeparamref name="T"/>
