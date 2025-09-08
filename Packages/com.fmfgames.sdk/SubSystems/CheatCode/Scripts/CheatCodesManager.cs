@@ -61,7 +61,7 @@ namespace BaseSDK.Controllers {
 			DontDestroy = true;
 
 #if ENABLE_INPUT_SYSTEM
-			InputMasterController.InputMaster.CheatCodes.KeyPress.performed += CheatCodeKeyPressPerformed;
+			//InputMasterController.InputMaster.CheatCodes.KeyPress.performed += CheatCodeKeyPressPerformed;
 #else
 			Debug.LogWarning("CheatCodes currently only work with the new InputSystem, not the legacy InputManager");
 #endif
@@ -71,12 +71,12 @@ namespace BaseSDK.Controllers {
 		/// <summary>
 		/// OnEnable. Activate the cheat code system.
 		/// </summary>
-		protected virtual void OnEnable () => InputMasterController.InputMaster.CheatCodes.Enable();
+		//protected virtual void OnEnable () => InputMasterController.InputMaster.CheatCodes.Enable();
 
 		/// <summary>
 		/// OnDisable. Deactivate the cheat code system.
 		/// </summary>
-		protected virtual void OnDisable () => InputMasterController.InputMaster.CheatCodes.Disable();
+		//protected virtual void OnDisable () => InputMasterController.InputMaster.CheatCodes.Disable();
 #endif
 		#endregion
 
