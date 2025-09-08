@@ -5,9 +5,9 @@ namespace BaseSDK {
 	/// <summary>
 	/// Interface for UI popups that can open and close with tween animation.
 	/// </summary>
-	public interface IPopup {
+	public interface IPopup<POPUPTYPE> where POPUPTYPE : Enum {
 		#region Variables
-		int PopupType { get; }
+		POPUPTYPE PopupType { get; }
 
 		bool IsOpen { get; }
 
