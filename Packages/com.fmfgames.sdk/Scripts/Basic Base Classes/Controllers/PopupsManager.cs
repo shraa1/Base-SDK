@@ -25,7 +25,7 @@ namespace BaseSDK.Controllers {
 		#endregion Private Variables
 
 		#region Interface Implementation
-		public (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IPopupService<POPUPTYPE>));
+		public virtual (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IPopupService<POPUPTYPE>));
 
 		public void Show (POPUPTYPE popupType) => TryOpenPopup(popupType);
 

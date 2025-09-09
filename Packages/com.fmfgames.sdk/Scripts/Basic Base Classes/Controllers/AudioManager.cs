@@ -77,7 +77,7 @@ namespace BaseSDK.Controllers {
 		#endregion Unity Methods
 
 		#region Interface Implementation
-		public (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IAudioService));
+		public virtual (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IAudioService));
 
 		/// <summary>
 		/// IConfigurable implementation

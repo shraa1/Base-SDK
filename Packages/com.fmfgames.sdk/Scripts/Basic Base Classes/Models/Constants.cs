@@ -9,7 +9,7 @@ namespace BaseSDK.Models {
 		public const string FIRST_LAUNCH_SAVED_FILE_NAME = "FirstLaunch.playedAlready";
 		public const string SAVED_GAME_FILES_FOLDERNAME = "Saved Game Files";
 
-		public static readonly string SAVED_FILE_NAME = $"{GameName}.sav";
+		public static readonly string SAVED_FILE_NAME = $"{GameName()}.sav";
 
 		public static readonly string SAVE_FOLDER_PATH = Path.Combine(Application.dataPath, SAVED_GAME_FILES_FOLDERNAME);
 

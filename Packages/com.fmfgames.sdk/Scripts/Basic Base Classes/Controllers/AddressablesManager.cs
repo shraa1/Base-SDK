@@ -12,7 +12,7 @@ namespace BaseSDK.Controllers {
 	/// </summary>
 	public class AddressablesManager : Configurable, IAddressableService {
 		#region Interface Implementation
-		public (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IAddressableService));
+		public virtual (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IAddressableService));
 		#endregion Interface Implementation
 
 		#region Public Helper Methods

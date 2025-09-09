@@ -26,7 +26,7 @@ namespace BaseSDK.Controllers {
 		#endregion Properties
 
 		#region Interface Implementation
-		public (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(ISettingsService<T>));
+		public virtual (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(ISettingsService<T>));
 
 		public virtual void Save () {
 			var serialized = JsonConvert.SerializeObject(SettingsState, Formatting.Indented);

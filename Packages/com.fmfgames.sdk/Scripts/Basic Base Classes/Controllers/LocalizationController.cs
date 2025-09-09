@@ -21,7 +21,7 @@ namespace BaseSDK.Controllers {
 		#endregion Properties
 
 		#region Interface Implementation
-		public (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(ILocalizationService));
+		public virtual (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(ILocalizationService));
 
 		/// <summary>
 		/// Wait for Localization to finish initializing

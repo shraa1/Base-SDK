@@ -30,7 +30,7 @@ namespace BaseSDK.Controllers {
 		#endregion Unity Methods
 
 		#region Interface Implementation
-		public (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IGameStateService<T>));
+		public virtual (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IGameStateService<T>));
 
 		public override IEnumerator Setup () {
 			Load();
