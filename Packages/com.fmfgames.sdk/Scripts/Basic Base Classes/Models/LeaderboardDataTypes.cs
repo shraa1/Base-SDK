@@ -5,7 +5,7 @@ using Sirenix.OdinInspector;
 using BaseSDK.SirenixHelper;
 #endif
 
-namespace BaseSDK {
+namespace BaseSDK.Models {
 	public class LeaderboardSaveData {
 		[ShowInInspector] public Guid GUID { get; set; }
 		[ShowInInspector] public uint Rank { get; set; }

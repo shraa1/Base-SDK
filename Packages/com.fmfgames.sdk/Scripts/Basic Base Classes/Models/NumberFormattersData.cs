@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FMF.DinoClickr.Models {
+namespace BaseSDK.Models {
 	[CreateAssetMenu(fileName = "Number Formatter Data", menuName = "Number Formatter Data File")]
 	public class NumberFormattersData : ScriptableObject {
 		public List<NumberFormattersDataObject> Data = new();
