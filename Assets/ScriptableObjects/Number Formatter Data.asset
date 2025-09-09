@@ -1,0 +1,628 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 547065863b8360d48b01e20bffbbee4b, type: 3}
+  m_Name: Number Formatter Data
+  m_EditorClassIdentifier: 
+  Data:
+  - MinValue: 0
+    MaxValue: 1000
+    Formatter: '#0'
+    ShortText: 
+    LongText: 
+    CachedMultiplier: 1
+  - MinValue: 1000
+    MaxValue: 999999
+    Formatter: 0.##
+    ShortText: K
+    LongText: ' Thousand'
+    CachedMultiplier: 0.001
+  - MinValue: 1000000
+    MaxValue: 999999999
+    Formatter: 0.##
+    ShortText: M
+    LongText: ' Million'
+    CachedMultiplier: 0.000001
+  - MinValue: 1000000000
+    MaxValue: 999999999999
+    Formatter: 0.##
+    ShortText: B
+    LongText: ' Billion'
+    CachedMultiplier: 0.000000001
+  - MinValue: 1000000000000
+    MaxValue: 999999999999999
+    Formatter: 0.##
+    ShortText: T
+    LongText: ' Trillion'
+    CachedMultiplier: 0.000000000001
+  - MinValue: 1000000000000000
+    MaxValue: 1e+18
+    Formatter: 0.##
+    ShortText: ' Quad'
+    LongText: ' Quadillion'
+    CachedMultiplier: 0.000000000000001
+  - MinValue: 1e+18
+    MaxValue: 1e+21
+    Formatter: 0.##
+    ShortText: ' Quint'
+    LongText: ' Quintillion'
+    CachedMultiplier: 1e-18
+  - MinValue: 1e+21
+    MaxValue: 1e+24
+    Formatter: 0.##
+    ShortText: ' Sext'
+    LongText: ' Sextillion'
+    CachedMultiplier: 1e-21
+  - MinValue: 1e+24
+    MaxValue: 1e+27
+    Formatter: 0.##
+    ShortText: ' Sept'
+    LongText: ' Septillion'
+    CachedMultiplier: 1e-24
+  - MinValue: 1e+27
+    MaxValue: 1e+30
+    Formatter: 0.##
+    ShortText: ' Oct'
+    LongText: ' Octillion'
+    CachedMultiplier: 1e-27
+  - MinValue: 1e+30
+    MaxValue: 1e+33
+    Formatter: 0.##
+    ShortText: ' Non'
+    LongText: ' Nontillion'
+    CachedMultiplier: 9.999999999999999e-31
+  - MinValue: 1e+33
+    MaxValue: 1e+36
+    Formatter: 0.##
+    ShortText: ' Dec'
+    LongText: ' Decillion'
+    CachedMultiplier: 1e-33
+  - MinValue: 1e+36
+    MaxValue: 1e+39
+    Formatter: 0.##
+    ShortText: ' Undec'
+    LongText: ' Undecillion'
+    CachedMultiplier: 1e-36
+  - MinValue: 1e+39
+    MaxValue: 1e+42
+    Formatter: 0.#
+    ShortText: ' Duodec'
+    LongText: ' Duodecillion'
+    CachedMultiplier: 1.0000000000000001e-39
+  - MinValue: 1e+42
+    MaxValue: 1e+45
+    Formatter: 0.#
+    ShortText: ' Tredec'
+    LongText: ' Tredecillion'
+    CachedMultiplier: 9.999999999999999e-43
+  - MinValue: 1e+45
+    MaxValue: 1e+48
+    Formatter: 0.#
+    ShortText: ' Quatdec'
+    LongText: ' Quatrodecillion'
+    CachedMultiplier: 1.0000000000000001e-45
+  - MinValue: 1e+48
+    MaxValue: 1e+51
+    Formatter: 0.#
+    ShortText: ' Quindec'
+    LongText: ' Quindecillion'
+    CachedMultiplier: 1e-48
+  - MinValue: 1e+51
+    MaxValue: 1e+54
+    Formatter: 0.##
+    ShortText: ' Sexdec'
+    LongText: ' Sexdecillion'
+    CachedMultiplier: 1e-51
+  - MinValue: 1e+54
+    MaxValue: 1e+57
+    Formatter: 0.#
+    ShortText: ' Septdec'
+    LongText: ' Septdecillion'
+    CachedMultiplier: 9.999999999999999e-55
+  - MinValue: 1e+57
+    MaxValue: 1e+60
+    Formatter: 0.#
+    ShortText: ' Octdec'
+    LongText: ' Octdecillion'
+    CachedMultiplier: 1e-57
+  - MinValue: 1e+60
+    MaxValue: 1e+63
+    Formatter: 0.#
+    ShortText: ' Novemdec'
+    LongText: ' Novemdecillion'
+    CachedMultiplier: 1.0000000000000001e-60
+  - MinValue: 1.0e+63
+    MaxValue: 1.0e+66
+    Formatter: 0.##
+    ShortText: ' Vigint'
+    LongText: ' Vigintillion'
+    CachedMultiplier: 1.0e-63
+  - MinValue: 1.0e+66
+    MaxValue: 1.0e+69
+    Formatter: 0.##
+    ShortText: ' Unvigint'
+    LongText: ' Unvigintillion'
+    CachedMultiplier: 1.0e-66
+  - MinValue: 1.0e+69
+    MaxValue: 1.0e+72
+    Formatter: 0.##
+    ShortText: ' Duovigint'
+    LongText: ' Duovigintillion'
+    CachedMultiplier: 1.0e-69
+  - MinValue: 1.0e+72
+    MaxValue: 1.0e+75
+    Formatter: 0.##
+    ShortText: ' Trevigint'
+    LongText: ' Trevigintillion'
+    CachedMultiplier: 1.0e-72
+  - MinValue: 1.0e+75
+    MaxValue: 1.0e+78
+    Formatter: 0.##
+    ShortText: ' Quattuorvigint'
+    LongText: ' Quattuorvigintillion'
+    CachedMultiplier: 1.0e-75
+  - MinValue: 1.0e+78
+    MaxValue: 1.0e+81
+    Formatter: 0.##
+    ShortText: ' Quinvigint'
+    LongText: ' Quinvigintillion'
+    CachedMultiplier: 1.0e-78
+  - MinValue: 1.0e+81
+    MaxValue: 1.0e+84
+    Formatter: 0.##
+    ShortText: ' Sexvigint'
+    LongText: ' Sexvigintillion'
+    CachedMultiplier: 1.0e-81
+  - MinValue: 1.0e+84
+    MaxValue: 1.0e+87
+    Formatter: 0.##
+    ShortText: ' Septenvigint'
+    LongText: ' Septenvigintillion'
+    CachedMultiplier: 1.0e-84
+  - MinValue: 1.0e+87
+    MaxValue: 1.0e+90
+    Formatter: 0.##
+    ShortText: ' Octovigint'
+    LongText: ' Octovigintillion'
+    CachedMultiplier: 1.0e-87
+  - MinValue: 1.0e+90
+    MaxValue: 1.0e+93
+    Formatter: 0.##
+    ShortText: ' Novemvigint'
+    LongText: ' Novemvigintillion'
+    CachedMultiplier: 1.0e-90
+  - MinValue: 1.0e+93
+    MaxValue: 1.0e+96
+    Formatter: 0.##
+    ShortText: ' Trigint'
+    LongText: ' Trigintillion'
+    CachedMultiplier: 1.0e-93
+  - MinValue: 1.0e+96
+    MaxValue: 1.0e+99
+    Formatter: 0.##
+    ShortText: ' Untrigint'
+    LongText: ' Untrigintillion'
+    CachedMultiplier: 1.0e-96
+  - MinValue: 1.0e+99
+    MaxValue: 1.0e+102
+    Formatter: 0.##
+    ShortText: ' Duotrigint'
+    LongText: ' Duotrigintillion'
+    CachedMultiplier: 1.0e-99
+  - MinValue: 1.0e+102
+    MaxValue: 1.0e+105
+    Formatter: 0.##
+    ShortText: ' Tretrigint'
+    LongText: ' Tretrigintillion'
+    CachedMultiplier: 1.0e-102
+  - MinValue: 1.0e+105
+    MaxValue: 1.0e+108
+    Formatter: 0.##
+    ShortText: ' Quattuortrigint'
+    LongText: ' Quattuortrigintillion'
+    CachedMultiplier: 1.0e-105
+  - MinValue: 1.0e+108
+    MaxValue: 1.0e+111
+    Formatter: 0.##
+    ShortText: ' Quintrigint'
+    LongText: ' Quintrigintillion'
+    CachedMultiplier: 1.0e-108
+  - MinValue: 1.0e+111
+    MaxValue: 1.0e+114
+    Formatter: 0.##
+    ShortText: ' Sextrigint'
+    LongText: ' Sextrigintillion'
+    CachedMultiplier: 1.0e-111
+  - MinValue: 1.0e+114
+    MaxValue: 1.0e+117
+    Formatter: 0.##
+    ShortText: ' Septentrigint'
+    LongText: ' Septentrigintillion'
+    CachedMultiplier: 1.0e-114
+  - MinValue: 1.0e+117
+    MaxValue: 1.0e+120
+    Formatter: 0.##
+    ShortText: ' Octotrigint'
+    LongText: ' Octotrigintillion'
+    CachedMultiplier: 1.0e-117
+  - MinValue: 1.0e+120
+    MaxValue: 1.0e+123
+    Formatter: 0.##
+    ShortText: ' Novemtrigint'
+    LongText: ' Novemtrigintillion'
+    CachedMultiplier: 1.0e-120
+  - MinValue: 1.0e+123
+    MaxValue: 1.0e+126
+    Formatter: 0.##
+    ShortText: ' Quadragint'
+    LongText: ' Quadragintillion'
+    CachedMultiplier: 1.0e-123
+  - MinValue: 1.0e+126
+    MaxValue: 1.0e+129
+    Formatter: 0.##
+    ShortText: ' Unquadragint'
+    LongText: ' Unquadragintillion'
+    CachedMultiplier: 1.0e-126
+  - MinValue: 1.0e+129
+    MaxValue: 1.0e+132
+    Formatter: 0.##
+    ShortText: ' Duoquadragint'
+    LongText: ' Duoquadragintillion'
+    CachedMultiplier: 1.0e-129
+  - MinValue: 1.0e+132
+    MaxValue: 1.0e+135
+    Formatter: 0.##
+    ShortText: ' Trequadragint'
+    LongText: ' Trequadragintillion'
+    CachedMultiplier: 1.0e-132
+  - MinValue: 1.0e+135
+    MaxValue: 1.0e+138
+    Formatter: 0.##
+    ShortText: ' Quattuorquadragint'
+    LongText: ' Quattuorquadragintillion'
+    CachedMultiplier: 1.0e-135
+  - MinValue: 1.0e+138
+    MaxValue: 1.0e+141
+    Formatter: 0.##
+    ShortText: ' Quinquadragint'
+    LongText: ' Quinquadragintillion'
+    CachedMultiplier: 1.0e-138
+  - MinValue: 1.0e+141
+    MaxValue: 1.0e+144
+    Formatter: 0.##
+    ShortText: ' Sexquadragint'
+    LongText: ' Sexquadragintillion'
+    CachedMultiplier: 1.0e-141
+  - MinValue: 1.0e+144
+    MaxValue: 1.0e+147
+    Formatter: 0.##
+    ShortText: ' Septenquadragint'
+    LongText: ' Septenquadragintillion'
+    CachedMultiplier: 1.0e-144
+  - MinValue: 1.0e+147
+    MaxValue: 1.0e+150
+    Formatter: 0.##
+    ShortText: ' Octoquadragint'
+    LongText: ' Octoquadragintillion'
+    CachedMultiplier: 1.0e-147
+  - MinValue: 1.0e+150
+    MaxValue: 1.0e+153
+    Formatter: 0.##
+    ShortText: ' Novemquadragint'
+    LongText: ' Novemquadragintillion'
+    CachedMultiplier: 1.0e-150
+  - MinValue: 1.0e+153
+    MaxValue: 1.0e+156
+    Formatter: 0.##
+    ShortText: ' Quinquagint'
+    LongText: ' Quinquagintillion'
+    CachedMultiplier: 1.0e-153
+  - MinValue: 1.0e+156
+    MaxValue: 1.0e+159
+    Formatter: 0.##
+    ShortText: ' Unquinquagint'
+    LongText: ' Unquinquagintillion'
+    CachedMultiplier: 1.0e-156
+  - MinValue: 1.0e+159
+    MaxValue: 1.0e+162
+    Formatter: 0.##
+    ShortText: ' Duoquinquagint'
+    LongText: ' Duoquinquagintillion'
+    CachedMultiplier: 1.0e-159
+  - MinValue: 1.0e+162
+    MaxValue: 1.0e+165
+    Formatter: 0.##
+    ShortText: ' Trequinquagint'
+    LongText: ' Trequinquagintillion'
+    CachedMultiplier: 1.0e-162
+  - MinValue: 1.0e+165
+    MaxValue: 1.0e+168
+    Formatter: 0.##
+    ShortText: ' Quattuorquinquagint'
+    LongText: ' Quattuorquinquagintillion'
+    CachedMultiplier: 1.0e-165
+  - MinValue: 1.0e+168
+    MaxValue: 1.0e+171
+    Formatter: 0.##
+    ShortText: ' Quinquinquagint'
+    LongText: ' Quinquinquagintillion'
+    CachedMultiplier: 1.0e-168
+  - MinValue: 1.0e+171
+    MaxValue: 1.0e+174
+    Formatter: 0.##
+    ShortText: ' Sexquinquagint'
+    LongText: ' Sexquinquagintillion'
+    CachedMultiplier: 1.0e-171
+  - MinValue: 1.0e+174
+    MaxValue: 1.0e+177
+    Formatter: 0.##
+    ShortText: ' Septenquinquagint'
+    LongText: ' Septenquinquagintillion'
+    CachedMultiplier: 1.0e-174
+  - MinValue: 1.0e+177
+    MaxValue: 1.0e+180
+    Formatter: 0.##
+    ShortText: ' Octoquinquagint'
+    LongText: ' Octoquinquagintillion'
+    CachedMultiplier: 1.0e-177
+  - MinValue: 1.0e+180
+    MaxValue: 1.0e+183
+    Formatter: 0.##
+    ShortText: ' Novemquinquagint'
+    LongText: ' Novemquinquagintillion'
+    CachedMultiplier: 1.0e-180
+  - MinValue: 1.0e+183
+    MaxValue: 1.0e+186
+    Formatter: 0.##
+    ShortText: ' Sexagint'
+    LongText: ' Sexagintillion'
+    CachedMultiplier: 1.0e-183
+  - MinValue: 1.0e+186
+    MaxValue: 1.0e+189
+    Formatter: 0.##
+    ShortText: ' Unsexagint'
+    LongText: ' Unsexagintillion'
+    CachedMultiplier: 1.0e-186
+  - MinValue: 1.0e+189
+    MaxValue: 1.0e+192
+    Formatter: 0.##
+    ShortText: ' Duosexagint'
+    LongText: ' Duosexagintillion'
+    CachedMultiplier: 1.0e-189
+  - MinValue: 1.0e+192
+    MaxValue: 1.0e+195
+    Formatter: 0.##
+    ShortText: ' Tresexagint'
+    LongText: ' Tresexagintillion'
+    CachedMultiplier: 1.0e-192
+  - MinValue: 1.0e+195
+    MaxValue: 1.0e+198
+    Formatter: 0.##
+    ShortText: ' Quattuorsexagint'
+    LongText: ' Quattuorsexagintillion'
+    CachedMultiplier: 1.0e-195
+  - MinValue: 1.0e+198
+    MaxValue: 1.0e+201
+    Formatter: 0.##
+    ShortText: ' Quinsexagint'
+    LongText: ' Quinsexagintillion'
+    CachedMultiplier: 1.0e-198
+  - MinValue: 1.0e+201
+    MaxValue: 1.0e+204
+    Formatter: 0.##
+    ShortText: ' Sexsexagint'
+    LongText: ' Sexsexagintillion'
+    CachedMultiplier: 1.0e-201
+  - MinValue: 1.0e+204
+    MaxValue: 1.0e+207
+    Formatter: 0.##
+    ShortText: ' Septensexagint'
+    LongText: ' Septensexagintillion'
+    CachedMultiplier: 1.0e-204
+  - MinValue: 1.0e+207
+    MaxValue: 1.0e+210
+    Formatter: 0.##
+    ShortText: ' Octosexagint'
+    LongText: ' Octosexagintillion'
+    CachedMultiplier: 1.0e-207
+  - MinValue: 1.0e+210
+    MaxValue: 1.0e+213
+    Formatter: 0.##
+    ShortText: ' Novemsexagint'
+    LongText: ' Novemsexagintillion'
+    CachedMultiplier: 1.0e-210
+  - MinValue: 1.0e+213
+    MaxValue: 1.0e+216
+    Formatter: 0.##
+    ShortText: ' Septuagint'
+    LongText: ' Septuagintillion'
+    CachedMultiplier: 1.0e-213
+  - MinValue: 1.0e+216
+    MaxValue: 1.0e+219
+    Formatter: 0.##
+    ShortText: ' Unseptuagint'
+    LongText: ' Unseptuagintillion'
+    CachedMultiplier: 1.0e-216
+  - MinValue: 1.0e+219
+    MaxValue: 1.0e+222
+    Formatter: 0.##
+    ShortText: ' Duoseptuagint'
+    LongText: ' Duoseptuagintillion'
+    CachedMultiplier: 1.0e-219
+  - MinValue: 1.0e+222
+    MaxValue: 1.0e+225
+    Formatter: 0.##
+    ShortText: ' Treseptuagint'
+    LongText: ' Treseptuagintillion'
+    CachedMultiplier: 1.0e-222
+  - MinValue: 1.0e+225
+    MaxValue: 1.0e+228
+    Formatter: 0.##
+    ShortText: ' Quattuorseptuagint'
+    LongText: ' Quattuorseptuagintillion'
+    CachedMultiplier: 1.0e-225
+  - MinValue: 1.0e+228
+    MaxValue: 1.0e+231
+    Formatter: 0.##
+    ShortText: ' Quinseptuagint'
+    LongText: ' Quinseptuagintillion'
+    CachedMultiplier: 1.0e-228
+  - MinValue: 1.0e+231
+    MaxValue: 1.0e+234
+    Formatter: 0.##
+    ShortText: ' Sexseptuagint'
+    LongText: ' Sexseptuagintillion'
+    CachedMultiplier: 1.0e-231
+  - MinValue: 1.0e+234
+    MaxValue: 1.0e+237
+    Formatter: 0.##
+    ShortText: ' Septenseptuagint'
+    LongText: ' Septenseptuagintillion'
+    CachedMultiplier: 1.0e-234
+  - MinValue: 1.0e+237
+    MaxValue: 1.0e+240
+    Formatter: 0.##
+    ShortText: ' Octoseptuagint'
+    LongText: ' Octoseptuagintillion'
+    CachedMultiplier: 1.0e-237
+  - MinValue: 1.0e+240
+    MaxValue: 1.0e+243
+    Formatter: 0.##
+    ShortText: ' Novemseptuagint'
+    LongText: ' Novemseptuagintillion'
+    CachedMultiplier: 1.0e-240
+  - MinValue: 1.0e+243
+    MaxValue: 1.0e+246
+    Formatter: 0.##
+    ShortText: ' Octogint'
+    LongText: ' Octogintillion'
+    CachedMultiplier: 1.0e-243
+  - MinValue: 1.0e+246
+    MaxValue: 1.0e+249
+    Formatter: 0.##
+    ShortText: ' Unoctogint'
+    LongText: ' Unoctogintillion'
+    CachedMultiplier: 1.0e-246
+  - MinValue: 1.0e+249
+    MaxValue: 1.0e+252
+    Formatter: 0.##
+    ShortText: ' Duooctogint'
+    LongText: ' Duooctogintillion'
+    CachedMultiplier: 1.0e-249
+  - MinValue: 1.0e+252
+    MaxValue: 1.0e+255
+    Formatter: 0.##
+    ShortText: ' Treoctogint'
+    LongText: ' Treoctogintillion'
+    CachedMultiplier: 1.0e-252
+  - MinValue: 1.0e+255
+    MaxValue: 1.0e+258
+    Formatter: 0.##
+    ShortText: ' Quattuoroctogint'
+    LongText: ' Quattuoroctogintillion'
+    CachedMultiplier: 1.0e-255
+  - MinValue: 1.0e+258
+    MaxValue: 1.0e+261
+    Formatter: 0.##
+    ShortText: ' Quinoctogint'
+    LongText: ' Quinoctogintillion'
+    CachedMultiplier: 1.0e-258
+  - MinValue: 1.0e+261
+    MaxValue: 1.0e+264
+    Formatter: 0.##
+    ShortText: ' Sexoctogint'
+    LongText: ' Sexoctogintillion'
+    CachedMultiplier: 1.0e-261
+  - MinValue: 1.0e+264
+    MaxValue: 1.0e+267
+    Formatter: 0.##
+    ShortText: ' Septenoctogint'
+    LongText: ' Septenoctogintillion'
+    CachedMultiplier: 1.0e-264
+  - MinValue: 1.0e+267
+    MaxValue: 1.0e+270
+    Formatter: 0.##
+    ShortText: ' Octooctogint'
+    LongText: ' Octooctogintillion'
+    CachedMultiplier: 1.0e-267
+  - MinValue: 1.0e+270
+    MaxValue: 1.0e+273
+    Formatter: 0.##
+    ShortText: ' Novemoctogint'
+    LongText: ' Novemoctogintillion'
+    CachedMultiplier: 1.0e-270
+  - MinValue: 1.0e+273
+    MaxValue: 1.0e+276
+    Formatter: 0.##
+    ShortText: ' Nonagint'
+    LongText: ' Nonagintillion'
+    CachedMultiplier: 1.0e-273
+  - MinValue: 1.0e+276
+    MaxValue: 1.0e+279
+    Formatter: 0.##
+    ShortText: ' Unnonagint'
+    LongText: ' Unnonagintillion'
+    CachedMultiplier: 1.0e-276
+  - MinValue: 1.0e+279
+    MaxValue: 1.0e+282
+    Formatter: 0.##
+    ShortText: ' Duononagint'
+    LongText: ' Duononagintillion'
+    CachedMultiplier: 1.0e-279
+  - MinValue: 1.0e+282
+    MaxValue: 1.0e+285
+    Formatter: 0.##
+    ShortText: ' Trenonagint'
+    LongText: ' Trenonagintillion'
+    CachedMultiplier: 1.0e-282
+  - MinValue: 1.0e+285
+    MaxValue: 1.0e+288
+    Formatter: 0.##
+    ShortText: ' Quattuornonagint'
+    LongText: ' Quattuornonagintillion'
+    CachedMultiplier: 1.0e-285
+  - MinValue: 1.0e+288
+    MaxValue: 1.0e+291
+    Formatter: 0.##
+    ShortText: ' Quinnonagint'
+    LongText: ' Quinnonagintillion'
+    CachedMultiplier: 1.0e-288
+  - MinValue: 1.0e+291
+    MaxValue: 1.0e+294
+    Formatter: 0.##
+    ShortText: ' Sexnonagint'
+    LongText: ' Sexnonagintillion'
+    CachedMultiplier: 1.0e-291
+  - MinValue: 1.0e+294
+    MaxValue: 1.0e+297
+    Formatter: 0.##
+    ShortText: ' Septennonagint'
+    LongText: ' Septennonagintillion'
+    CachedMultiplier: 1.0e-294
+  - MinValue: 1.0e+297
+    MaxValue: 1.0e+300
+    Formatter: 0.##
+    ShortText: ' Octononagint'
+    LongText: ' Octononagintillion'
+    CachedMultiplier: 1.0e-297
+  - MinValue: 1.0e+300
+    MaxValue: 1.0e+303
+    Formatter: 0.##
+    ShortText: ' Novemnonagint'
+    LongText: ' Novemnonagintillion'
+    CachedMultiplier: 1.0e-300
+  - MinValue: 1.0e+303
+    MaxValue: 1.0e+306
+    Formatter: 0.##
+    ShortText: ' Cent'
+    LongText: ' Centillion'
+    CachedMultiplier: 1.0e-303
+    
