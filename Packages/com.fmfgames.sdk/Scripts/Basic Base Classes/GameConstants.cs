@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using UnityEngine;
 
 namespace BaseSDK {
@@ -73,5 +74,14 @@ namespace BaseSDK {
 		public static readonly DateTime k_EPOCH_DATETIME_UTC = DateTime.UnixEpoch;
 		public static readonly WaitForEndOfFrame EOF = new();
 		#endregion Other Static Readonlys
+
+		#region File Paths Related
+		public static Func<string> GameName;
+		public const string SAVED_GAME_FILES_FOLDERNAME = "Saved Game Files";
+		public const string FIRST_LAUNCH_SAVED_FILE_NAME = "FirstLaunch.playedAlready";
+
+		public static readonly string SAVE_FOLDER_PATH = Path.Combine(Application.dataPath, SAVED_GAME_FILES_FOLDERNAME);
+		public static readonly string FIRST_LAUNCH_SAVED_FILE_PATH = Path.Combine(SAVE_FOLDER_PATH, FIRST_LAUNCH_SAVED_FILE_NAME);
+		#endregion File Paths Related
 	}
 }

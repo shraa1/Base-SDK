@@ -39,14 +39,18 @@ namespace BaseSDK.Controllers {
 		}
 
 		public void Load () {
-			if (File.Exists(Constants.SAVE_TEMP_FILE_PATH)) {
-				if (File.Exists(Constants.SAVE_FILE_PATH))
-					File.Delete(Constants.SAVE_FILE_PATH);
-				File.Move(Constants.SAVE_TEMP_FILE_PATH, Constants.SAVE_FILE_PATH);
+			var SAVED_FILE_NAME = $"{GameConstants.GameName()}.sav";
+			var SAVE_FILE_PATH = Path.Combine(GameConstants.SAVE_FOLDER_PATH, SAVED_FILE_NAME);
+			var SAVE_TEMP_FILE_PATH = Path.Combine(GameConstants.SAVE_FOLDER_PATH, SAVED_FILE_NAME + ".tmp");
+
+			if (File.Exists(SAVE_TEMP_FILE_PATH)) {
+				if (File.Exists(SAVE_FILE_PATH))
+					File.Delete(SAVE_FILE_PATH);
+				File.Move(SAVE_TEMP_FILE_PATH, SAVE_FILE_PATH);
 			}
 
 			//Fresh launch
-			if (!File.Exists(Constants.SAVE_FILE_PATH)) {
+			if (!File.Exists(SAVE_FILE_PATH)) {
 				GameState = new T();
 				Save();
 				return;
@@ -54,7 +58,7 @@ namespace BaseSDK.Controllers {
 
 			Profiler.BeginSample("Open GameState File");
 			var savGameState = string.Empty;
-			using (var sr = new StreamReader(Constants.SAVE_FILE_PATH))
+			using (var sr = new StreamReader(SAVE_FILE_PATH))
 				savGameState = sr.ReadToEnd();
 			var ppGameState = PlayerPrefsManager.Get(k_PLAYERPREF_KEY, string.Empty);
 			Profiler.EndSample();
@@ -72,18 +76,22 @@ namespace BaseSDK.Controllers {
 		}
 
 		public void Save () {
+			var SAVED_FILE_NAME = $"{GameConstants.GameName()}.sav";
+			var SAVE_FILE_PATH = Path.Combine(GameConstants.SAVE_FOLDER_PATH, SAVED_FILE_NAME);
+			var SAVE_TEMP_FILE_PATH = Path.Combine(GameConstants.SAVE_FOLDER_PATH, SAVED_FILE_NAME + ".tmp");
+
 			//Update Last Logout value
 			GameState.Save();
 			var encrypted = JsonConvert.SerializeObject(GameState, Formatting.None).Encrypt();
 			PlayerPrefsManager.Set(k_PLAYERPREF_KEY, encrypted);
 
-			if (!Directory.Exists(Constants.SAVE_FOLDER_PATH))
-				Directory.CreateDirectory(Constants.SAVE_FOLDER_PATH);
+			if (!Directory.Exists(GameConstants.SAVE_FOLDER_PATH))
+				Directory.CreateDirectory(GameConstants.SAVE_FOLDER_PATH);
 
-			File.WriteAllText(Constants.SAVE_TEMP_FILE_PATH, encrypted);
-			if (File.Exists(Constants.SAVE_FILE_PATH))
-				File.Delete(Constants.SAVE_FILE_PATH);
-			File.Move(Constants.SAVE_TEMP_FILE_PATH, Constants.SAVE_FILE_PATH);
+			File.WriteAllText(SAVE_TEMP_FILE_PATH, encrypted);
+			if (File.Exists(SAVE_FILE_PATH))
+				File.Delete(SAVE_FILE_PATH);
+			File.Move(SAVE_TEMP_FILE_PATH, SAVE_FILE_PATH);
 #if UNITY_EDITOR
 			UnityEditor.AssetDatabase.Refresh();
 #endif

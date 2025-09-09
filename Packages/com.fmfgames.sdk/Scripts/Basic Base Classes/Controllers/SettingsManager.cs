@@ -8,10 +8,9 @@ using UnityEngine;
 
 namespace BaseSDK.Controllers {
 	public class SettingsManager<T> : Configurable, IManagerBehaviour, ISettingsService<T> where T : SettingsState, new () {
-		#region Variables
-		private static readonly string k_SAVED_FILE_NAME = $"{Constants.GameName}_Settings.json";
-		private const string k_PLAYERPREF_KEY = "m_SettingsState";
-		#endregion Variables
+		#region Variables and Consts
+		private const string PLAYERPREF_KEY = "m_SettingsState";
+		#endregion Variables and Consts
 
 		#region Properties
 		public T SettingsState {
@@ -29,13 +28,14 @@ namespace BaseSDK.Controllers {
 		public virtual (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(ISettingsService<T>));
 
 		public virtual void Save () {
+			var SAVED_FILE_NAME = $"{GameConstants.GameName()}_Settings.json";
 			var serialized = JsonConvert.SerializeObject(SettingsState, Formatting.Indented);
-			PlayerPrefsManager.Set(k_PLAYERPREF_KEY, serialized);
+			PlayerPrefsManager.Set(PLAYERPREF_KEY, serialized);
 
-			var path = Path.Combine(Application.dataPath, Constants.SAVED_GAME_FILES_FOLDERNAME);
+			var path = Path.Combine(Application.dataPath, GameConstants.SAVED_GAME_FILES_FOLDERNAME);
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
-			using var sw = new StreamWriter(Path.Combine(path, k_SAVED_FILE_NAME));
+			using var sw = new StreamWriter(Path.Combine(path, SAVED_FILE_NAME));
 			sw.Write(serialized);
 #if UNITY_EDITOR
 			UnityEditor.AssetDatabase.Refresh();
@@ -43,7 +43,9 @@ namespace BaseSDK.Controllers {
 		}
 
 		public virtual void Load () {
-			var savFilePath = Path.Combine(Application.dataPath, Constants.SAVED_GAME_FILES_FOLDERNAME, k_SAVED_FILE_NAME);
+			var SAVED_FILE_NAME = $"{GameConstants.GameName()}_Settings.json";
+			var savFilePath = Path.Combine(Application.dataPath, GameConstants.SAVED_GAME_FILES_FOLDERNAME, SAVED_FILE_NAME);
+
 			//Fresh launch
 			if (!File.Exists(savFilePath)) {
 				SettingsState = new T();
@@ -53,7 +55,7 @@ namespace BaseSDK.Controllers {
 
 			using var sr = new StreamReader(savFilePath);
 			var savSettingsState = sr.ReadToEnd();
-			var ppGameState = PlayerPrefsManager.Get(k_PLAYERPREF_KEY, string.Empty);
+			var ppGameState = PlayerPrefsManager.Get(PLAYERPREF_KEY, string.Empty);
 			T ppSS = null;
 			try {
 				ppSS = ppGameState.Deserialize<T>();
