@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using BaseSDK.Extension;
-
 using UnityEngine;
 using UnityEngine.Events;
-
-using IS = UnityEngine.InputSystem.InputSystem;
+using UnityEngine.InputSystem;
+#if ODIN_INSPECTOR
+using Sirenix.OdinInspector;
+#else
+using BaseSDK.SirenixHelper;
+#endif
 
 namespace BaseSDK.Controllers {
 	/// <summary>
@@ -38,19 +40,21 @@ namespace BaseSDK.Controllers {
 		#endregion
 
 		#region Variables & Constants
-#if ENABLE_INPUT_SYSTEM
+		[InfoBox("The CheatCode system works with cheats that are not subsets of each other. For example, if you have cheat codes \"BigB\" and \"BigBang\", then only BigB will get triggered, and not BigBang.", InfoMessageType.Warning)]
+		[InfoBox("There is no time limit for consecutive key presses. If the 1st character of the cheat was pressed at time 10, and 2nd character was pressed at 100, it would still consider it as the same attempt. You can add a timer and remove the items from attemptedCheats if you so wish.", InfoMessageType.Warning)]
+		[SerializeField] private InputActionReference m_CheatCodesAction;
+
 		/// <summary>
 		/// All the cheat codes in the game, for all devices. Currently only supported
 		/// for inspector, can be made public to be set up by code.
 		/// </summary>
-		[SerializeField] private List<CheatCodeData> allCheatCodes = new List<CheatCodeData>();
+		[SerializeField] private List<CheatCodeData> m_AllCheatCodes = new();
 
 		/// <summary>
 		/// All attempted codes which are valid. For e.g, cheat "BigBigBigWin" would have "Big", "BigBig" and "BigBigBig" as valid attempts.
 		/// Once the W for Win has been pressed, "Big" and "BigBig" will no longer be stored in this list.
 		/// </summary>
-		private List<string> attemptedCheats = new List<string>();
-#endif
+		private readonly List<string> m_AttemptedCheats = new();
 		#endregion
 
 		#region Unity Methods
@@ -60,28 +64,21 @@ namespace BaseSDK.Controllers {
 		protected virtual void Awake () {
 			DontDestroy = true;
 
-#if ENABLE_INPUT_SYSTEM
-			//InputMasterController.InputMaster.CheatCodes.KeyPress.performed += CheatCodeKeyPressPerformed;
-#else
-			Debug.LogWarning("CheatCodes currently only work with the new InputSystem, not the legacy InputManager");
-#endif
+			m_CheatCodesAction.action.performed += CheatCodeKeyPressPerformed;
 		}
 
-#if ENABLE_INPUT_SYSTEM
 		/// <summary>
 		/// OnEnable. Activate the cheat code system.
 		/// </summary>
-		//protected virtual void OnEnable () => InputMasterController.InputMaster.CheatCodes.Enable();
+		protected virtual void OnEnable () => m_CheatCodesAction.action.Enable();
 
 		/// <summary>
 		/// OnDisable. Deactivate the cheat code system.
 		/// </summary>
-		//protected virtual void OnDisable () => InputMasterController.InputMaster.CheatCodes.Disable();
-#endif
+		protected virtual void OnDisable () => m_CheatCodesAction.action.Disable();
 		#endregion
 
 		#region Helper Methods
-#if ENABLE_INPUT_SYSTEM
 		/// <summary>
 		/// Cheatcode InputAction's KeyPress occurred. Operate here.
 		/// Note: Instead of using InputSystem's Keyboard class's onTextInput event, using CallbackContext instead.
@@ -89,7 +86,7 @@ namespace BaseSDK.Controllers {
 		/// If you plan to use only Keyboard cheatcodes, you can modify the method below and hook it up to Keyboard.onTextInput instead.
 		/// </summary>
 		/// <param name="context"></param>
-		private void CheatCodeKeyPressPerformed (UnityEngine.InputSystem.InputAction.CallbackContext context) {
+		private void CheatCodeKeyPressPerformed (InputAction.CallbackContext context) {
 			//If certain keys which have sensitive values, like sticks/shoulders on controllers, ignore them till they are completely triggered
 			if (context.ReadValue<float>() < 1f)
 				return;
@@ -98,20 +95,20 @@ namespace BaseSDK.Controllers {
 			//Debug.LogError(context.control.name);
 			//CHECK DEVICE NAME HERE
 			//Debug.LogError(context.control.device.layout);
-			//Debug.LogError(UnityEngine.InputSystem.InputSystem.IsFirstLayoutBasedOnSecond(context.control.device.layout, "Keyboard"));
-			//Debug.LogError(UnityEngine.InputSystem.InputSystem.IsFirstLayoutBasedOnSecond(context.control.device.layout, "Gamepad"));
-			//Debug.LogError(UnityEngine.InputSystem.InputSystem.IsFirstLayoutBasedOnSecond(context.control.device.layout, "Mouse"));
+			//Debug.LogError(InputSystem.IsFirstLayoutBasedOnSecond(context.control.device.layout, "Keyboard"));
+			//Debug.LogError(InputSystem.IsFirstLayoutBasedOnSecond(context.control.device.layout, "Gamepad"));
+			//Debug.LogError(InputSystem.IsFirstLayoutBasedOnSecond(context.control.device.layout, "Mouse"));
 
 			//ALSO, THE SYSTEM USES THE CONTROL'S NAME DEFAULT, YOU CAN USE DISPLAYNAME INSTEAD IF YOU PREFER THAT. JUST CHANGE THE VALUE BEING ADDED TO ATTEMPTEDCHEATS HERE ->
 			//Update the existing attempts
-			attemptedCheats.For(i => attemptedCheats[i] += context.control.name);
-			attemptedCheats.Add(context.control.name);
+			m_AttemptedCheats.For(i => m_AttemptedCheats[i] += context.control.name);
+			m_AttemptedCheats.Add(context.control.name);
 
 			//Filter out the cheats for the specific input device
-			var allCheatsForDevice = allCheatCodes.FindAll(x => IS.IsFirstLayoutBasedOnSecond(context.control.device.layout, x.deviceName))?.Select(x => x.cheatCode).ToList();
+			var allCheatsForDevice = m_AllCheatCodes.FindAll(x => InputSystem.IsFirstLayoutBasedOnSecond(context.control.device.layout, x.deviceName))?.Select(x => x.cheatCode).ToList();
 
 			//Cycle through all attempted cheats, to remove invalid ones
-			for (var i = 0; i < attemptedCheats.Count; i++) {
+			for (var i = 0; i < m_AttemptedCheats.Count; i++) {
 				//Was there a valid attempt?
 				var used = false;
 				//Used to verify if this attempt completed the cheat code.
@@ -120,14 +117,14 @@ namespace BaseSDK.Controllers {
 				//Only verify against cheats from this device.
 				for (var j = 0; j < allCheatsForDevice.Count; j++) {
 					//Is a valid attempt, and the entire cheat code was completed.
-					if (allCheatsForDevice[j].Equals(attemptedCheats[i], StringComparison.OrdinalIgnoreCase)) {
+					if (allCheatsForDevice[j].Equals(m_AttemptedCheats[i], StringComparison.OrdinalIgnoreCase)) {
 						completedAttempt = allCheatsForDevice[j];
 						used = true;
 						break;
 					}
 
 					//Is a valid attempt, but the entire cheat code was not completed. More key presses are required to complete.
-					if (allCheatsForDevice[j].StartsWith(attemptedCheats[i], StringComparison.OrdinalIgnoreCase)) {
+					if (allCheatsForDevice[j].StartsWith(m_AttemptedCheats[i], StringComparison.OrdinalIgnoreCase)) {
 						used = true;
 						break;
 					}
@@ -140,10 +137,10 @@ namespace BaseSDK.Controllers {
 					//To avoid this, inside the if condition, clear the list and break the for loop. But this is not the experience intended, so keeping it here like this ;)
 					if (!completedAttempt.IsNullOrEmpty()) {
 						//Trigger the Action for the completed cheat code
-						allCheatCodes.Find(x => x.cheatCode.Equals(completedAttempt, StringComparison.OrdinalIgnoreCase))?.onTriggeredAction?.Invoke();
+						m_AllCheatCodes.Find(x => x.cheatCode.Equals(completedAttempt, StringComparison.OrdinalIgnoreCase))?.onTriggeredAction?.Invoke();
 
 						//Triggered the cheat code, so now remove it from the attempted cheats list
-						attemptedCheats.Remove(attemptedCheats[i]);
+						m_AttemptedCheats.Remove(m_AttemptedCheats[i]);
 						i--;
 					}
 
@@ -152,12 +149,11 @@ namespace BaseSDK.Controllers {
 				}
 				//Remove the attempt if it was invalid
 				else {
-					attemptedCheats.Remove(attemptedCheats[i]);
+					m_AttemptedCheats.Remove(m_AttemptedCheats[i]);
 					i--;
 				}
 			}
 		}
-#endif
 		#endregion
 	}
 }

@@ -26,4 +26,13 @@ namespace BaseSDK.SirenixHelper {
 
 	[AttributeUsage(AttributeTargets.All), Conditional("UNITY_EDITOR")]
 	public class ShowInInspectorAttribute : Attribute { }
+
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = true)]
+    public class InfoBoxAttribute : Attribute {
+        public InfoBoxAttribute(string str, InfoMessageType infoMessageType = InfoMessageType.Info, string visibleIfMemberName = null) { }
+    }
+
+    public enum InfoMessageType {
+        None, Warning, Error, Info,
+    }
 }

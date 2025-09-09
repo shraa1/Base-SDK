@@ -6,8 +6,8 @@ using BaseSDK.Services;
 using Sirenix.OdinInspector;
 #else
 using BaseSDK.SirenixHelper;
-using BaseSDK.Views;
 #endif
+using BaseSDK.Views;
 using UnityEngine;
 using UnityEngine.UI;
 
