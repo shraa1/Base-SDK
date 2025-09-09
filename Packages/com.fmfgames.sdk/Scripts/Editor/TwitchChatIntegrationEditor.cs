@@ -6,19 +6,6 @@ using UnityEngine;
 namespace BaseSDK.EditorScripts {
 	[CustomEditor(typeof(TwitchChatIntegration))]
 	public class TwitchChatIntegrationEditor : Editor {
-		private UnityEditor.PackageManager.Requests.AddRequest addPackage_Result;
-
-		private void OnEnable () {
-			EditorApplication.update += Update;
-		}
-
-		private void Update () {
-			if (addPackage_Result != null && addPackage_Result.IsCompleted) {
-				addPackage_Result = null;
-				PackageDependenciesHelper.AddTextMeshProEssentials();
-			}
-		}
-
 		public override void OnInspectorGUI () {
 			var connectAtAwake = serializedObject.FindProperty("connectAtAwake");
 			connectAtAwake.boolValue = EditorGUILayout.Toggle("Connect At Awake", connectAtAwake.boolValue);
