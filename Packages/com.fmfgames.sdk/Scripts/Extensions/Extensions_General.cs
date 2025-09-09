@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace BaseSDK.Extension {
@@ -165,5 +166,20 @@ namespace BaseSDK.Extension {
 		/// <param name="x">Number to check</param>
 		/// <returns>Returns true if the number is a square number</returns>
 		public static bool IsPowerOfTwo (ulong x) => (x != 0) && ((x & (x - 1)) == 0);
+
+		/// <summary>
+		/// Deserialize a string into an object of type <typeparamref name="T"/>
+		/// </summary>
+		/// <typeparam name="T">Type to deserialize the string to</typeparam>
+		/// <param name="str">The string being deserialized</param>
+		/// <returns>Returns the deserialized object</returns>
+		public static T Deserialize<T>(this string str) => JsonConvert.DeserializeObject<T>(str);
+
+		/// <summary>
+		/// Serialize an object
+		/// </summary>
+		/// <param name="obj">Object being serialized to a string</param>
+		/// <returns>Returns the serialized version of the object <paramref name="obj"/></returns>
+		public static string Serialize(this object obj) => JsonConvert.SerializeObject(obj, Formatting.Indented);
 	}
 }
