@@ -16,23 +16,23 @@ namespace BaseSDK.Controllers {
 		#endregion Interface Implementation
 
 		#region Public Helper Methods
-		public void LoadAsset<T> (AssetReference assetReference, Action<float> onProgress = null, Action<T> onComplete = null) {
+		public virtual void LoadAsset<T> (AssetReference assetReference, Action<float> onProgress = null, Action<T> onComplete = null) {
 			var operation = assetReference.LoadAssetAsync<T>();
 			_ = StartCoroutine(OperationProgress(operation, onProgress, onComplete));
 		}
 
-		public void LoadScene (AssetReferenceScene assetReferenceScene, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode = UnityEngine.SceneManagement.LoadSceneMode.Single, Action<float> onProgress = null, Action onComplete = null) {
+		public virtual void LoadScene (AssetReferenceScene assetReferenceScene, UnityEngine.SceneManagement.LoadSceneMode loadSceneMode = UnityEngine.SceneManagement.LoadSceneMode.Single, Action<float> onProgress = null, Action onComplete = null) {
 			var operation = assetReferenceScene.LoadSceneAsync(loadSceneMode);
 			_ = StartCoroutine(OperationProgress(operation, onProgress, onComplete));
 		}
 
-		public void UnloadScene (AssetReferenceScene assetReferenceScene) => assetReferenceScene.UnLoadScene();
+		public virtual void UnloadScene (AssetReferenceScene assetReferenceScene) => assetReferenceScene.UnLoadScene();
 
-		public void ReleaseAsset (AsyncOperationHandle handle) {
+		public virtual void ReleaseAsset (AsyncOperationHandle handle) {
 			if (handle.IsValid())
 				Addressables.Release(handle);
 		}
-		#endregion Public Helper Methods
+		#endregion Interface Implementation
 
 		#region Private Helper Methods
 		private IEnumerator OperationProgress<T>(AsyncOperationHandle<T> operation, Action<float> onProgress, Action<T> onComplete) {

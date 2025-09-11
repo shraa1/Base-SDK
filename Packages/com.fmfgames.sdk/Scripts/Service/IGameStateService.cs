@@ -1,7 +1,9 @@
 using BaseSDK.Models;
 
 namespace BaseSDK.Services {
-	public interface IGameStateService<T> : IService where T : GameState, new() {
-		T GameState { get; }
+	public interface IGameStateService<GAMESTATE, GAMESAVESTATE> : IService
+		where GAMESTATE : GameState<GAMESAVESTATE>, new()
+		where GAMESAVESTATE : GameSaveStateBase, new() {
+		GAMESTATE GameState { get; }
 	}
 }

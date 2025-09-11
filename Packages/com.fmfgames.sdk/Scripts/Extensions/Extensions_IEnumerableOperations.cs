@@ -37,7 +37,7 @@ namespace BaseSDK.Extension {
 		/// <returns></returns>
 		public static string Print<T>(this IEnumerable<T> enumerable, bool useNewtonsoft = true) {
 			if (useNewtonsoft)
-				return JsonConvert.SerializeObject(enumerable, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+				return enumerable.Serialize(GameConstants.JsonSerializerSettings);
 
 			var sb = new StringBuilder();
 			foreach (var iterator in enumerable)

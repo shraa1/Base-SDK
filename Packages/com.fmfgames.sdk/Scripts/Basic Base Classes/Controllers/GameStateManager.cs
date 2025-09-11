@@ -9,16 +9,18 @@ using Newtonsoft.Json;
 using UnityEngine.Profiling;
 
 namespace BaseSDK.Controllers {
-	public class GameStateManager<T> : Configurable, IGameStateService<T>, IManagerBehaviour where T : GameState, new() {
+	public class GameStateManager<GAMESTATE, GAMESAVESTATE> : Configurable, IGameStateService<GAMESTATE, GAMESAVESTATE>, IManagerBehaviour
+		where GAMESTATE : GameState<GAMESAVESTATE>, new()
+		where GAMESAVESTATE : GameSaveStateBase, new() {
 		#region Properties
-		private T m_GameState;
-		public T GameState {
+		private GAMESTATE m_GameState;
+		public GAMESTATE GameState {
 			get {
 				if (m_GameState == null)
 					Load();
 				return m_GameState;
 			}
-			private set => m_GameState = value;
+			protected set => m_GameState = value;
 		}
 		#endregion Properties
 
@@ -31,7 +33,7 @@ namespace BaseSDK.Controllers {
 		#endregion Unity Methods
 
 		#region Interface Implementation
-		public virtual (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IGameStateService<T>));
+		public virtual (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IGameStateService<GAMESTATE, GAMESAVESTATE>));
 
 		public override IEnumerator Setup() {
 			Load();
@@ -39,7 +41,7 @@ namespace BaseSDK.Controllers {
 			Initialized = true;
 		}
 
-		public void Load() {
+		public virtual void Load() {
 			var SAVED_FILE_NAME = $"{GameConstants.GameName()}.sav";
 			var SAVE_FILE_PATH = Path.Combine(GameConstants.SAVE_FOLDER_PATH, SAVED_FILE_NAME);
 			var SAVE_TEMP_FILE_PATH = Path.Combine(GameConstants.SAVE_FOLDER_PATH, SAVED_FILE_NAME + ".tmp");
@@ -52,7 +54,7 @@ namespace BaseSDK.Controllers {
 
 			//Fresh launch
 			if (!File.Exists(SAVE_FILE_PATH)) {
-				GameState = new T();
+				GameState = new GAMESTATE();
 				Save();
 				return;
 			}
@@ -66,11 +68,11 @@ namespace BaseSDK.Controllers {
 
 			Profiler.BeginSample("Deserialize JSONs");
 #if UNITY_EDITOR
-			var ppGS = ppGameState.Deserialize<T>();
-			var savGS = savGameState.Deserialize<T>();
+			var ppGS = ppGameState.Deserialize<GAMESTATE>(GameConstants.JsonSerializerSettings);
+			var savGS = savGameState.Deserialize<GAMESTATE>(GameConstants.JsonSerializerSettings);
 #else
-			var ppGS = ppGameState.Decrypt<string>().Deserialize<T>();
-			var savGS = savGameState.Decrypt<string>().Deserialize<T>();
+			var ppGS = ppGameState.Decrypt<string>().Deserialize<GAMESTATE>(GameConstants.JsonSerializerSettings);
+			var savGS = savGameState.Decrypt<string>().Deserialize<GAMESTATE>(GameConstants.JsonSerializerSettings);
 #endif
 			Profiler.EndSample();
 
@@ -81,7 +83,7 @@ namespace BaseSDK.Controllers {
 			Profiler.EndSample();
 		}
 
-		public void Save() {
+		public virtual void Save() {
 			var SAVED_FILE_NAME = $"{GameConstants.GameName()}.sav";
 			var SAVE_FILE_PATH = Path.Combine(GameConstants.SAVE_FOLDER_PATH, SAVED_FILE_NAME);
 			var SAVE_TEMP_FILE_PATH = Path.Combine(GameConstants.SAVE_FOLDER_PATH, SAVED_FILE_NAME + ".tmp");
@@ -89,9 +91,9 @@ namespace BaseSDK.Controllers {
 			//Update Last Logout value
 			GameState.Save();
 #if UNITY_EDITOR
-			var encrypted = JsonConvert.SerializeObject(GameState, Formatting.None);
+			var encrypted = GameState.Serialize(GameConstants.JsonSerializerSettings);
 #else
-			var encrypted = JsonConvert.SerializeObject(GameState, Formatting.None).Encrypt();
+			var encrypted = GameState.Serialize(GameConstants.JsonSerializerSettings).Encrypt();
 #endif
 			PlayerPrefsManager.Set(k_PLAYERPREF_KEY, encrypted);
 
@@ -107,9 +109,9 @@ namespace BaseSDK.Controllers {
 #endif
 		}
 
-		public void CheckForUpgrade() { }
+		public virtual void CheckForUpgrade() { }
 
-		public void Upgrade(int oldVersion, int newVersion) { }
+		public virtual void Upgrade(int oldVersion, int newVersion) { }
 		#endregion Interface Implementation
 	}
 }

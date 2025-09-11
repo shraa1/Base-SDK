@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace BaseSDK {
@@ -73,6 +74,13 @@ namespace BaseSDK {
 		public static readonly Color DEFAULT_HIGHLIGHT_COLOUR_BUTTON2D = new(0.2f, 0.2f, 0.2f, 1f);
 		public static readonly DateTime k_EPOCH_DATETIME_UTC = DateTime.UnixEpoch;
 		public static readonly WaitForEndOfFrame EOF = new();
+
+		public static readonly JsonSerializerSettings JsonSerializerSettings = new() {
+			ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+			TypeNameHandling = TypeNameHandling.Auto,
+			MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead,
+			Formatting = Formatting.Indented
+		};
 		#endregion Other Static Readonlys
 
 		#region File Paths Related

@@ -1,19 +1,17 @@
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using BaseSDK.Extension;
 
 namespace BaseSDK.Models {
 	[Serializable]
-	public class GameState {
+	public class GameState<GAEMSAVESTATE> where GAEMSAVESTATE : GameSaveStateBase {
 		public int GameStateVersion = 0;
 		public long LastLogout = 0;
-		public List<GameSaveState> GameSaveStates;
-		public GameSaveStateBase LifetimeGameStates;
-
-		private static readonly JsonSerializerSettings m_JsonSerializerSettings = new() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore, TypeNameHandling = TypeNameHandling.Auto };
+		public List<GAEMSAVESTATE> GameSaveStates;
+		public GAEMSAVESTATE LifetimeGameStates;
 
 		public void Save () => LastLogout = DateTime.Now.Ticks;
-		public override string ToString () => JsonConvert.SerializeObject(this, m_JsonSerializerSettings);
+		public override string ToString () => this.Serialize(GameConstants.JsonSerializerSettings);
 	}
 
 	[Serializable]

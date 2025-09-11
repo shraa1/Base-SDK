@@ -14,7 +14,7 @@ namespace BaseSDK.Extension {
 		/// <returns>Returns a string version of the dictionary's key value pairs</returns>
 		public static string Print<T, U>(this Dictionary<T, U> dict, bool useNewtonsoft = true) {
 			if (useNewtonsoft)
-				return JsonConvert.SerializeObject(dict, Formatting.Indented, new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+				return dict.Serialize(GameConstants.JsonSerializerSettings);
 
 			var sb = new StringBuilder();
 			foreach (var iterator in dict)

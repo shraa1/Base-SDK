@@ -67,10 +67,10 @@ namespace BaseSDK.Controllers {
 			SettingsState = ppSS;
 		}
 
-		public void CheckForUpgrade () { }
-		public void Upgrade (int oldVersion, int newVersion) { }
+		public virtual void CheckForUpgrade () { }
+		public virtual void Upgrade (int oldVersion, int newVersion) { }
 
-		public void SetBrightnessValue (float newValue) => SettingsState.Brightness = newValue;
+		public virtual void SetBrightnessValue (float newValue) => SettingsState.Brightness = newValue;
 		#endregion Interface Implementation
 
 		#region Unity Methods

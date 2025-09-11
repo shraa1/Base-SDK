@@ -173,13 +173,13 @@ namespace BaseSDK.Extension {
 		/// <typeparam name="T">Type to deserialize the string to</typeparam>
 		/// <param name="str">The string being deserialized</param>
 		/// <returns>Returns the deserialized object</returns>
-		public static T Deserialize<T>(this string str) => JsonConvert.DeserializeObject<T>(str);
+		public static T Deserialize<T>(this string str, JsonSerializerSettings settings = null) => JsonConvert.DeserializeObject<T>(str, settings);
 
 		/// <summary>
 		/// Serialize an object
 		/// </summary>
 		/// <param name="obj">Object being serialized to a string</param>
 		/// <returns>Returns the serialized version of the object <paramref name="obj"/></returns>
-		public static string Serialize(this object obj) => JsonConvert.SerializeObject(obj, Formatting.Indented);
+		public static string Serialize(this object obj, JsonSerializerSettings settings = null) => JsonConvert.SerializeObject(obj, settings);
 	}
 }

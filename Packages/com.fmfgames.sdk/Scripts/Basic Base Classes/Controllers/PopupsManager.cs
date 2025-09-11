@@ -27,9 +27,9 @@ namespace BaseSDK.Controllers {
 		#region Interface Implementation
 		public virtual (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IPopupService<POPUPTYPE>));
 
-		public void Show (POPUPTYPE popupType) => TryOpenPopup(popupType);
+		public virtual void Show (POPUPTYPE popupType) => TryOpenPopup(popupType);
 
-		public void Close () => TryOpenPopup(default);
+		public virtual void Close () => TryOpenPopup(default);
 		#endregion Interface Implementation
 
 		#region Unity Methods
@@ -94,9 +94,9 @@ namespace BaseSDK.Controllers {
 		#endregion Private Methods
 
 		#region Public Methods
-		public void ShowUIPopupCloseOthers (POPUPTYPE popupType) => TryOpenPopup(popupType);
+		public virtual void ShowUIPopupCloseOthers (POPUPTYPE popupType) => TryOpenPopup(popupType);
 
-		public void CloseCurrentPopup () => CloseCurrentPopup(null);
+		public virtual void CloseCurrentPopup () => CloseCurrentPopup(null);
 		#endregion Public Methods
 
 		#region Custom DataTypes

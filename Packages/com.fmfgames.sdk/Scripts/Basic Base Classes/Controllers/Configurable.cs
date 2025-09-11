@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 namespace BaseSDK.Controllers {
-	public class Configurable : MonoBehaviour, IConfigurable {
+	public abstract class Configurable : MonoBehaviour, IConfigurable {
 		public virtual bool Initialized { get; set; } = false;
 
 		public virtual IEnumerator Setup() {

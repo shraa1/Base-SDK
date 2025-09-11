@@ -93,18 +93,18 @@ namespace BaseSDK.Controllers {
 			SetVolume(VOLUMETYPE.SFX, settingsManager.SettingsState.SFXVolume);
 		}
 
-		public void SetVolume (VOLUMETYPE volumeType, float volume) {
+		public virtual void SetVolume (VOLUMETYPE volumeType, float volume) {
 			var parameter = m_VolumeType[volumeType];
 			_ = m_AudioMixer.SetFloat(parameter, Mathf.Log10(Mathf.Clamp(volume, k_MIN_VOLUME, 1f)) * k_AUDIO_MULTIPLIER);
 			PlayerPrefs.SetFloat(parameter, volume);
 		}
 
-		public void PlayMusic (AudioClip clip, bool loop = true) {
+		public virtual void PlayMusic (AudioClip clip, bool loop = true) {
 			if (m_MusicSource.isPlaying && m_MusicSource.clip == clip) return;
 			_ = StartCoroutine(FadeMusic(clip, loop));
 		}
 
-		public void StopMusic () => m_MusicSource.Stop();
+		public virtual void StopMusic () => m_MusicSource.Stop();
 		#endregion Interface Implementation
 
 		#region Music
