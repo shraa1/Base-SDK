@@ -4,6 +4,7 @@ using System.IO;
 using BaseSDK.Extension;
 using BaseSDK.Helper;
 using BaseSDK.Models;
+using BaseSDK.Services;
 using Newtonsoft.Json;
 using UnityEngine.Profiling;
 
@@ -26,19 +27,19 @@ namespace BaseSDK.Controllers {
 		#endregion Variables
 
 		#region Unity Methods
-		protected virtual void OnApplicationQuit () => Save();
+		protected virtual void OnApplicationQuit() => Save();
 		#endregion Unity Methods
 
 		#region Interface Implementation
 		public virtual (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IGameStateService<T>));
 
-		public override IEnumerator Setup () {
+		public override IEnumerator Setup() {
 			Load();
 			yield return null;
 			Initialized = true;
 		}
 
-		public void Load () {
+		public void Load() {
 			var SAVED_FILE_NAME = $"{GameConstants.GameName()}.sav";
 			var SAVE_FILE_PATH = Path.Combine(GameConstants.SAVE_FOLDER_PATH, SAVED_FILE_NAME);
 			var SAVE_TEMP_FILE_PATH = Path.Combine(GameConstants.SAVE_FOLDER_PATH, SAVED_FILE_NAME + ".tmp");
@@ -64,8 +65,13 @@ namespace BaseSDK.Controllers {
 			Profiler.EndSample();
 
 			Profiler.BeginSample("Deserialize JSONs");
+#if UNITY_EDITOR
+			var ppGS = ppGameState.Deserialize<T>();
+			var savGS = savGameState.Deserialize<T>();
+#else
 			var ppGS = ppGameState.Decrypt<string>().Deserialize<T>();
 			var savGS = savGameState.Decrypt<string>().Deserialize<T>();
+#endif
 			Profiler.EndSample();
 
 			Profiler.BeginSample("Assign Final GameStates");
@@ -75,14 +81,18 @@ namespace BaseSDK.Controllers {
 			Profiler.EndSample();
 		}
 
-		public void Save () {
+		public void Save() {
 			var SAVED_FILE_NAME = $"{GameConstants.GameName()}.sav";
 			var SAVE_FILE_PATH = Path.Combine(GameConstants.SAVE_FOLDER_PATH, SAVED_FILE_NAME);
 			var SAVE_TEMP_FILE_PATH = Path.Combine(GameConstants.SAVE_FOLDER_PATH, SAVED_FILE_NAME + ".tmp");
 
 			//Update Last Logout value
 			GameState.Save();
+#if UNITY_EDITOR
+			var encrypted = JsonConvert.SerializeObject(GameState, Formatting.None);
+#else
 			var encrypted = JsonConvert.SerializeObject(GameState, Formatting.None).Encrypt();
+#endif
 			PlayerPrefsManager.Set(k_PLAYERPREF_KEY, encrypted);
 
 			if (!Directory.Exists(GameConstants.SAVE_FOLDER_PATH))
@@ -97,9 +107,9 @@ namespace BaseSDK.Controllers {
 #endif
 		}
 
-		public void CheckForUpgrade () { }
+		public void CheckForUpgrade() { }
 
-		public void Upgrade (int oldVersion, int newVersion) { }
+		public void Upgrade(int oldVersion, int newVersion) { }
 		#endregion Interface Implementation
 	}
 }
