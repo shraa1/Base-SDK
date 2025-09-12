@@ -5,7 +5,6 @@ using BaseSDK.Extension;
 using BaseSDK.Helper;
 using BaseSDK.Models;
 using BaseSDK.Services;
-using Newtonsoft.Json;
 using UnityEngine.Profiling;
 
 namespace BaseSDK.Controllers {

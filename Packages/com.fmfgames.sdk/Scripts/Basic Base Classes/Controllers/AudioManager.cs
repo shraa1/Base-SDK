@@ -28,31 +28,31 @@ namespace BaseSDK.Controllers {
 		/// <summary>
 		/// AudioSources and respective Audioclips they play
 		/// </summary>
-		[FoldoutGroup("Audios"), DrawWithUnity, SerializeField] private List<NamedAudioSourceAssetReference> m_AudiosInfo = new();
+		[FoldoutGroup("Audios"), DrawWithUnity, SerializeField] protected List<NamedAudioSourceAssetReference> m_AudiosInfo = new();
 
 #if UNITY_EDITOR
 		public List<NamedAudioSourceAssetReference> AudiosInfo => m_AudiosInfo;
 		public AudioMixerGroup SFXAudioMixerGroup;
 #endif
 
-		[FoldoutGroup("Mixer & Settings"), SerializeField] private AudioMixer m_AudioMixer;
-		[FoldoutGroup("Music Settings"), SerializeField] private AudioSource m_MusicSource;
-		[FoldoutGroup("Music Settings"), SerializeField] private float m_MusicFadeTime = 1f;
+		[FoldoutGroup("Mixer & Settings"), SerializeField] protected AudioMixer m_AudioMixer;
+		[FoldoutGroup("Music Settings"), SerializeField] protected AudioSource m_MusicSource;
+		[FoldoutGroup("Music Settings"), SerializeField] protected float m_MusicFadeTime = 1f;
 		#endregion Inspector Variables
 
 		#region Variables
 		/// <summary>
 		/// Move on only if all audios have been downloaded
 		/// </summary>
-		private bool m_DownloadedAllAudios = false;
+		protected bool m_DownloadedAllAudios = false;
 
 		private static readonly Dictionary<VOLUMETYPE, string> m_VolumeType = new() {
 			{ VOLUMETYPE.MASTER, "Master" },
 			{ VOLUMETYPE.MUSIC, "Music" },
 			{ VOLUMETYPE.SFX, "SFX" },
 		};
-		private const float k_MIN_VOLUME = .0001f;
-		private const float k_AUDIO_MULTIPLIER = 20f;
+		protected const float k_MIN_VOLUME = .0001f;
+		protected const float k_AUDIO_MULTIPLIER = 20f;
 		#endregion Variables
 
 		#region Unity Methods
@@ -108,7 +108,7 @@ namespace BaseSDK.Controllers {
 		#endregion Interface Implementation
 
 		#region Music
-		private IEnumerator FadeMusic (AudioClip newClip, bool loop) {
+		protected virtual IEnumerator FadeMusic (AudioClip newClip, bool loop) {
 			for (var t = 0f; t < m_MusicFadeTime; t += Time.unscaledDeltaTime) {
 				m_MusicSource.volume = 1 - (t / m_MusicFadeTime);
 				yield return null;
@@ -133,7 +133,7 @@ namespace BaseSDK.Controllers {
 		/// </summary>
 		/// <param name="clipName">Clip name cached in the inspector/list</param>
 		/// <param name="onAudioFinishedPlaying">Callback for audio's finish event</param>
-		public void PlayClip (string clipName, Action onAudioFinishedPlaying = null) {
+		public virtual void PlayClip (string clipName, Action onAudioFinishedPlaying = null) {
 			var find = m_AudiosInfo.Find(x => x.AudioName == clipName);
 			if (find == null) return;
 			find.AudioSource.Play();
@@ -141,7 +141,7 @@ namespace BaseSDK.Controllers {
 			_ = StartCoroutine(ReleaseAfterPlay(find.AudioSource, onAudioFinishedPlaying));
 		}
 
-		private static IEnumerator ReleaseAfterPlay (AudioSource source, Action onAudioFinishedPlaying = null) {
+		protected virtual IEnumerator ReleaseAfterPlay (AudioSource source, Action onAudioFinishedPlaying = null) {
 			yield return new WaitForSecondsRealtime(source.clip.length);
 			source.Stop();
 			onAudioFinishedPlaying?.Invoke();
