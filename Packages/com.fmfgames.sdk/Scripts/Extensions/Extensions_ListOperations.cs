@@ -42,5 +42,13 @@ namespace BaseSDK.Extension {
 		/// <param name="list">List to get the random item from</param>
 		/// <returns>Returns a randomed item from the list</returns>
 		public static T Random<T> (this List<T> list) => list[UnityEngine.Random.Range(0, list.Count)];
+
+		/// <summary>
+		/// A foreach loop's lambda
+		/// </summary>
+		public static void ForEach<T> (this T[] arr, Action<T> action) {
+			foreach (var item in arr)
+				action?.Invoke(item);
+		}
 	}
 }

@@ -27,12 +27,36 @@ namespace BaseSDK.SirenixHelper {
 	[AttributeUsage(AttributeTargets.All), Conditional("UNITY_EDITOR")]
 	public class ShowInInspectorAttribute : Attribute { }
 
-    [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = true)]
-    public class InfoBoxAttribute : Attribute {
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = true), Conditional("UNITY_EDITOR")]
+	public class InfoBoxAttribute : Attribute {
         public InfoBoxAttribute(string str, InfoMessageType infoMessageType = InfoMessageType.Info, string visibleIfMemberName = null) { }
-    }
+	}
 
-    public enum InfoMessageType {
+	[AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = true), Conditional("UNITY_EDITOR")]
+	public class TitleAttribute : Attribute {
+		public TitleAttribute(string title, string subtitle = null, TitleAlignments titleAlignment = TitleAlignments.Left, bool horizontalLine = true, bool bold = true) { }
+	}
+
+	[AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = true), Conditional("UNITY_EDITOR")]
+	public class ToggleLeftAttribute : Attribute { }
+
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = true), Conditional("UNITY_EDITOR")]
+    public sealed class ShowIfAttribute : Attribute {
+        public ShowIfAttribute(string condition, bool animate = true) { }
+        public ShowIfAttribute(string condition, object optionalValue, bool animate = true) { }
+	}
+
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = false, Inherited = true), Conditional("UNITY_EDITOR")]
+    public sealed class MinValueAttribute : Attribute {
+        public MinValueAttribute(double minValue) { }
+        public MinValueAttribute(string expression) { }
+	}
+
+		public enum TitleAlignments {
+		Left, Centered, Right, Split
+	}
+
+	public enum InfoMessageType {
         None, Warning, Error, Info,
     }
 }
