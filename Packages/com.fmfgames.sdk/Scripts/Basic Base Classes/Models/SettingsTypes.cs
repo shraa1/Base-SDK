@@ -2,24 +2,48 @@ using System;
 using Newtonsoft.Json;
 
 namespace BaseSDK.Models {
-	[Serializable]
-	public class SettingsState {
+	public interface ISettingsState {
 		#region Generic
-		public float VibrationValue = 1f;
-		public string Locale = "en-US";
+		float VibrationValue { get; set; }
+		string Locale { get; set; }
 		#endregion Generic
 
 		#region Audio
-		public float MasterVolume = 1f;
-		public float MusicVolume = 1f;
-		public float SFXVolume = 1f;
+		public float MasterVolume { get; set; }
+		public float MusicVolume { get; set; }
+		public float SFXVolume { get; set; }
 		#endregion Audio
 
 		#region Display
-		public float Brightness = 1f;
-		public bool FullScreen;
-		public bool Borderless;
-		public bool VSync;
+		public float Brightness { get; set; }
+		public bool FullScreen { get; set; }
+		public bool Borderless { get; set; }
+		public bool VSync { get; set; }
+		#endregion Display
+
+		#region Methods
+		void Reset();
+		#endregion Methods
+	}
+
+	[Serializable]
+	public class SettingsState : ISettingsState {
+		#region Generic
+		public float VibrationValue { get; set; } = 1f;
+		public string Locale { get; set; } = "en-US";
+		#endregion Generic
+
+		#region Audio
+		public float MasterVolume { get; set; } = 1f;
+		public float MusicVolume { get; set; } = 1f;
+		public float SFXVolume { get; set; } = 1f;
+		#endregion Audio
+
+		#region Display
+		public float Brightness { get; set; } = 1f;
+		public bool FullScreen { get; set; }
+		public bool Borderless { get; set; }
+		public bool VSync { get; set; }
 		#endregion Display
 
 		#region Methods
