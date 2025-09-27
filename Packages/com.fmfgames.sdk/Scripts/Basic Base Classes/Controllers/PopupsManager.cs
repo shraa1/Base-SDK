@@ -14,7 +14,7 @@ using UnityEngine.UI;
 namespace BaseSDK.Controllers {
 	public class PopupsManager<POPUPTYPE> : Configurable, IPopupService<POPUPTYPE> where POPUPTYPE : Enum {
 		#region Inspector Variables
-		[FoldoutGroup("Popups"), SerializeField] private List<NamedInputActionReference> m_AllPopups;
+		[FoldoutGroup("Popups"), SerializeField] private List<NamedPopupBtnReference> m_AllPopups;
 		[FoldoutGroup("Special class types"), SerializeField] private PopupBase<POPUPTYPE> m_SettingsPopupType;
 		#endregion Inspector Variables
 
@@ -101,13 +101,12 @@ namespace BaseSDK.Controllers {
 
 		#region Custom DataTypes
 		[Serializable]
-		public class NamedInputActionReference {
+		public class NamedPopupBtnReference {
 			public Button Btn;
 			public PopupBase<POPUPTYPE> PopupBase;
 		}
 		#endregion Custom DataTypes
 
-		private static bool EnumEquals(POPUPTYPE a, POPUPTYPE b) =>
-			EqualityComparer<POPUPTYPE>.Default.Equals(a, b);
+		private static bool EnumEquals(POPUPTYPE a, POPUPTYPE b) => EqualityComparer<POPUPTYPE>.Default.Equals(a, b);
 	}
 }
