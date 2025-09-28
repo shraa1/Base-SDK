@@ -7,11 +7,12 @@ using Sirenix.OdinInspector;
 #else
 using BaseSDK.SirenixHelper;
 #endif
-using BaseSDK.Views;
+using BaseSDK.Popups.View;
 using UnityEngine;
 using UnityEngine.UI;
+using BaseSDK.Controllers;
 
-namespace BaseSDK.Controllers {
+namespace BaseSDK.Popups.Controllers {
 	public abstract class PopupsManager<POPUPTYPE> : Configurable, IPopupService<POPUPTYPE> where POPUPTYPE : Enum {
 		#region Inspector Variables
 		[FoldoutGroup("Popups"), SerializeField] protected List<NamedPopupBtnReference> m_AllPopups;

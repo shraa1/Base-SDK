@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using BaseSDK.Controllers;
 using BaseSDK.Models;
 using BaseSDK.Services;
 using UnityEngine;
@@ -9,7 +10,7 @@ using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 
-namespace BaseSDK.Controllers {
+namespace BaseSDK.Localization.Controllers {
 	public abstract class LocalizationControllerBase : Configurable, ILocalizationService {
 		#region String Tables
 		[SerializeField] protected List<LocalizedStringTable> m_LocalizationTables = new();

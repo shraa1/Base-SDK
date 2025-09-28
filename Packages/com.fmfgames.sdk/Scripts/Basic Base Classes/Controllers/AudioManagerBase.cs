@@ -11,8 +11,9 @@ using BaseSDK.SirenixHelper;
 using UnityEngine;
 using UnityEngine.Audio;
 using BaseSDK.Models;
+using BaseSDK.Controllers;
 
-namespace BaseSDK.Controllers {
+namespace BaseSDK.Audio.Controllers {
 	/// <summary>
 	/// Identify AudioSources based on the string name
 	/// </summary>

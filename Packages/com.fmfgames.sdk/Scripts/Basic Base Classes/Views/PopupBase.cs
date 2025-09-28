@@ -9,7 +9,7 @@ using BaseSDK.SirenixHelper;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BaseSDK.Views {
+namespace BaseSDK.Popups.View {
 	public abstract class PopupBase<POPUPTYPE> : MonoBehaviour, IPopup<POPUPTYPE> where POPUPTYPE : Enum {
 		#region Inspector Variables
 		[FoldoutGroup("Popup Base Fields"), SerializeField] protected Button m_BlockerImage;
