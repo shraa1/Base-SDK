@@ -12,17 +12,17 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace BaseSDK.Controllers {
-	public class PopupsManager<POPUPTYPE> : Configurable, IPopupService<POPUPTYPE> where POPUPTYPE : Enum {
+	public abstract class PopupsManager<POPUPTYPE> : Configurable, IPopupService<POPUPTYPE> where POPUPTYPE : Enum {
 		#region Inspector Variables
-		[FoldoutGroup("Popups"), SerializeField] private List<NamedPopupBtnReference> m_AllPopups;
-		[FoldoutGroup("Special class types"), SerializeField] private PopupBase<POPUPTYPE> m_SettingsPopupType;
+		[FoldoutGroup("Popups"), SerializeField] protected List<NamedPopupBtnReference> m_AllPopups;
+		[FoldoutGroup("Special class types"), SerializeField] protected PopupBase<POPUPTYPE> m_SettingsPopupType;
 		#endregion Inspector Variables
 
-		#region Private Variables
-		private IPopup<POPUPTYPE> m_CurrentPopup;
-		private POPUPTYPE m_PendingPopupType;
-		private bool m_IsTransitioning = false;
-		#endregion Private Variables
+		#region Variables
+		protected IPopup<POPUPTYPE> m_CurrentPopup;
+		protected POPUPTYPE m_PendingPopupType;
+		protected bool m_IsTransitioning = false;
+		#endregion Variables
 
 		#region Interface Implementation
 		public virtual (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IPopupService<POPUPTYPE>));
@@ -33,11 +33,11 @@ namespace BaseSDK.Controllers {
 		#endregion Interface Implementation
 
 		#region Unity Methods
-		private void Awake () => m_AllPopups.ForEach(x => x.Btn.onClick.AddListener(() => TryOpenPopup(x.PopupBase.PopupType)));
+		protected virtual void Awake () => m_AllPopups.ForEach(x => x.Btn.onClick.AddListener(() => TryOpenPopup(x.PopupBase.PopupType)));
 		#endregion Unity Methods
 
-		#region Private Methods
-		private void TryOpenPopup (POPUPTYPE popupType) {
+		#region Private/Protected Methods
+		protected virtual void TryOpenPopup (POPUPTYPE popupType) {
 			if ((m_CurrentPopup != null && EnumEquals(m_CurrentPopup.PopupType, popupType)) || EnumEquals(popupType, default)) {
 				m_IsTransitioning = true;
 				CloseCurrentPopup();
@@ -58,7 +58,7 @@ namespace BaseSDK.Controllers {
 			OpenPopup(popupType);
 		}
 
-		private void OnPopupClosed () {
+		protected virtual void OnPopupClosed () {
 			m_IsTransitioning = false;
 			if (EnumEquals(m_PendingPopupType, default)) return;
 
@@ -67,7 +67,7 @@ namespace BaseSDK.Controllers {
 			OpenPopup(typeToOpen);
 		}
 
-		private void OpenPopup (POPUPTYPE popupType) {
+		protected virtual void OpenPopup (POPUPTYPE popupType) {
 			var popup = m_AllPopups.Find(p => EnumEquals(p.PopupBase.PopupType, popupType));
 			if (!m_IsTransitioning) {
 				m_IsTransitioning = true;
@@ -78,7 +78,7 @@ namespace BaseSDK.Controllers {
 			}
 		}
 
-		private void CloseCurrentPopup (Action onComplete) {
+		protected virtual void CloseCurrentPopup (Action onComplete) {
 			if (m_CurrentPopup == null) {
 				m_IsTransitioning = false;
 				onComplete?.Invoke();
@@ -91,7 +91,7 @@ namespace BaseSDK.Controllers {
 				onComplete?.Invoke();
 			});
 		}
-		#endregion Private Methods
+		#endregion Private/Protected Methods
 
 		#region Public Methods
 		public virtual void ShowUIPopupCloseOthers (POPUPTYPE popupType) => TryOpenPopup(popupType);
@@ -107,6 +107,6 @@ namespace BaseSDK.Controllers {
 		}
 		#endregion Custom DataTypes
 
-		private static bool EnumEquals(POPUPTYPE a, POPUPTYPE b) => EqualityComparer<POPUPTYPE>.Default.Equals(a, b);
+		protected static bool EnumEquals(POPUPTYPE a, POPUPTYPE b) => EqualityComparer<POPUPTYPE>.Default.Equals(a, b);
 	}
 }
