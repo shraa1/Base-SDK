@@ -60,9 +60,9 @@ namespace BaseSDK.Controllers {
 
 			using var sr = new StreamReader(savFilePath);
 			var savSettingsState = sr.ReadToEnd();
-			var ppGameState = PlayerPrefsManager.Get(PLAYERPREF_KEY, string.Empty);
+			var ppSettingsState = PlayerPrefsManager.Get(PLAYERPREF_KEY, string.Empty);
 			ISettingsState ppSS = null;
-			ppSS = GetSettingsState(ppGameState);
+			ppSS = GetSettingsState(ppSettingsState);
 			ppSS ??= GetSettingsState(savSettingsState);
 			ppSS ??= GetNewSettingsState();
 
