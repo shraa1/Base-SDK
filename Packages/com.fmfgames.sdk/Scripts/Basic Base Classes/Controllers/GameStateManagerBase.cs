@@ -5,15 +5,13 @@ using BaseSDK.Extension;
 using BaseSDK.Helper;
 using BaseSDK.Models;
 using BaseSDK.Services;
-using UnityEngine.Profiling;
+using UnityEngine;
 
 namespace BaseSDK.Controllers {
-	public class GameStateManager<GAMESTATE, GAMESAVESTATE> : Configurable, IGameStateService<GAMESTATE, GAMESAVESTATE>, IManagerBehaviour
-		where GAMESTATE : GameState<GAMESAVESTATE>, new()
-		where GAMESAVESTATE : GameSaveStateBase, new() {
+	public abstract class GameStateManagerBase : Configurable, IGameStateService, IManagerBehaviour {
 		#region Properties
-		private GAMESTATE m_GameState;
-		public GAMESTATE GameState {
+		private IGameState m_GameState;
+		public IGameState GameState {
 			get {
 				if (m_GameState == null)
 					Load();
@@ -32,7 +30,11 @@ namespace BaseSDK.Controllers {
 		#endregion Unity Methods
 
 		#region Interface Implementation
-		public virtual (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IGameStateService<GAMESTATE, GAMESAVESTATE>));
+		public abstract IGameState GetNewGameState();
+
+		public abstract IGameState GetGameState(string serialized);
+
+		public virtual (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(IGameStateService));
 
 		public override IEnumerator Setup() {
 			Load();
@@ -53,33 +55,22 @@ namespace BaseSDK.Controllers {
 
 			//Fresh launch
 			if (!File.Exists(SAVE_FILE_PATH)) {
-				GameState = new GAMESTATE();
+				GameState = GetNewGameState();
 				Save();
 				return;
 			}
 
-			Profiler.BeginSample("Open GameState File");
-			var savGameState = string.Empty;
-			using (var sr = new StreamReader(SAVE_FILE_PATH))
-				savGameState = sr.ReadToEnd();
+			using var sr = new StreamReader(SAVE_FILE_PATH);
+			var savGameState = sr.ReadToEnd();
 			var ppGameState = PlayerPrefsManager.Get(k_PLAYERPREF_KEY, string.Empty);
-			Profiler.EndSample();
 
-			Profiler.BeginSample("Deserialize JSONs");
-#if UNITY_EDITOR
-			var ppGS = ppGameState.Deserialize<GAMESTATE>(GameConstants.JsonSerializerSettings);
-			var savGS = savGameState.Deserialize<GAMESTATE>(GameConstants.JsonSerializerSettings);
-#else
-			var ppGS = ppGameState.Decrypt<string>().Deserialize<GAMESTATE>(GameConstants.JsonSerializerSettings);
-			var savGS = savGameState.Decrypt<string>().Deserialize<GAMESTATE>(GameConstants.JsonSerializerSettings);
-#endif
-			Profiler.EndSample();
+			var ppGS = GetGameState(ppGameState);
+			var savGS = GetGameState(savGameState);
+			ppGS ??= GetNewGameState();
+			savGS ??= GetNewGameState();
 
-			Profiler.BeginSample("Assign Final GameStates");
-			//Take the latest data, ignore the older one. File writing might fail sometimes, probably more often than registry failures
-			var useLatest = ppGS.LastLogout > savGS.LastLogout ? ppGS : savGS;
-			GameState = ppGameState == savGameState ? ppGS : useLatest;
-			Profiler.EndSample();
+			ppGS = ppGS.LastLogout > savGS.LastLogout ? ppGS : savGS;
+			GameState = ppGS;
 		}
 
 		public virtual void Save() {
@@ -94,6 +85,7 @@ namespace BaseSDK.Controllers {
 #else
 			var encrypted = GameState.Serialize(GameConstants.JsonSerializerSettings).Encrypt();
 #endif
+
 			PlayerPrefsManager.Set(k_PLAYERPREF_KEY, encrypted);
 
 			if (!Directory.Exists(GameConstants.SAVE_FOLDER_PATH))

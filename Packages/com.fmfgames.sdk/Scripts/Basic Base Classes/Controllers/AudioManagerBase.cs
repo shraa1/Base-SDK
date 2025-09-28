@@ -23,7 +23,7 @@ namespace BaseSDK.Controllers {
 		public AssetReferenceAudioClip AudioClipAssetReference;
 	}
 
-	public class AudioManager : Configurable, IAudioService {
+	public abstract class AudioManagerBase : Configurable, IAudioService {
 		#region Inspector Variables
 		/// <summary>
 		/// AudioSources and respective Audioclips they play
@@ -87,7 +87,7 @@ namespace BaseSDK.Controllers {
 				yield return null;
 			Initialized = true;
 
-			var settingsManager = GlobalServices.GetServiceProvider(ServicesScope.GLOBAL).Get<ISettingsService<SettingsState>>();
+			var settingsManager = GlobalServices.GetServiceProvider(ServicesScope.GLOBAL).Get<ISettingsService>();
 			SetVolume(VOLUMETYPE.MASTER, settingsManager.SettingsState.MasterVolume);
 			SetVolume(VOLUMETYPE.MUSIC, settingsManager.SettingsState.MusicVolume);
 			SetVolume(VOLUMETYPE.SFX, settingsManager.SettingsState.SFXVolume);
@@ -96,7 +96,6 @@ namespace BaseSDK.Controllers {
 		public virtual void SetVolume (VOLUMETYPE volumeType, float volume) {
 			var parameter = m_VolumeType[volumeType];
 			_ = m_AudioMixer.SetFloat(parameter, Mathf.Log10(Mathf.Clamp(volume, k_MIN_VOLUME, 1f)) * k_AUDIO_MULTIPLIER);
-			PlayerPrefs.SetFloat(parameter, volume);
 		}
 
 		public virtual void PlayMusic (AudioClip clip, bool loop = true) {
@@ -150,12 +149,12 @@ namespace BaseSDK.Controllers {
 	}
 
 #if UNITY_EDITOR
-	[UnityEditor.CustomEditor(typeof(AudioManager))]
+	[UnityEditor.CustomEditor(typeof(AudioManagerBase))]
 	public class AudioManagerEditor : UnityEditor.Editor {
 		public override void OnInspectorGUI () {
 			base.OnInspectorGUI();
 
-			var am = target as AudioManager;
+			var am = target as AudioManagerBase;
 			am.AudiosInfo.ForEach(audioInfo => {
 				if (audioInfo.AudioSource == null) {
 					audioInfo.AudioSource = am.gameObject.AddComponent<AudioSource>();

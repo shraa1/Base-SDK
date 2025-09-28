@@ -1,19 +1,19 @@
 using System;
 using System.IO;
-using BaseSDK.Extension;
+using BaseSDK.Controllers;
 using BaseSDK.Helper;
 using BaseSDK.Models;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace BaseSDK.Controllers {
-	public class SettingsManager<T> : Configurable, IManagerBehaviour, ISettingsService<T> where T : SettingsState, new () {
+namespace BaseSDK.Settings.Controller {
+	public abstract class SettingsManagerBase : Configurable, IManagerBehaviour, ISettingsService {
 		#region Variables and Consts
 		private const string PLAYERPREF_KEY = "m_SettingsState";
 		#endregion Variables and Consts
 
 		#region Properties
-		public T SettingsState {
+		public ISettingsState SettingsState {
 			get {
 				if (m_SettingsState == null)
 					Load();
@@ -21,11 +21,15 @@ namespace BaseSDK.Controllers {
 			}
 			set => m_SettingsState = value;
 		}
-		private T m_SettingsState;
+		private ISettingsState m_SettingsState;
 		#endregion Properties
 
 		#region Interface Implementation
-		public virtual (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(ISettingsService<T>));
+		public abstract ISettingsState GetNewSettingsState();
+
+		public abstract ISettingsState GetSettingsState(string serialized);
+
+		public virtual (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(ISettingsService));
 
 		public virtual void Save () {
 			var SAVED_FILE_NAME = $"{GameConstants.GameName()}_Settings.json";
@@ -48,22 +52,19 @@ namespace BaseSDK.Controllers {
 
 			//Fresh launch
 			if (!File.Exists(savFilePath)) {
-				SettingsState = new T();
+				SettingsState = GetNewSettingsState();
 				Save();
 				return;
 			}
 
 			using var sr = new StreamReader(savFilePath);
 			var savSettingsState = sr.ReadToEnd();
-			var ppGameState = PlayerPrefsManager.Get(PLAYERPREF_KEY, string.Empty);
-			T ppSS = null;
-			try {
-				ppSS = ppGameState.Deserialize<T>();
-			}
-			catch {
-				SettingsState = savSettingsState.Deserialize<T>();
-				return;
-			}
+			var ppSettingsState = PlayerPrefsManager.Get(PLAYERPREF_KEY, string.Empty);
+			ISettingsState ppSS = null;
+			ppSS = GetSettingsState(ppSettingsState);
+			ppSS ??= GetSettingsState(savSettingsState);
+			ppSS ??= GetNewSettingsState();
+
 			SettingsState = ppSS;
 		}
 
