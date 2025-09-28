@@ -1,12 +1,12 @@
 using System;
 using System.IO;
-using BaseSDK.Extension;
+using BaseSDK.Controllers;
 using BaseSDK.Helper;
 using BaseSDK.Models;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace BaseSDK.Controllers {
+namespace BaseSDK.Settings.Controller {
 	public abstract class SettingsManager : Configurable, IManagerBehaviour, ISettingsService {
 		#region Variables and Consts
 		private const string PLAYERPREF_KEY = "m_SettingsState";
@@ -27,7 +27,6 @@ namespace BaseSDK.Controllers {
 		#region Interface Implementation
 		public abstract ISettingsState GetNewSettingsState();
 
-		// TODO consider try catch situation here
 		public abstract ISettingsState GetSettingsState(string serialized);
 
 		public virtual (int scope, Type interfaceType) RegisteringTypes => ((int)ServicesScope.GLOBAL, typeof(ISettingsService));

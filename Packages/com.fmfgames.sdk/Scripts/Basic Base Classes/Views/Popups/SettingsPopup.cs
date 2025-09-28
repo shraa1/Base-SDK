@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.InputSystem;
-using BaseSDK.RebindUI;
+using BaseSDK.Settings.Rebind;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering;
 using BaseSDK.Helper;

@@ -10,7 +10,7 @@ using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 
 namespace BaseSDK.Controllers {
-	public class LocalizationController : Configurable, ILocalizationService {
+	public abstract class LocalizationControllerBase : Configurable, ILocalizationService {
 		#region String Tables
 		[SerializeField] private List<LocalizedStringTable> m_LocalizationTables = new();
 		#endregion String Tables

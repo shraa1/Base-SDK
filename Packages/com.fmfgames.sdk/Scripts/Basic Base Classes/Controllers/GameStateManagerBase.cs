@@ -6,10 +6,9 @@ using BaseSDK.Helper;
 using BaseSDK.Models;
 using BaseSDK.Services;
 using UnityEngine;
-using UnityEngine.Profiling;
 
 namespace BaseSDK.Controllers {
-	public abstract class GameStateManager : Configurable, IGameStateService, IManagerBehaviour {
+	public abstract class GameStateManagerBase : Configurable, IGameStateService, IManagerBehaviour {
 		#region Properties
 		private IGameState m_GameState;
 		public IGameState GameState {

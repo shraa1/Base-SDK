@@ -23,7 +23,7 @@ namespace BaseSDK.Controllers {
 		public AssetReferenceAudioClip AudioClipAssetReference;
 	}
 
-	public class AudioManager : Configurable, IAudioService {
+	public abstract class AudioManagerBase : Configurable, IAudioService {
 		#region Inspector Variables
 		/// <summary>
 		/// AudioSources and respective Audioclips they play
@@ -149,12 +149,12 @@ namespace BaseSDK.Controllers {
 	}
 
 #if UNITY_EDITOR
-	[UnityEditor.CustomEditor(typeof(AudioManager))]
+	[UnityEditor.CustomEditor(typeof(AudioManagerBase))]
 	public class AudioManagerEditor : UnityEditor.Editor {
 		public override void OnInspectorGUI () {
 			base.OnInspectorGUI();
 
-			var am = target as AudioManager;
+			var am = target as AudioManagerBase;
 			am.AudiosInfo.ForEach(audioInfo => {
 				if (audioInfo.AudioSource == null) {
 					audioInfo.AudioSource = am.gameObject.AddComponent<AudioSource>();
