@@ -4,12 +4,12 @@ using Sirenix.OdinInspector;
 #else
 using BaseSDK.SirenixHelper;
 #endif
-using BaseSDK.Popups.View;
+using BaseSDK.Popups.Views;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.InputSystem;
-using BaseSDK.Settings.View.Rebind;
+using BaseSDK.Settings.Views.Rebind;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering;
 using BaseSDK.Helper;
@@ -19,7 +19,7 @@ using BaseSDK.Services;
 using BaseSDK.Models;
 using System.Linq;
 
-namespace BaseSDK.Settings.View {
+namespace BaseSDK.Settings.Views {
 	public abstract partial class SettingsPopupBase<POPUPTYPE> : PopupBase<POPUPTYPE> where POPUPTYPE : Enum {
 		#region Inspector Variables
 		[FoldoutGroup("Overall"), SerializeField] private InputActionAsset m_InputActionAsset;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BaseSDK.Settings.View.Rebind {
+namespace BaseSDK.Settings.Views.Rebind {
 	/// <summary>
 	/// A reusable component with a self-contained UI for rebinding a single action.
 	/// </summary>

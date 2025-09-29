@@ -6,7 +6,7 @@ using BaseSDK.Models;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace BaseSDK.Settings.Controller {
+namespace BaseSDK.Settings.Controllers {
 	public abstract class SettingsManagerBase : Configurable, IManagerBehaviour, ISettingsService {
 		#region Variables and Consts
 		private const string PLAYERPREF_KEY = "m_SettingsState";
