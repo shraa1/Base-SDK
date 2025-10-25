@@ -52,7 +52,16 @@ namespace BaseSDK.SirenixHelper {
         public MinValueAttribute(string expression) { }
 	}
 
-		public enum TitleAlignments {
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = true, Inherited = true), Conditional("UNITY_EDITOR")]
+    public sealed class OnValueChangedAttribute : Attribute {
+		public string Action;
+		public bool IncludeChildren;
+		public bool InvokeOnUndoRedo = true;
+		public bool InvokeOnInitialize;
+		public OnValueChangedAttribute(string action, bool includeChildren = false) { }
+	}
+
+	public enum TitleAlignments {
 		Left, Centered, Right, Split
 	}
 
