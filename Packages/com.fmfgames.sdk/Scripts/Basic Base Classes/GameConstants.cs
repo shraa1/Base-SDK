@@ -85,6 +85,7 @@ namespace BaseSDK {
 
 		#region File Paths Related
 		public static Func<string> GameName;
+		public static Func<int> MaxSaveSlots;
 		public const string SAVED_GAME_FILES_FOLDERNAME = "Saved Game Files";
 		public const string FIRST_LAUNCH_SAVED_FILE_NAME = "FirstLaunch.playedAlready";
 

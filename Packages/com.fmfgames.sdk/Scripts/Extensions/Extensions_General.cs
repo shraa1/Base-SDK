@@ -125,9 +125,9 @@ namespace BaseSDK.Extension {
 		/// </summary>
 		/// <typeparam name="T">Type of item to check.</typeparam>
 		/// <param name="actual">Value of the item being checked.</param>
-		/// <param name="minValue">Low-end value of the range to check in.</param>
-		/// <param name="maxValue">High-end value of the range to check in.</param>
-		/// <returns>Returns if the given item is inside the given range.</returns>
+		/// <param name="minValue">Low-end value of the range to check in (inclusive).</param>
+		/// <param name="maxValue">High-end value of the range to check in (exclusive).</param>
+		/// <returns>Returns true if actual >= minValue AND actual &lt; maxValue (minValue inclusive, maxValue exclusive).</returns>
 		public static bool Between<T> (this T actual, T minValue, T maxValue) where T : IComparable<T> => actual.CompareTo(minValue) >= 0 && actual.CompareTo(maxValue) < 0;
 
 		/// <summary>

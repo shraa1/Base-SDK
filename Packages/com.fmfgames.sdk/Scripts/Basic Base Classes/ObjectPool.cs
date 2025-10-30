@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 using UnityEngine;
 
@@ -32,9 +30,14 @@ namespace BaseSDK.Utils {
 		private static GameObject controller;
 
 		/// <summary>
-		/// Already instantiated objects
+		/// Queue of free/available pool items for efficient O(1) access
 		/// </summary>
-		private static readonly List<Tuple<T, ItemUsageState>> instances = new();
+		private static readonly Queue<T> freeItems = new();
+
+		/// <summary>
+		/// HashSet of in-use pool items for efficient O(1) tracking
+		/// </summary>
+		private static readonly HashSet<T> inUseItems = new();
 
 		/// <summary>
 		/// Default rotation for instantiating new objects
@@ -49,24 +52,14 @@ namespace BaseSDK.Utils {
 
 		#region Properties
 		/// <summary>
-		/// All freed up items
-		/// </summary>
-		private static List<Tuple<T, ItemUsageState>> FreeItems => instances.FindAll(x => x.Item2 == ItemUsageState.FREE);
-
-		/// <summary>
-		/// All in use items
-		/// </summary>
-		private static List<Tuple<T, ItemUsageState>> InUseItems => instances.FindAll(x => x.Item2 == ItemUsageState.IN_USE);
-
-		/// <summary>
 		/// All the Objects of this type which are in use
 		/// </summary>
-		public static List<T> AllInUseItems => InUseItems?.Select(x => x.Item1)?.ToList();
+		public static List<T> AllInUseItems => new List<T>(inUseItems);
 
 		/// <summary>
 		/// All the Objects of this type which are free/available for use
 		/// </summary>
-		public static List<T> GetAllFree => FreeItems?.Select(x => x.Item1)?.ToList();
+		public static List<T> GetAllFree => new List<T>(freeItems);
 
 		/// <summary>
 		/// Set the max pool items allowed for this Type of ObjectPool.<br/>Ignored for BulkInstantiate call.
@@ -76,17 +69,17 @@ namespace BaseSDK.Utils {
 		/// <summary>
 		/// Count of free/available instantiated items for this ObjectPool<T>
 		/// </summary>
-		public static int NumberOfFreeItems => FreeItems.Count;
+		public static int NumberOfFreeItems => freeItems.Count;
 
 		/// <summary>
 		/// Count of in use instantiated items for this ObjectPool<T>
 		/// </summary>
-		public static int NumberOfInUseItems => InUseItems.Count;
+		public static int NumberOfInUseItems => inUseItems.Count;
 
 		/// <summary>
 		/// Count of instantiated items for this ObjectPool<T>
 		/// </summary>
-		public static int InstantiatedPoolItemsCount => instances.Count;
+		public static int InstantiatedPoolItemsCount => freeItems.Count + inUseItems.Count;
 
 		/// <summary>
 		/// Controller GameObject which was instantiated and holds all the pool objects. Named Pool<T>
@@ -113,7 +106,7 @@ namespace BaseSDK.Utils {
 				controller = new GameObject($"{pool}<{typeof(T).Name}>");
 				controller.SetActive(instantiateActive);
 				if (dontDestroy)
-					UnityEngine.Object.DontDestroyOnLoad(controller);
+                    Object.DontDestroyOnLoad(controller);
 			}
 			return controller;
 		}
@@ -144,28 +137,35 @@ namespace BaseSDK.Utils {
 		/// <param name="itemUsageState">On creating a new or fetching an existing pool item, set it as an in-use item or a free to use item</param>
 		/// <returns>Returns null if MaxPoolItems is reached, else finds an available object, else creates a new one and returns it.</returns>
 		public static T Get (Transform parentTransform = null, ItemUsageState itemUsageState = ItemUsageState.IN_USE) {
-			var find = instances.Find(x => x.Item2 == ItemUsageState.FREE);
-			var item = find?.Item1;
-			var ind = 0;
-			if (item == null) {
-				if (MaxPoolItems != -1 && instances.Count >= MaxPoolItems)
-					return null;
 
-				if (templ != null)
-					item = UnityEngine.Object.Instantiate(templ, templ.transform.position, Quaternion.identity, controller.transform);
-				else
-					item = new GameObject().AddComponent<T>();
-				item.name = templ.name;
-				instances.Add(Tuple.Create(item, ItemUsageState.FREE));
-				ind = instances.Count - 1;
-			}
-			else
-				ind = instances.IndexOf(find);
+            // Try to get a free item from the queue
+            if (!freeItems.TryDequeue(out T item)) {
+                // No free items available, check if we can create a new one
+                if (MaxPoolItems != -1 && InstantiatedPoolItemsCount >= MaxPoolItems)
+                    return null;
 
-			item.transform.SetParent(parentTransform, true);
+                // Create a new item
+                if (templ != null) {
+                    item = Object.Instantiate(templ, templ.transform.position, Quaternion.identity, controller.transform);
+                	item.gameObject.name = templ.name;
+				}
+                else {
+                    item = new GameObject().AddComponent<T>();
+					item.gameObject.name = typeof(T).Name;
+				}
+            }
+
+            // Set up the item
+            item.transform.SetParent(parentTransform, true);
 			item.transform.localScale = localScale;
 			item.transform.rotation = rotation;
-			instances[ind] = Tuple.Create(item, itemUsageState);
+
+			// Track the item based on its usage state
+			if (itemUsageState == ItemUsageState.IN_USE)
+				inUseItems.Add(item);
+			else
+				freeItems.Enqueue(item);
+
 			return item;
 		}
 
@@ -178,14 +178,14 @@ namespace BaseSDK.Utils {
 			for (var i = 0; i < capacity; i++) {
 				T item;
 				if (templ != null)
-					item = UnityEngine.Object.Instantiate(templ, templ.transform.position, Quaternion.identity, controller.transform);
+					item = Object.Instantiate(templ, templ.transform.position, Quaternion.identity, controller.transform);
 				else
 					item = new GameObject().AddComponent<T>();
 
-				item.transform.SetParent(null, true);
+				item.transform.SetParent(controller.transform, true);
 				item.transform.localScale = localScale;
 				item.transform.rotation = rotation;
-				instances.Add(Tuple.Create(item, ItemUsageState.FREE));
+				freeItems.Enqueue(item);
 			}
 		}
 
@@ -194,20 +194,21 @@ namespace BaseSDK.Utils {
 		/// </summary>
 		/// <param name="itemToFree">Item to free.</param>
 		public static void FreeToPool (T itemToFree) {
-			var item = instances.Find(x => x.Item1 == itemToFree);
-			var index = instances.IndexOf(item);
-			itemToFree.transform.SetParent(controller.transform, true);
-			instances[index] = Tuple.Create(itemToFree, ItemUsageState.FREE);
+			if (inUseItems.Remove(itemToFree)) {
+				itemToFree.transform.SetParent(controller.transform, true);
+				freeItems.Enqueue(itemToFree);
+			}
 		}
 
 		/// <summary>
 		/// Free up all pool items
 		/// </summary>
 		public static void FreeAllItemsToPool () {
-			for (var i = 0; i < instances.Count; i++) {
-				instances[i].Item1.transform.SetParent(controller.transform, true);
-				instances[i] = Tuple.Create(instances[i].Item1, ItemUsageState.FREE);
+			foreach (var item in inUseItems) {
+				item.transform.SetParent(controller.transform, true);
+				freeItems.Enqueue(item);
 			}
+			inUseItems.Clear();
 		}
 		#endregion Methods
 #pragma warning restore S2743 // Static fields should not be used in generic types
