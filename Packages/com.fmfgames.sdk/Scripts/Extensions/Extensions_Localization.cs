@@ -57,13 +57,14 @@ namespace BaseSDK.Extension {
 
 			// Convert the event's argument collection to a mutable list
 			var args = element.StringReference.Values.ToList();
-
-			// If the number of arguments doesn’t match the number of provided parameters, abort
-			if (args.Count != parameters.Length)
+			if (args.Count <= 0)
 				return;
 
-			// Assign parameter values to the matching variables
-			parameters.For(i => ((Variable<T>)args[i]).Value = parameters[i]);
+			for(var i = 0; i < parameters.Length; i++) {
+				if (i >= args.Count)
+					break;
+				((Variable<T>)args[i]).Value = parameters[i];
+			}
 
 			// Refresh to apply updated parameter values
 			element.RefreshString();
