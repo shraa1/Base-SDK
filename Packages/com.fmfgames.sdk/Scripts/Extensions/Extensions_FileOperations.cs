@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
 
 namespace BaseSDK.Extension {
 	public static partial class Extensions {
@@ -21,8 +18,8 @@ namespace BaseSDK.Extension {
 				return null;
 			else {
 				try {
-					using (var sw = new StreamWriter(filePath))
-						sw.Write(content);
+					using var sw = new StreamWriter(filePath);
+					sw.Write(content);
 				}
 				catch (Exception ex) { e = ex; }
 			}
@@ -52,8 +49,8 @@ namespace BaseSDK.Extension {
 				e = new FileNotFoundException();
 			else {
 				try {
-					using (var sw = new StreamReader(filePath))
-						str = sw.ReadToEnd();
+					using var sw = new StreamReader(filePath);
+					str = sw.ReadToEnd();
 				}
 				catch (Exception ex) {
 					e = ex;
@@ -61,6 +58,11 @@ namespace BaseSDK.Extension {
 			}
 #endif
 			return str;
+		}
+	
+		public static void DeleteSafely(this string filePath) {
+			if (File.Exists(filePath))
+				File.Delete(filePath);
 		}
 	}
 }

@@ -1,13 +1,10 @@
 #if UNITY_EDITOR
-using System.Collections;
-using System.Collections.Generic;
+using BaseSDK.Helper;
+using BaseSDK.Extension;
 using System.Diagnostics;
 using System.Reflection;
-
-using BaseSDK.Helper;
-
+using System.IO;
 using UnityEditor;
-
 using UnityEngine;
 
 namespace BaseSDK {
@@ -38,6 +35,33 @@ namespace BaseSDK {
 
 			if (hadKey)
 				PlayerPrefs.SetString("PlayFromScene0", string.Empty);
+		}
+		
+		[MenuItem("Tools/Delete PlayerPrefs + Game Save Files %#DEL", priority = 50)]
+		public static void DeleteWithGameFiles () {
+			var hadKey = PlayerPrefs.HasKey("PlayFromScene0");
+
+			PlayerPrefsManager.DeleteAll();
+
+			if (hadKey)
+				PlayerPrefs.SetString("PlayFromScene0", string.Empty);
+
+			Path.Combine(Application.dataPath, "Saved Game Files", "FirstLaunch.playedAlready").DeleteSafely();
+			Path.Combine(Application.dataPath, "Saved Game Files", "FirstLaunch.playedAlready.meta").DeleteSafely();
+
+			if (EditorApplication.isPlaying) {
+				Path.Combine(Application.dataPath, "Saved Game Files", $"{GameConstants.GameName()}.sav").DeleteSafely();
+				Path.Combine(Application.dataPath, "Saved Game Files", $"{GameConstants.GameName()}.sav.meta").DeleteSafely();
+				Path.Combine(Application.dataPath, "Saved Game Files", $"{GameConstants.GameName()}_Settings.json").DeleteSafely();
+				Path.Combine(Application.dataPath, "Saved Game Files", $"{GameConstants.GameName()}_Settings.json.meta").DeleteSafely();
+			}
+			else {
+				Path.Combine(Application.dataPath, "Saved Game Files", $"{PlayerSettings.productName}.sav").DeleteSafely();
+				Path.Combine(Application.dataPath, "Saved Game Files", $"{PlayerSettings.productName}.sav.meta").DeleteSafely();
+				Path.Combine(Application.dataPath, "Saved Game Files", $"{PlayerSettings.productName}_Settings.json").DeleteSafely();
+				Path.Combine(Application.dataPath, "Saved Game Files", $"{PlayerSettings.productName}_Settings.json.meta").DeleteSafely();
+			}
+			AssetDatabase.Refresh();
 		}
 	}
 }

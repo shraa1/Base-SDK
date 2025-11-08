@@ -72,10 +72,9 @@ namespace BaseSDK.Models {
 	/// </summary>
 	[Serializable]
 	public class SingleSaveGameState : GameStateBase {
-		protected IGameSaveState CurrentSave { get; set; }
-		public bool HasSaveData => CurrentSave != null;
+		public bool HasSaveData => LifetimeGameStates != null;
 
-		public void SetCurrentSlot(IGameSaveState newState) => CurrentSave = newState;
-		public override IGameSaveState GetCurrentSlot() => CurrentSave;
+		public void SetCurrentSlot(IGameSaveState newState) => LifetimeGameStates = newState;
+		public override IGameSaveState GetCurrentSlot() => LifetimeGameStates as IGameSaveState;
 	}
 }

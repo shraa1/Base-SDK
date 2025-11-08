@@ -1,7 +1,7 @@
 {
   "name": "com.fmfgames.sdk",
   "displayName": "Base SDK",
-  "version": "0.2.18",
+  "version": "0.2.20",
   "unity": "6000.0",
   "unityRelease": "23f1",
   "author": {
