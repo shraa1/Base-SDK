@@ -29,27 +29,27 @@ namespace BaseSDK.Models {
 	[Serializable]
 	public class SettingsState : ISettingsState {
 		#region Generic
-		public float VibrationValue { get; set; } = 1f;
-		public string Locale { get; set; } = "en-US";
+		public virtual float VibrationValue { get; set; } = 1f;
+		public virtual string Locale { get; set; } = "en-US";
 		#endregion Generic
 
 		#region Audio
-		public float MasterVolume { get; set; } = 1f;
-		public float MusicVolume { get; set; } = 1f;
-		public float SFXVolume { get; set; } = 1f;
+		public virtual float MasterVolume { get; set; } = 1f;
+		public virtual float MusicVolume { get; set; } = 1f;
+		public virtual float SFXVolume { get; set; } = 1f;
 		#endregion Audio
 
 		#region Display
-		public float Brightness { get; set; } = 1f;
-		public bool FullScreen { get; set; }
-		public bool Borderless { get; set; }
-		public bool VSync { get; set; }
+		public virtual float Brightness { get; set; } = 1f;
+		public virtual bool FullScreen { get; set; }
+		public virtual bool Borderless { get; set; }
+		public virtual bool VSync { get; set; }
 		#endregion Display
 
 		#region Methods
 		public override string ToString () => JsonConvert.SerializeObject(this);
 
-		public void Reset() {
+		public virtual void Reset() {
 			VibrationValue = 1f;
 			Locale = "en-US";
 			MasterVolume = 1f;
