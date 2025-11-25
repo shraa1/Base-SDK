@@ -41,10 +41,13 @@ namespace BaseSDK.Settings.Views {
 		#endregion Inspector Variables
 
 		#region Variables
-		protected IAudioService AudioService => GlobalServices.GetServiceProvider(ServicesScope.GLOBAL).Get<IAudioService>();
-		protected ISettingsService SettingsService => GlobalServices.GetServiceProvider(ServicesScope.GLOBAL).Get<ISettingsService>();
 		protected ColorAdjustments m_ColorAdjustments;
 		#endregion Variables
+
+		#region Properties
+		protected virtual IAudioService AudioService => GlobalServices.GetServiceProvider(ServicesScope.GLOBAL).Get<IAudioService>();
+		protected virtual ISettingsService SettingsService => GlobalServices.GetServiceProvider(ServicesScope.GLOBAL).Get<ISettingsService>();
+		#endregion Properties
 
 		#region Unity Methods
 		protected override void Awake() {

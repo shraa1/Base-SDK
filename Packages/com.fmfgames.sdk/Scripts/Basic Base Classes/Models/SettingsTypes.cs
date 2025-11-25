@@ -9,16 +9,16 @@ namespace BaseSDK.Models {
 		#endregion Generic
 
 		#region Audio
-		public float MasterVolume { get; set; }
-		public float MusicVolume { get; set; }
-		public float SFXVolume { get; set; }
+		float MasterVolume { get; set; }
+		float MusicVolume { get; set; }
+		float SFXVolume { get; set; }
 		#endregion Audio
 
 		#region Display
-		public float Brightness { get; set; }
-		public bool FullScreen { get; set; }
-		public bool Borderless { get; set; }
-		public bool VSync { get; set; }
+		float Brightness { get; set; }
+		bool FullScreen { get; set; }
+		bool Borderless { get; set; }
+		bool VSync { get; set; }
 		#endregion Display
 
 		#region Methods
