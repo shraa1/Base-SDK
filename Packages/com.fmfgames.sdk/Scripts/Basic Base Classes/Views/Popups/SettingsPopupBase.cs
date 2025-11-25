@@ -22,22 +22,22 @@ using System.Linq;
 namespace BaseSDK.Settings.Views {
 	public abstract partial class SettingsPopupBase<POPUPTYPE> : PopupBase<POPUPTYPE> where POPUPTYPE : Enum {
 		#region Inspector Variables
-		[FoldoutGroup("Overall"), SerializeField] private InputActionAsset m_InputActionAsset;
-		[FoldoutGroup("Generic Settings"), SerializeField] private Button m_RestoreDeaultsBtn;
-		[FoldoutGroup("Generic Settings"), SerializeField] private Slider m_VibrationSlider;
-		[FoldoutGroup("Generic Settings"), SerializeField] private TMP_Dropdown m_LanguageDropdown;
+		[FoldoutGroup("Overall"), SerializeField] protected InputActionAsset m_InputActionAsset;
+		[FoldoutGroup("Generic Settings"), SerializeField] protected Button m_RestoreDeaultsBtn;
+		[FoldoutGroup("Generic Settings"), SerializeField] protected Slider m_VibrationSlider;
+		[FoldoutGroup("Generic Settings"), SerializeField] protected TMP_Dropdown m_LanguageDropdown;
 
-		[FoldoutGroup("Audio"), SerializeField] private Slider m_MasterVolumeSlider;
-		[FoldoutGroup("Audio"), SerializeField] private Slider m_MusicVolumeSlider;
-		[FoldoutGroup("Audio"), SerializeField] private Slider m_SFXVolumeSlider;
+		[FoldoutGroup("Audio"), SerializeField] protected Slider m_MasterVolumeSlider;
+		[FoldoutGroup("Audio"), SerializeField] protected Slider m_MusicVolumeSlider;
+		[FoldoutGroup("Audio"), SerializeField] protected Slider m_SFXVolumeSlider;
 
-		[FoldoutGroup("Display"), SerializeField] private Slider m_BrightnessSlider;
-		[FoldoutGroup("Display"), SerializeField] private Toggle[] m_FullScreenToggles;
-		[FoldoutGroup("Display"), SerializeField] private Toggle[] m_BorderlessToggles;
-		[FoldoutGroup("Display"), SerializeField] private Toggle[] m_VSyncToggles;
-		[FoldoutGroup("Display")] public Volume GlobalVolume;
+		[FoldoutGroup("Display"), SerializeField] protected Slider m_BrightnessSlider;
+		[FoldoutGroup("Display"), SerializeField] protected Toggle[] m_FullScreenToggles;
+		[FoldoutGroup("Display"), SerializeField] protected Toggle[] m_BorderlessToggles;
+		[FoldoutGroup("Display"), SerializeField] protected Toggle[] m_VSyncToggles;
+		[FoldoutGroup("Display"), SerializeField] protected Volume m_GlobalVolume;
 
-		[FoldoutGroup("Controls"), SerializeField] private RebindActionUIBase[] m_RebindActionUIs;
+		[FoldoutGroup("Controls"), SerializeField] protected RebindActionUIBase[] m_RebindActionUIs;
 		#endregion Inspector Variables
 
 		#region Variables
@@ -49,7 +49,7 @@ namespace BaseSDK.Settings.Views {
 		#region Unity Methods
 		protected override void Awake() {
 			base.Awake();
-			_ = GlobalVolume.profile.TryGet(out m_ColorAdjustments);
+			_ = m_GlobalVolume.profile.TryGet(out m_ColorAdjustments);
 
 			#region Listeners
 			m_VibrationSlider.onValueChanged.AddListener(OnVibrationValueChanged);
@@ -95,7 +95,7 @@ namespace BaseSDK.Settings.Views {
 			InitDisplay();
 		}
 
-		private void RadioButtonHelper(Toggle[] toggles, bool val, Action<bool> onValueChanged) {
+		protected void RadioButtonHelper(Toggle[] toggles, bool val, Action<bool> onValueChanged) {
 			toggles.ForEach(x => x.onValueChanged.RemoveAllListeners());
 
 			//TODO HACK FIXME improve this
@@ -126,7 +126,7 @@ namespace BaseSDK.Settings.Views {
 		#endregion Callback Methods
 
 		#region Init
-		public virtual void InitGeneric() {
+		protected virtual void InitGeneric() {
 			var localizationService = GlobalServices.GetServiceProvider(ServicesScope.GLOBAL).Get<ILocalizationService>();
 			var settings = SettingsService.SettingsState;
 			m_VibrationSlider.value = settings.VibrationValue;
@@ -162,7 +162,7 @@ namespace BaseSDK.Settings.Views {
 		#endregion Callback Methods
 
 		#region Init
-		public virtual void InitAudio() {
+		protected virtual void InitAudio() {
 			m_MasterVolumeSlider.value = SettingsService.SettingsState.MasterVolume;
 			m_MusicVolumeSlider.value = SettingsService.SettingsState.MusicVolume;
 			m_SFXVolumeSlider.value = SettingsService.SettingsState.SFXVolume;
@@ -183,7 +183,7 @@ namespace BaseSDK.Settings.Views {
 		#endregion Callback Methods
 
 		#region Init
-		public virtual void InitDisplay() {
+		protected virtual void InitDisplay() {
 			m_BrightnessSlider.value = SettingsService.SettingsState.Brightness;
 
 			RadioButtonHelper(m_FullScreenToggles, SettingsService.SettingsState.FullScreen, val => {
